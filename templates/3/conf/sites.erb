@@ -1,0 +1,6 @@
+<% if @enable_default -%>
+$INCLUDE ${confdir}/sites-enabled/default
+<% end -%>
+<% if @enable_inner_tunnel -%>
+$INCLUDE ${confdir}/sites-enabled/inner-tunnel
+<% end -%>

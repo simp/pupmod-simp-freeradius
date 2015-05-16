@@ -1,0 +1,4 @@
+---
+ldap::base_dn : 'ou=foo,dc=bar,dc=baz'
+ldap::bind_pw : 'password'
+ldap::bind_dn : 'dn=test,ou=foo,dc=bar,dc=baz'

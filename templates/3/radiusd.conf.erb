@@ -1,0 +1,66 @@
+prefix = /usr
+exec_prefix = /usr
+sysconfdir = /etc
+localstatedir = <%= @localstatedir %>
+sbindir = /usr/sbin
+logdir = <%= @logdir %>
+raddbdir = ${sysconfdir}/raddb
+radacctdir = ${logdir}/radacct
+name = radiusd
+confdir = ${raddbdir}
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${raddbdir}
+modconfdir = ${raddbdir}/mods-config
+certdir = ${raddbdir}/certs
+cadir = ${raddbdir}/certs
+<% if @hardwaremodel.eql?("x86_64") then -%>
+libdir = /usr/lib64/freeradius
+<% else -%>
+libdir = /usr/lib/freeradius
+<% end -%>
+pidfile = ${run_dir}/${name}.pid
+max_request_time = <%= @max_request_time %>
+cleanup_delay = <%= @cleanup_delay %>
+max_requests = <%= @max_requests %>
+
+$INCLUDE conf/listen.inc/
+
+<% if @hostname_lookups then -%>
+hostname_lookups = yes
+<% else -%>
+hostname_lookups = no
+<% end -%>
+
+<% if @regular_expressions -%>
+regular_expressions	= yes
+<% else -%>
+regular_expressions	= no
+<% end -%>
+<% if @extended_expressions then -%>
+extended_expressions	= yes
+<% else -%>
+extended_expressions	= no
+<% end -%>
+
+$INCLUDE conf/log.inc
+
+checkrad = ${sbindir}/checkrad
+
+$INCLUDE conf/security.inc
+
+<% if @proxy_requests then -%>
+proxy_requests  = yes
+$INCLUDE proxy.conf
+<% end -%>
+
+$INCLUDE conf/clients/
+
+$INCLUDE conf/thread_pool.inc
+
+$INCLUDE conf/modules.inc
+
+$INCLUDE conf/instantiate.inc
+
+$INCLUDE conf/sites.inc
+
+$INCLUDE conf/policy.inc

@@ -1,0 +1,43 @@
+log {
+<%
+  t_valid_destinations = [
+    "files",
+    "syslog",
+    "stdout",
+    "stderr"
+  ]
+
+  if not t_valid_destinations.include?(@destination) then
+    raise Puppet::ParseError.new("'destination' must be one of '#{t_valid_destinations.join(',')}'")
+  end
+-%>
+  destination = <%= @destination %>
+  file = <%= @log_file %>
+  syslog_facility = <%= @syslog_facility %>
+<% if @stripped_names then -%>
+  stripped_names = yes
+<% else -%>
+  stripped_names = no
+<% end -%>
+<% if @auth then -%>
+  auth = yes
+<% else -%>
+  auth = no
+<% end -%>
+<% if @auth_badpass then -%>
+  auth_badpass = yes
+<% else -%>
+  auth_badpass = no
+<% end -%>
+<% if @auth_goodpass then -%>
+  auth_goodpass = yes
+<% else -%>
+  auth_goodpass = no
+<% end -%>
+<% if not @msg_goodpass.empty? then -%>
+  msg_goodpass = "<%= @msg_goodpass %>"
+<% end -%>
+<% if not @msg_badpass.empty? then -%>
+  msg_badpass = "<%= @msg_badpass %>"
+<% end -%>
+}

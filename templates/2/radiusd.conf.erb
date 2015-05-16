@@ -1,0 +1,78 @@
+<%
+  bool2str = {
+    true => 'yes',
+    false => 'no'
+  }
+-%>
+prefix = /usr
+exec_prefix = /usr
+sysconfdir = /etc
+localstatedir = <%= @localstatedir %>
+sbindir = /usr/sbin
+logdir = <%= @logdir %>
+raddbdir = ${sysconfdir}/raddb
+radacctdir = ${logdir}/radacct
+name = radiusd
+confdir = ${raddbdir}
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${raddbdir}
+<% if @hardwaremodel.eql?("x86_64") then -%>
+libdir = /usr/lib64/freeradius
+<% else -%>
+libdir = /usr/lib/freeradius
+<% end -%>
+pidfile = ${run_dir}/${name}.pid
+#chroot = /path/to/chroot/directory
+user = radiusd
+group = radiusd
+<%
+  if not ( @max_request_time.to_i > 5 and @max_request_time.to_i < 120 ) then
+    raise Puppet::ParseError.new("max_request_time must be between 5 and 120")
+  else
+-%>
+max_request_time = <%= @max_request_time %>
+<% end -%>
+<%
+  if not ( @cleanup_delay.to_i > 2 and @cleanup_delay.to_i < 10 ) then
+    raise Puppet::ParseError.new("cleanup_delay must be between 2 and 10")
+  else
+-%>
+cleanup_delay = <%= @cleanup_delay %>
+<% end -%>
+<%
+  if not ( @max_requests.to_i > 256 ) then
+    raise Puppet::ParseError.new("max_requests must be greater than 256")
+  else
+-%>
+max_requests = <%= @max_requests %>
+<% end -%>
+
+$INCLUDE conf/listen.inc/
+
+hostname_lookups = <%= bool2str[@hostname_lookups] %>
+allow_core_dumps = <%= bool2str[@allow_core_dumps] %>
+regular_expressions	= <%= bool2str[@regular_expressions] %>
+extended_expressions	= <%= bool2str[@extended_expressions] %>
+
+$INCLUDE conf/log.inc
+
+checkrad = ${sbindir}/checkrad
+
+$INCLUDE conf/security.inc
+
+<% if @proxy_requests then -%>
+proxy_requests  = yes
+$INCLUDE proxy.conf
+<% end -%>
+
+$INCLUDE conf/clients/
+
+$INCLUDE conf/thread_pool.inc
+
+$INCLUDE conf/modules.inc
+
+$INCLUDE conf/instantiate.inc
+
+$INCLUDE policy.conf
+
+$INCLUDE sites-enabled/
