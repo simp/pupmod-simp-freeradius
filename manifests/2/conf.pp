@@ -142,26 +142,26 @@ class freeradius::2::conf (
   }
   else {
     file { '/etc/raddb/radiusd.conf':
-      ensure   => 'file',
-      owner    => 'root',
-      group    => 'radiusd',
-      mode     => '0640',
-      notify   => Service['radiusd'],
-      require  => Package[$freeradius::l_freeradius_ver]
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'radiusd',
+      mode    => '0640',
+      notify  => Service['radiusd'],
+      require => Package[$freeradius::l_freeradius_ver]
     }
 
     rsync { 'freeradius':
-      source    => 'freeradius/',
-      target    => '/etc/raddb',
-      server    => $rsync_server,
-      timeout   => $rsync_timeout,
-      notify    => [
+      source   => 'freeradius/',
+      target   => '/etc/raddb',
+      server   => $rsync_server,
+      timeout  => $rsync_timeout,
+      notify   => [
         File['/etc/raddb'],
         Service['radiusd']
       ],
-      bwlimit   => $::rsync_bwlimit,
-      user      => $radius_rsync_user,
-      password  => $radius_rsync_password ? {
+      bwlimit  => $::rsync_bwlimit,
+      user     => $radius_rsync_user,
+      password => $radius_rsync_password ? {
         'nil'   => passgen(['$radius_rsync_user']),
         default => $radius_rsync_password
       }

@@ -27,11 +27,11 @@ class freeradius::users {
   }
 
   file { '/etc/raddb/users':
-    ensure   => 'file',
-    owner    => 'root',
-    group    => 'radiusd',
-    mode     => '0640',
-    notify   => Exec['build_freeradius_users']
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'radiusd',
+    mode   => '0640',
+    notify => Exec['build_freeradius_users']
   }
 
   tidy { '/etc/raddb/users.inc':
