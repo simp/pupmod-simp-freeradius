@@ -48,7 +48,7 @@ class freeradius::3::conf::sites (
             owner  => 'root',
             group  => 'radiusd',
             mode   => '0640',
-            source => "puppet:///modules/freeradius/sites/default",
+            source => 'puppet:///modules/freeradius/sites/default',
             notify => Service['radiusd']
           }
         }
