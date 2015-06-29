@@ -130,6 +130,11 @@ class freeradius::2::conf (
   }
 
   if !$use_rsync_radiusd_conf {
+
+    validate_max_requests($max_requests)
+    validate_max_request_time($max_request_time)
+    validate_cleanup_delay($cleanup_delay)
+
     file { '/etc/raddb/radiusd.conf':
       ensure  => 'file',
       owner   => 'root',
