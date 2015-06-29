@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe 'freeradius::conf::instantiate' do
 
-  it { should create_class('freeradius::conf::instantiate') }
-  it { should create_file('/etc/raddb/conf/instantiate.inc').with_content(/logintime/) }
+  it { is_expected.to create_class('freeradius::conf::instantiate') }
+  it { is_expected.to create_file('/etc/raddb/conf/instantiate.inc').with_content(/logintime/) }
 
   context 'keep_defaults_false' do
     let(:params) {{
@@ -11,6 +11,6 @@ describe 'freeradius::conf::instantiate' do
       :content       => 'test_content'
     }}
 
-    it { should create_file('/etc/raddb/conf/instantiate.inc').with_content(/test_content/) }
+    it { is_expected.to create_file('/etc/raddb/conf/instantiate.inc').with_content(/test_content/) }
   end
 end

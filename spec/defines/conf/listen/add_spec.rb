@@ -6,5 +6,5 @@ describe 'freeradius::conf::listen::add', :type => :define do
     :listen_type => 'proxy'
   }}
 
-  it { should create_file('/etc/raddb/conf/listen.inc/test_add_listen').with_content(/type = proxy/) }
+  it { is_expected.to create_file('/etc/raddb/conf/listen.inc/test_add_listen').with_content(/type = proxy/) }
 end

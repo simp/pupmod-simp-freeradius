@@ -12,8 +12,8 @@ describe 'freeradius::modules::ldap' do
   }}
 
   context 'base' do
-    it { should compile.with_all_deps }
-    it { should create_class('freeradius::modules::ldap') }
-    it { should create_class('freeradius::3::modules::ldap') }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_class('freeradius::modules::ldap') }
+    it { is_expected.to create_class('freeradius::3::modules::ldap') }
   end
 end

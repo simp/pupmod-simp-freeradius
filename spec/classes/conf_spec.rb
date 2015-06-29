@@ -12,10 +12,10 @@ describe 'freeradius::conf' do
       :radius_version    => '2.1.0'
     }}
 
-    it { should compile.with_all_deps }
-    it { should create_class('freeradius::2::conf') }
-    it { should create_file('/var/log/radius').with_ensure('directory') }
-    it { should create_file('/etc/raddb/radiusd.conf').with_content(/raddbdir/) }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_class('freeradius::2::conf') }
+    it { is_expected.to create_file('/var/log/radius').with_ensure('directory') }
+    it { is_expected.to create_file('/etc/raddb/radiusd.conf').with_content(/raddbdir/) }
   end
 
   context 'rhel_7' do
@@ -28,9 +28,9 @@ describe 'freeradius::conf' do
       :radius_version    => '3.0.1'
     }}
 
-    it { should compile.with_all_deps }
-    it { should create_class('freeradius::3::conf') }
-    it { should create_file('/var/log/radius').with_ensure('directory') }
-    it { should create_file('/etc/raddb/radiusd.conf').with_content(/raddbdir/) }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_class('freeradius::3::conf') }
+    it { is_expected.to create_file('/var/log/radius').with_ensure('directory') }
+    it { is_expected.to create_file('/etc/raddb/radiusd.conf').with_content(/raddbdir/) }
   end
 end
