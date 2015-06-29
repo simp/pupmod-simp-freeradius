@@ -36,6 +36,13 @@ class freeradius::conf::log (
   $msg_badpass = ''
 ) {
 
+  validate_absolute_path($log_file)
+  validate_freeradius_destination($destination)
+  validate_bool($stripped_names)
+  validate_bool($auth)
+  validate_bool($auth_badpass)
+  validate_bool($auth_goodpass)
+
   file { '/etc/raddb/conf/log.inc':
     ensure  => 'file',
     owner   => 'root',
@@ -45,10 +52,4 @@ class freeradius::conf::log (
     notify  => Service['radiusd']
   }
 
-  validate_absolute_path($log_file)
-  validate_array_member($destination, ['files','syslog','stdout','stderr'])
-  validate_bool($stripped_names)
-  validate_bool($auth)
-  validate_bool($auth_badpass)
-  validate_bool($auth_goodpass)
 }
