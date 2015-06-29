@@ -6,5 +6,5 @@ describe 'freeradius::conf::client::add', :type => :define do
     :ipaddr => '1.2.3.4.'
   }}
 
-  it { should create_file('/etc/raddb/conf/clients/test_client.conf') }
+  it { is_expected.to create_file('/etc/raddb/conf/clients/test_client.conf') }
 end

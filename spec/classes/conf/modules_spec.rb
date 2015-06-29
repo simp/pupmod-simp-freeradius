@@ -22,9 +22,9 @@ describe 'freeradius::conf::modules' do
   context 'base_rhel_6' do
     let(:facts) {base_facts_rhel_6}
 
-    it { should compile.with_all_deps }
-    it { should create_class('freeradius::conf::modules') }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/eap.conf/) }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_class('freeradius::conf::modules') }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/eap.conf/) }
   end
   context 'rhel_6_include_sql' do
     let(:facts) {base_facts_rhel_6}
@@ -34,18 +34,18 @@ describe 'freeradius::conf::modules' do
       :include_sqlippool => true
     }}
 
-    it { should compile.with_all_deps }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/sql.conf/) }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/counter.conf/) }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/sqlippool.conf/) }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/sql.conf/) }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/counter.conf/) }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/sqlippool.conf/) }
   end
 
   context 'base_rhel_7' do
     let(:facts) {base_facts_rhel_7}
 
-    it { should compile.with_all_deps }
-    it { should create_class('freeradius::conf::modules') }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/mods-enabled/) }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_class('freeradius::conf::modules') }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/mods-enabled/) }
   end
   context 'rhel_7_include_sql' do
     let(:facts) {base_facts_rhel_7}
@@ -55,9 +55,9 @@ describe 'freeradius::conf::modules' do
       :include_sqlippool => true
     }}
 
-    it { should compile.with_all_deps }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/sql.conf/) }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/counter.conf/) }
-    it { should create_file('/etc/raddb/conf/modules.inc').with_content(/sqlippool.conf/) }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/sql.conf/) }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/counter.conf/) }
+    it { is_expected.to create_file('/etc/raddb/conf/modules.inc').with_content(/sqlippool.conf/) }
   end
 end
