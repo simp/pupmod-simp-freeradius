@@ -1,6 +1,6 @@
 Summary: FreeRADIUS Puppet Module.
 Name: pupmod-freeradius
-Version: 4.2.0
+Version: 4.2.0-4
 Release: 3
 License: Apache License, Version 2.0
 Group: Applications/System
@@ -57,6 +57,10 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Jun 29 2015 Nick Miller <nick.miller@onyxpoint.com> - 4.2.0-4
+- Moved validation from the templates and put them in their own
+  functions
+
 * Thu Feb 19 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.0-3
 - Migrated to the new 'simp' environment.
 
