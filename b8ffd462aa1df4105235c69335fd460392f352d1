@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ad9bd40_113c2a2f",
+        "filename": "build/pupmod-freeradius.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1005194
+      },
+      "writtenOn": "2015-06-30T17:48:15Z",
+      "side": 1,
+      "message": "Just increment the patch set, 4.2.0-4.  Change the version at the top of the spec file as well.",
+      "range": {
+        "startLine": 60,
+        "startChar": 64,
+        "endLine": 60,
+        "endChar": 65
+      },
+      "revId": "b8ffd462aa1df4105235c69335fd460392f352d1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
