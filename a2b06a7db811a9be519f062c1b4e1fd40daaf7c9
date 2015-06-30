@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ad9bd40_dc6c9c39",
+        "filename": "manifests/2/conf.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-06-30T04:53:54Z",
+      "side": 1,
+      "message": "Consider naming these something more specific to the freeradius module; function names are global and can collide between installed modules.",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 48
+      },
+      "revId": "a2b06a7db811a9be519f062c1b4e1fd40daaf7c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_fc696026",
+        "filename": "templates/2/radiusd.conf.erb",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-06-30T04:53:54Z",
+      "side": 1,
+      "message": "Much nicer!",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 35
+      },
+      "revId": "a2b06a7db811a9be519f062c1b4e1fd40daaf7c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
