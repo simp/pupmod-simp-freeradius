@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ad9bd40_f7c33688",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-07-01T01:50:49Z",
+      "side": 1,
+      "message": "Please keep commit message lines to a maximum of 72 characters.",
+      "range": {
+        "startLine": 10,
+        "startChar": 72,
+        "endLine": 10,
+        "endChar": 90
+      },
+      "revId": "8ad407efb3603dc1e07c8898cafbc4b636c359b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_37be7e00",
+        "filename": "build/pupmod-freeradius.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-07-01T01:50:49Z",
+      "side": 1,
+      "message": "This should be removed.",
+      "range": {
+        "startLine": 3,
+        "startChar": 14,
+        "endLine": 3,
+        "endChar": 16
+      },
+      "revId": "8ad407efb3603dc1e07c8898cafbc4b636c359b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_17c17a80",
+        "filename": "build/pupmod-freeradius.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-07-01T01:50:49Z",
+      "side": 1,
+      "message": "This should be \u00274\u0027",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 10
+      },
+      "revId": "8ad407efb3603dc1e07c8898cafbc4b636c359b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
