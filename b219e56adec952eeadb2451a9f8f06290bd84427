@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ad9bd40_abed6bf1",
+        "filename": "templates/2/radiusd.conf.erb",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 0,
+      "message": "Kill the tabs please",
+      "revId": "b219e56adec952eeadb2451a9f8f06290bd84427",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}

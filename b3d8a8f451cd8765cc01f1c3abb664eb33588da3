@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ad9bd40_ab164bef",
+        "filename": "lib/puppet/parser/functions/validate_freeradius_cleanup_delay.rb",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 1,
+      "message": "Change this to:\n\nunless cleanup_delay.to_i.between?(2,10) raise.....",
+      "revId": "b3d8a8f451cd8765cc01f1c3abb664eb33588da3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_cbd46f22",
+        "filename": "lib/puppet/parser/functions/validate_freeradius_destination.rb",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 1,
+      "message": "Change to \u0027unless\u0027 and drop the \u0027then\u0027",
+      "revId": "b3d8a8f451cd8765cc01f1c3abb664eb33588da3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_ebd77321",
+        "filename": "lib/puppet/parser/functions/validate_freeradius_max_request_time.rb",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 1,
+      "message": "Unless/between again.",
+      "revId": "b3d8a8f451cd8765cc01f1c3abb664eb33588da3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_0bdf373c",
+        "filename": "lib/puppet/parser/functions/validate_freeradius_max_requests.rb",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 1,
+      "message": "Unless and drop then",
+      "revId": "b3d8a8f451cd8765cc01f1c3abb664eb33588da3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_6be36305",
+        "filename": "spec/functions/conf_spec.rb",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 1,
+      "message": "Need to be more specific in what Error message you expect. Could get this message for a lot of things.\n\nBelow here too.",
+      "revId": "b3d8a8f451cd8765cc01f1c3abb664eb33588da3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ad9bd40_8bf267d0",
+        "filename": "spec/functions/log_spec.rb",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-07-19T23:22:08Z",
+      "side": 1,
+      "message": "Be more specific in error message check.",
+      "revId": "b3d8a8f451cd8765cc01f1c3abb664eb33588da3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
