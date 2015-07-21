@@ -1,4 +1,4 @@
-# == Class: freeradius::2::modules
+# == Class: freeradius::v2::modules
 #
 # The Freeradius modules space.
 #
@@ -6,7 +6,7 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-class freeradius::2::modules {
+class freeradius::v2::modules {
   file { '/etc/raddb/modules':
     ensure => 'directory',
     owner  => 'root',

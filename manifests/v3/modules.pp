@@ -6,7 +6,7 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-class freeradius::3::modules {
+class freeradius::v3::modules {
   file { '/etc/raddb/mods-available':
     ensure => 'directory',
     owner  => 'root',

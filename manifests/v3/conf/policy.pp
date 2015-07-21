@@ -14,7 +14,7 @@
 #
 # * Kendall Moore <kmoore@keywcorp.com>
 #
-class freeradius::3::conf::policy {
+class freeradius::v3::conf::policy {
   include '::freeradius'
 
   if $::operatingsystem in ['RedHat', 'CentOS'] {
@@ -25,7 +25,7 @@ class freeradius::3::conf::policy {
           owner   => 'root',
           group   => 'radiusd',
           mode    => '0640',
-          content => template('freeradius/3/conf/policy.erb'),
+          content => template('freeradius/v3/conf/policy.erb'),
           notify  => Service['radiusd']
         }
       }

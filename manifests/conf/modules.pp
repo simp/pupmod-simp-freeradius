@@ -45,7 +45,7 @@ class freeradius::conf::modules (
           owner   => 'root',
           group   => 'radiusd',
           mode    => '0640',
-          content => template('freeradius/3/conf/modules.erb'),
+          content => template('freeradius/v3/conf/modules.erb'),
           notify  => Service['radiusd']
         }
       }
@@ -55,7 +55,7 @@ class freeradius::conf::modules (
           owner   => 'root',
           group   => 'radiusd',
           mode    => '0640',
-          content => template('freeradius/2/conf/modules.erb'),
+          content => template('freeradius/v2/conf/modules.erb'),
           notify  => Service['radiusd']
         }
       }
