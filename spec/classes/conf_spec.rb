@@ -13,7 +13,7 @@ describe 'freeradius::conf' do
     }}
 
     it { is_expected.to compile.with_all_deps }
-    it { is_expected.to create_class('freeradius::2::conf') }
+    it { is_expected.to create_class('freeradius::v2::conf') }
     it { is_expected.to create_file('/var/log/radius').with_ensure('directory') }
     it { is_expected.to create_file('/etc/raddb/radiusd.conf').with_content(/raddbdir/) }
   end
@@ -29,7 +29,7 @@ describe 'freeradius::conf' do
     }}
 
     it { is_expected.to compile.with_all_deps }
-    it { is_expected.to create_class('freeradius::3::conf') }
+    it { is_expected.to create_class('freeradius::v3::conf') }
     it { is_expected.to create_file('/var/log/radius').with_ensure('directory') }
     it { is_expected.to create_file('/etc/raddb/radiusd.conf').with_content(/raddbdir/) }
   end

@@ -10,7 +10,7 @@ describe 'freeradius::modules' do
 
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to create_class('freeradius::modules') }
-    it { is_expected.to create_class('freeradius::3::modules') }
+    it { is_expected.to create_class('freeradius::v3::modules') }
     it { is_expected.to create_file('/etc/raddb/mods-available').with_ensure('directory') }
     it { is_expected.to create_file('/etc/raddb/mods-enabled').with_ensure('directory') }
   end
@@ -23,7 +23,7 @@ describe 'freeradius::modules' do
 
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to create_class('freeradius::modules') }
-    it { is_expected.to create_class('freeradius::2::modules') }
+    it { is_expected.to create_class('freeradius::v2::modules') }
     it { is_expected.to create_file('/etc/raddb/modules').with_ensure('directory') }
   end
 end

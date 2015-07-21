@@ -14,7 +14,7 @@ group :test do
   gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
   gem "puppetlabs_spec_helper"
   gem "metadata-json-lint"
-  gem "rspec-puppet-facts"
+  gem "simp-rspec-puppet-facts"
 
   # simp-rake-helpers does not suport puppet 2.7.X
   # FIXME: simp-rake-helpers should support Puppet 4.X

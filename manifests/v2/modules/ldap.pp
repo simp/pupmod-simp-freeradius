@@ -1,4 +1,4 @@
-# == Class: freeradius::2::modules::ldap
+# == Class: freeradius::v2::modules::ldap
 #
 # Set up the LDAP module configuration.
 #
@@ -51,7 +51,7 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-class freeradius::2::modules::ldap (
+class freeradius::v2::modules::ldap (
   $server = hiera('ldap::uri'),
   $identity = hiera('ldap::bind_dn'),
   $password = hiera('ldap::bind_pw'),
@@ -91,7 +91,7 @@ class freeradius::2::modules::ldap (
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
-    content => template('freeradius/2/modules/ldap.erb'),
+    content => template('freeradius/v2/modules/ldap.erb'),
     notify  => Service['radiusd']
   }
 

@@ -24,7 +24,7 @@
 #
 # * Kendall Moore <kmoore@keywcorp.com>
 #
-class freeradius::3::conf::sites (
+class freeradius::v3::conf::sites (
   $enable_default      = true,
   $enable_inner_tunnel = true
 ){
@@ -38,7 +38,7 @@ class freeradius::3::conf::sites (
           owner   => 'root',
           group   => 'radiusd',
           mode    => '0640',
-          content => template('freeradius/3/conf/sites.erb'),
+          content => template('freeradius/v3/conf/sites.erb'),
           notify  => Service['radiusd']
         }
 

@@ -1,4 +1,4 @@
-# == Class: freeradius::3::modules::ldap
+# == Class: freeradius::v3::modules::ldap
 #
 # Set up the LDAP module configuration.
 #
@@ -69,7 +69,7 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-class freeradius::3::modules::ldap (
+class freeradius::v3::modules::ldap (
   $base_dn = hiera('ldap::base_dn'),
   $base_filter = '(objectclass=radiusprofile)',
   $ca_path = '/etc/pki/cacerts',
@@ -124,7 +124,7 @@ class freeradius::3::modules::ldap (
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
-    content => template('freeradius/3/modules/ldap.erb'),
+    content => template('freeradius/v3/modules/ldap.erb'),
     notify  => Service['radiusd']
   }
 
