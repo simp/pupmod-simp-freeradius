@@ -11,7 +11,7 @@ module Puppet::Parser::Functions
     ]
 
     unless t_valid_destinations.include?(destination)
-      raise Puppet::ParseError.new("'destination' must be one of '#{t_valid_destinations.join(',')}'")
+      raise Puppet::ParseError.new("destination must be one of '#{t_valid_destinations.join(',')}'")
     end
 
   end

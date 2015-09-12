@@ -12,10 +12,10 @@ class freeradius::conf {
   if $::operatingsystem in ['RedHat', 'CentOS'] {
     if $::radius_version != 'unknown' {
       if (versioncmp($::radius_version, '3') >= 0) {
-        include '::freeradius::3::conf'
+        include '::freeradius::v3::conf'
       }
       else {
-        include '::freeradius::2::conf'
+        include '::freeradius::v2::conf'
       }
     }
     else {
