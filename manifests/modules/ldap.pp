@@ -23,6 +23,6 @@ class freeradius::modules::ldap {
     }
   }
   else {
-    warning("$::operatingsystem not yet supported. Current options are RedHat and CentOS")
+    warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
   }
 }

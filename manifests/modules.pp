@@ -21,6 +21,6 @@ class freeradius::modules {
     }
   }
   else {
-    warning("$::operatingsystem not yet supported. Current options are RedHat and CentOS")
+    warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
   }
 }

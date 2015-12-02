@@ -40,7 +40,7 @@ define freeradius::conf::client::add (
   $coa_server = 'nil'
 ) {
 
-  file { "/etc/raddb/conf/clients/$name.conf":
+  file { "/etc/raddb/conf/clients/${name}.conf":
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',

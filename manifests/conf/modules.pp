@@ -34,6 +34,10 @@ class freeradius::conf::modules (
   $include_mysql_counter = false,
   $include_sqlippool = false
 ) {
+  validate_bool($include_eap)
+  validate_bool($include_sql)
+  validate_bool($include_mysql_counter)
+  validate_bool($include_sqlippool)
 
   include '::freeradius'
 
@@ -65,11 +69,6 @@ class freeradius::conf::modules (
     }
   }
   else {
-    warning("$::operatingsystem not yet supported. Current options are RedHat and CentOS")
+    warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
   }
-
-  validate_bool($include_eap)
-  validate_bool($include_sql)
-  validate_bool($include_mysql_counter)
-  validate_bool($include_sqlippool)
 }

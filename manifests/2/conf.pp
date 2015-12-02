@@ -146,6 +146,10 @@ class freeradius::2::conf (
     }
   }
   else {
+
+    validate_net_list($rsync_server)
+    validate_integer($rsync_timeout)
+
     file { '/etc/raddb/radiusd.conf':
       ensure  => 'file',
       owner   => 'root',
@@ -167,13 +171,10 @@ class freeradius::2::conf (
       bwlimit  => $::rsync_bwlimit,
       user     => $radius_rsync_user,
       password => $radius_rsync_password ? {
-        'nil'   => passgen(['$radius_rsync_user']),
+        'nil'   => passgen("radius_rsync_${radius_rsync_user}"),
         default => $radius_rsync_password
       }
     }
-
-    validate_net_list($rsync_server)
-    validate_integer($rsync_timeout)
   }
 
   if $default_acct_listener {
