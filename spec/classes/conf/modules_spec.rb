@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'freeradius::conf::modules' do
 
   base_facts_rhel_6 = {
-    :lsbmajdistrelease  => '6',
+    :operatingsystemmajrelease  => '6',
     :operatingsystem    => 'RedHat',
     :hardwaremodel      => 'x86_64',
     :radius_version     => '2',
@@ -11,7 +11,7 @@ describe 'freeradius::conf::modules' do
     :uid_min            => '1000'
   }
   base_facts_rhel_7 = {
-    :lsbmajdistrelease  => '7',
+    :operatingsystemmajrelease  => '7',
     :operatingsystem    => 'RedHat',
     :hardwaremodel      => 'x86_64',
     :radius_version     => '3',

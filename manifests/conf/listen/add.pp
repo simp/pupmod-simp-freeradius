@@ -28,7 +28,7 @@ define freeradius::conf::listen::add (
   $per_socket_clients = ''
 ) {
 
-  file { "/etc/raddb/conf/listen.inc/$name":
+  file { "/etc/raddb/conf/listen.inc/${name}":
     ensure  => 'file',
     owner   => 'root',
     group   => 'radiusd',

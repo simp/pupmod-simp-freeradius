@@ -65,7 +65,7 @@ define freeradius::users::add (
   $order = '100'
 ) {
 
-  file { "/etc/raddb/users.inc/$order.$name":
+  file { "/etc/raddb/users.inc/${order}.${name}":
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',

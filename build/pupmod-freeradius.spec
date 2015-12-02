@@ -1,7 +1,7 @@
 Summary: FreeRADIUS Puppet Module.
 Name: pupmod-freeradius
 Version: 4.2.0
-Release: 5
+Release: 6
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -57,7 +57,13 @@ fi
 # Post uninstall stuff
 
 %changelog
-* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.2.0-5
+* Wed Dec 02 2015 Chris Tessmer <chris.tessmer@onyxpoint.com> - 4.2.0-6
+- Replaced all 'lsb*' facts with their (package-independent)
+  'operatingsystem*' counterparts.
+- Common module assets have been normalized.
+- Fixed a bug with the radius_rsync_user passgen.
+
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onyxpoint.com> - 4.2.0-5
 - migration to simplib and simpcat (lib/ only)
 
 * Mon Jun 29 2015 Nick Miller <nick.miller@onyxpoint.com> - 4.2.0-4

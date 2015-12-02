@@ -26,7 +26,7 @@
 #
 class freeradius::conf::log (
   $destination = 'syslog',
-  $log_file = "$::freeradius::conf::logdir/radius.log",
+  $log_file = "${::freeradius::conf::logdir}/radius.log",
   $syslog_facility = 'local6',
   $stripped_names = false,
   $auth = true,
