@@ -4,7 +4,7 @@ describe 'freeradius::conf' do
 
   context 'rhel_6' do
     let(:facts) {{
-      :lsbmajdistrelease => '6',
+      :operatingsystemmajrelease => '6',
       :hardwaremodel     => 'x86_64',
       :grub_version      => '2',
       :uid_min           => '1000',
@@ -21,7 +21,7 @@ describe 'freeradius::conf' do
   context 'rhel_7' do
     let(:facts) {{
       :operatingsystem   => 'RedHat',
-      :lsbmajdistrelease => '7',
+      :operatingsystemmajrelease => '7',
       :hardwaremodel     => 'x86_64',
       :grub_version      => '2',
       :uid_min           => '1000',

@@ -5,7 +5,7 @@ describe 'freeradius::modules::ldap' do
   let(:facts) {{
     :operatingsystem   => 'RedHat',
     :radius_version    => '3.0.1',
-    :lsbmajdistrelease => '7',
+    :operatingsystemmajrelease => '7',
     :hardwaremodel     => 'x86_64',
     :grub_version      => '2',
     :uid_min           => '1000'

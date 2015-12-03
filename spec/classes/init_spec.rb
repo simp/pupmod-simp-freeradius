@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'freeradius' do
   base_facts = {
-    :lsbmajdistrelease  => '6',
+    :operatingsystemmajrelease  => '6',
     :operatingsystem    => 'RedHat',
     :hardwaremodel      => 'x86_64',
     :grub_version       => '2',

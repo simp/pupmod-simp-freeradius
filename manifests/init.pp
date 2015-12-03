@@ -10,7 +10,7 @@ class freeradius {
   include 'pki'
   include 'freeradius::modules'
 
-  if $::operatingsystem in ['RedHat','CentOS'] and ( versioncmp($::lsbmajdistrelease,'6') < 0 ) {
+  if $::operatingsystem in ['RedHat','CentOS'] and ( versioncmp($::operatingsystemmajrelease,'6') < 0 ) {
     $freeradius_name = 'freeradius2'
   }
   else {
@@ -76,8 +76,8 @@ class freeradius {
     enable    => true,
     hasstatus => true,
     subscribe => [
-      File["/etc/pki/private/$::fqdn.pem"],
-      File["/etc/pki/public/$::fqdn.pub"],
+      File["/etc/pki/private/${::fqdn}.pem"],
+      File["/etc/pki/public/${::fqdn}.pub"],
       File['/etc/pki/cacerts']
     ],
     require   => [

@@ -89,6 +89,21 @@ class freeradius::3::conf (
   $regular_expressions = true,
   $use_rsync_radiusd_conf = false
 ) {
+  validate_between($cleanup_delay, 2, 10)
+  validate_between($max_request_time, 5, 120)
+  if $max_requests <= '256' {
+    fail('max_requests must be greater than 256')
+  }
+  validate_bool($use_rsync_radiusd_conf)
+  validate_bool($default_acct_listener)
+  validate_bool($hostname_lookups)
+  validate_bool($regular_expressions)
+  validate_bool($extended_expressions)
+  validate_bool($proxy_requests)
+  validate_integer($max_requests)
+  validate_net_list($client_nets)
+  validate_port($radius_ports)
+
   include '::rsync'
   include '::freeradius'
   include '::freeradius::conf::listen'
@@ -104,10 +119,10 @@ class freeradius::3::conf (
   }
 
   file { [
-    "$logdir/linelog",
-    "$logdir/radutmp",
-    "$logdir/radwtmp",
-    "$logdir/sradutmp"
+    "${logdir}/linelog",
+    "${logdir}/radutmp",
+    "${logdir}/radwtmp",
+    "${logdir}/sradutmp"
   ]:
     ensure  => 'file',
     owner   => 'radiusd',
@@ -138,6 +153,9 @@ class freeradius::3::conf (
     }
   }
   else {
+    validate_net_list($rsync_server)
+    validate_integer($rsync_timeout)
+
     file { '/etc/raddb/radiusd.conf':
       ensure  => 'file',
       owner   => 'root',
@@ -159,13 +177,10 @@ class freeradius::3::conf (
       bwlimit  => $::rsync_bwlimit,
       user     => $radius_rsync_user,
       password => $radius_rsync_password ? {
-        'nil'   => passgen(['$radius_rsync_user']),
+        'nil'   => passgen("radius_rsync_${radius_rsync_user}"),
         default => $radius_rsync_password
       }
     }
-
-    validate_net_list($rsync_server)
-    validate_integer($rsync_timeout)
   }
 
   if $default_acct_listener {
@@ -180,19 +195,4 @@ class freeradius::3::conf (
     client_nets => $client_nets,
     dports      => $radius_ports
   }
-
-  validate_between($cleanup_delay, 2, 10)
-  validate_between($max_request_time, 5, 120)
-  if $max_requests <= '256' {
-    fail('max_requests must be greater than 256')
-  }
-  validate_bool($use_rsync_radiusd_conf)
-  validate_bool($default_acct_listener)
-  validate_bool($hostname_lookups)
-  validate_bool($regular_expressions)
-  validate_bool($extended_expressions)
-  validate_bool($proxy_requests)
-  validate_integer($max_requests)
-  validate_net_list($client_nets)
-  validate_port($radius_ports)
 }
