@@ -8,12 +8,12 @@
 #
 class freeradius::modules {
   if $::operatingsystem in ['RedHat', 'CentOS'] {
-    if $::radius_version != 'unknown' {
+    if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
-        include '::freeradius::3::modules'
+        include '::freeradius::v3::modules'
       }
       else {
-        include '::freeradius::2::modules'
+        include '::freeradius::v2::modules'
       }
     }
     else {

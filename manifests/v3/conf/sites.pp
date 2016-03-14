@@ -24,14 +24,14 @@
 #
 # * Kendall Moore <kmoore@keywcorp.com>
 #
-class freeradius::3::conf::sites (
+class freeradius::v3::conf::sites (
   $enable_default      = true,
   $enable_inner_tunnel = true
 ){
   include '::freeradius'
 
   if $::operatingsystem in ['RedHat', 'CentOS'] {
-    if $::radius_version != 'unknown' {
+    if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
         file { '/etc/raddb/conf/sites.inc':
           ensure  => 'file',

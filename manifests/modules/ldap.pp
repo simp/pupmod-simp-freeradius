@@ -10,12 +10,12 @@ class freeradius::modules::ldap {
   include 'freeradius'
 
   if $::operatingsystem in ['RedHat', 'CentOS'] {
-    if $::radius_version != 'unknown' {
+    if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
-        include '::freeradius::3::modules::ldap'
+        include '::freeradius::v3::modules::ldap'
       }
       else {
-        include '::freeradius::2::modules::ldap'
+        include '::freeradius::v2::modules::ldap'
       }
     }
     else {

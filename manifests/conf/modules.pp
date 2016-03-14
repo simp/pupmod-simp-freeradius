@@ -42,7 +42,7 @@ class freeradius::conf::modules (
   include '::freeradius'
 
   if $::operatingsystem in ['RedHat', 'CentOS'] {
-    if $::radius_version != 'unknown' {
+    if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
         file { '/etc/raddb/conf/modules.inc':
           ensure  => 'file',

@@ -12,3 +12,4 @@ fixtures:
     pki: "#{source_dir}/../pki"
     rsync: "#{source_dir}/../rsync"
     stdlib: "#{source_dir}/../stdlib"
+    compliance_markup: "#{source_dir}/../compliance_markup"

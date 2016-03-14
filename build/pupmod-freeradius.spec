@@ -1,7 +1,7 @@
 Summary: FreeRADIUS Puppet Module.
 Name: pupmod-freeradius
-Version: 4.2.0
-Release: 6
+Version: 5.0.0
+Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -9,13 +9,11 @@ Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: pupmod-iptables >= 4.1.0-3
 Requires: pupmod-pki >= 4.1.0-0
 Requires: pupmod-openldap >= 4.1.0-3
-Requires: puppet >= 3.3.0
 Requires: simp-rsync >= 4.0.1-14
 Buildarch: noarch
-Requires: simp-bootstrap >= 4.2.0
 Obsoletes: pupmod-freeradius-test
 
-Prefix: /etc/puppet/environments/simp/modules
+Prefix: %{_sysconfdir}/puppet/environments/simp/modules
 
 %description
 This Puppet module provides the capability to configure FreeRADIUS servers.
@@ -57,6 +55,12 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Mar 14 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.0-0
+- Ensure Puppet 4 compatibility. This changes the (always incorrect, but
+  allowed) '2' and '3' paths to 'v2' and 'v3'.
+  - Be sure to check and update your Hiera data!
+- Fixed the case where the `radius_version` fact does not exist.
+
 * Wed Dec 02 2015 Chris Tessmer <chris.tessmer@onyxpoint.com> - 4.2.0-6
 - Replaced all 'lsb*' facts with their (package-independent)
   'operatingsystem*' counterparts.

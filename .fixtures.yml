@@ -12,5 +12,6 @@ fixtures:
     pki: "git://github.com/simp/pupmod-simp-pki"
     rsync: "git://github.com/simp/pupmod-simp-rsync"
     stdlib: "git://github.com/simp/puppetlabs-stdlib"
+    compliance_markup: "git://github.com/trevor-vaughan/pupmod-compliance"
   symlinks:
     freeradius: "#{source_dir}"
