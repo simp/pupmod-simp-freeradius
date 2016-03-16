@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a6ff13c_9363d1b0",
+        "filename": ".fixtures.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2016-03-16T14:37:21Z",
+      "side": 1,
+      "message": "https://github.com/simp/pupmod-simp-compliance_markup.git",
+      "range": {
+        "startLine": 15,
+        "startChar": 23,
+        "endLine": 15,
+        "endChar": 74
+      },
+      "revId": "c7d369fc663f71fe8ac1260e7ccc53476d19f1eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
