@@ -1,6 +1,6 @@
 Summary: FreeRADIUS Puppet Module.
 Name: pupmod-freeradius
-Version: 5.0.0
+Version: 5.0.1
 Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
@@ -55,6 +55,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Sat May 14 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.1-0
+- Update to fix the absence of the `logdir` variable after the v2/v3 refactor.
+
 * Mon Mar 14 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.0-0
 - Ensure Puppet 4 compatibility. This changes the (always incorrect, but
   allowed) '2' and '3' paths to 'v2' and 'v3'.

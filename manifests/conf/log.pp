@@ -26,7 +26,7 @@
 #
 class freeradius::conf::log (
   $destination = 'syslog',
-  $log_file = "${::freeradius::conf::logdir}/radius.log",
+  $log_file = "${::freeradius::logdir}/radius.log",
   $syslog_facility = 'local6',
   $stripped_names = false,
   $auth = true,
@@ -34,7 +34,7 @@ class freeradius::conf::log (
   $auth_goodpass = false,
   $msg_goodpass = '',
   $msg_badpass = ''
-) {
+) inherits ::freeradius {
 
   validate_absolute_path($log_file)
   validate_freeradius_destination($destination)
@@ -51,5 +51,4 @@ class freeradius::conf::log (
     content => template('freeradius/conf/log.erb'),
     notify  => Service['radiusd']
   }
-
 }

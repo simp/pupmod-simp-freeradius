@@ -79,7 +79,7 @@ class freeradius::v2::conf (
   $rsync_timeout = hiera('rsync::timeout','2'),
   $client_nets = '127.0.0.1',
   $localstatedir = '/var',
-  $logdir = '/var/log/radius',
+  $logdir = $::freeradius::logdir,
   $expose_shadow = false,
   $radius_port = '1812',
   $radius_rsync_user = 'freeradius_systems',
@@ -93,9 +93,8 @@ class freeradius::v2::conf (
   $regular_expressions = true,
   $extended_expressions = true,
   $proxy_requests = false
-) {
+) inherits ::freeradius {
   include '::rsync'
-  include '::freeradius'
   include '::freeradius::conf::listen'
 
   file { $logdir:

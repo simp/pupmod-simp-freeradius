@@ -6,9 +6,11 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-class freeradius {
-  include 'pki'
-  include 'freeradius::modules'
+class freeradius (
+  $logdir = '/var/log/freeradius'
+){
+  include '::pki'
+  include '::freeradius::modules'
 
   if $::operatingsystem in ['RedHat','CentOS'] and ( versioncmp($::operatingsystemmajrelease,'6') < 0 ) {
     $freeradius_name = 'freeradius2'

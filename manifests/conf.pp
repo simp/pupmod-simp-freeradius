@@ -12,11 +12,13 @@ class freeradius::conf {
   if $::operatingsystem in ['RedHat', 'CentOS'] {
     if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
-        include '::freeradius::v3::conf'
+        $ver = '3'
       }
       else {
-        include '::freeradius::v2::conf'
+        $ver = '2'
       }
+
+      include "::freeradius::v${ver}::conf"
     }
     else {
       warning('FreeRADIUS does not yet appear to be installed. Please install FreeRADIUS and then continue.')

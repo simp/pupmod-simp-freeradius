@@ -77,7 +77,7 @@ class freeradius::v3::conf (
   $extended_expressions = true,
   $hostname_lookups  = false,
   $localstatedir = '/var',
-  $logdir = '/var/log/radius',
+  $logdir = $::freeradius::logdir,
   $max_request_time = '30',
   $max_requests = '1024',
   $proxy_requests = false,
@@ -88,7 +88,7 @@ class freeradius::v3::conf (
   $radius_rsync_password = 'nil',
   $regular_expressions = true,
   $use_rsync_radiusd_conf = false
-) {
+) inherits ::freeradius {
   validate_between(to_integer($cleanup_delay), 2, 10)
   validate_between(to_integer($max_request_time), 5, 120)
   if to_integer($max_requests) <= 256 {
