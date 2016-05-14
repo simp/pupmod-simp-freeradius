@@ -24,6 +24,7 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
+# FIXME: paramas pattern this guy
 class freeradius::conf::log (
   $destination = 'syslog',
   $log_file = "${::freeradius::logdir}/radius.log",
