@@ -10,19 +10,19 @@
   "tags": [ "simp", "freeradius" ],
   "dependencies": [
     {
-      "name": "simp-iptables",
+      "name": "simp/iptables",
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "simp-pki",
+      "name": "simp/pki",
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "simp-rsync",
+      "name": "simp/rsync",
       "version_requirement": ">= 4.0.1"
     },
     {
-      "name": "simp-simplib",
+      "name": "simp/simplib",
       "version_requirement": ">= 1.0.0"
     }
   ],
