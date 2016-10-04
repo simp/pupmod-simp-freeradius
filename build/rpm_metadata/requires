@@ -1,5 +1,9 @@
-Requires: pupmod-simp-iptables >= 4.1.0-3
-Requires: pupmod-simp-pki >= 4.1.0-0
-Requires: pupmod-simp-openldap >= 4.1.0-3
-Requires: pupmod-simp-rsync >= 4.0.1
 Obsoletes: pupmod-freeradius-test
+Requires: pupmod-simp-iptables < 5.0.0-0
+Requires: pupmod-simp-iptables >= 4.1.4-0
+Requires: pupmod-simp-pki < 5.0.0-0
+Requires: pupmod-simp-pki >= 4.2.4-0
+Requires: pupmod-simp-rsync < 5.0.0-0
+Requires: pupmod-simp-rsync >= 4.2.2-0
+Requires: pupmod-simp-simplib < 2.0.0-0
+Requires: pupmod-simp-simplib >= 1.3.1-0
