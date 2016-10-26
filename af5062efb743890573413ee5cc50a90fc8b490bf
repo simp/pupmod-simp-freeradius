@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_7d5f0241",
+        "filename": "Gemfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1005361
+      },
+      "writtenOn": "2016-10-26T13:22:28Z",
+      "side": 1,
+      "message": "is this missing the ~\u003e ?",
+      "revId": "af5062efb743890573413ee5cc50a90fc8b490bf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
