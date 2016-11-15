@@ -1,6 +1,6 @@
 {
   "name": "simp-freeradius",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "author": "simp",
   "summary": "manages FreeRADIUS authentication servers",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
   "dependencies": [
     {
       "name": "simp/iptables",
-      "version_requirement": ">= 4.1.4 < 5.0.0"
+      "version_requirement": ">= 5.0.0 < 6.0.0"
     },
     {
       "name": "simp/pki",

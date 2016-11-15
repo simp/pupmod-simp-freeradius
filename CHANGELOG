@@ -1,3 +1,6 @@
+* Tue Nov 15 2016 Liz Nemsick <lnemsick.simp@gmail.com> - 5.0.4-0
+- Updated iptables dependency version
+
 * Tue Aug 02 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.2-0
 - Update to the new naming scheme
 
