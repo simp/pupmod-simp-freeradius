@@ -8,7 +8,9 @@ describe 'freeradius::modules::ldap' do
     :operatingsystemmajrelease => '7',
     :hardwaremodel     => 'x86_64',
     :grub_version      => '2',
-    :uid_min           => '1000'
+    :uid_min           => '1000',
+    :fqdn               => 'foo.example.com',
+    :init_systems       => [ "rc", "systemd", "sysv" ]
   }}
 
   context 'base' do

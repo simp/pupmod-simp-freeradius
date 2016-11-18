@@ -1,3 +1,6 @@
+* Tue Nov 22 2016 Chris Tessmer <chris.tessmer@onyxpoint.com> - 5.0.4-0
+- Minor cleanup
+
 * Tue Nov 15 2016 Liz Nemsick <lnemsick.simp@gmail.com> - 5.0.4-0
 - Updated iptables dependency version
 

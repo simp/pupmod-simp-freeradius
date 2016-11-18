@@ -8,7 +8,10 @@ describe 'freeradius::conf::modules' do
     :hardwaremodel      => 'x86_64',
     :radius_version     => '2',
     :grub_version       => '2',
-    :uid_min            => '1000'
+    :uid_min            => '1000',
+    :fqdn               => 'foo.example.com',
+    :init_systems       => [ "rc", "upstart", "sysv" ]
+
   }
   base_facts_rhel_7 = {
     :operatingsystemmajrelease  => '7',
@@ -16,7 +19,9 @@ describe 'freeradius::conf::modules' do
     :hardwaremodel      => 'x86_64',
     :radius_version     => '3',
     :grub_version       => '3',
-    :uid_min            => '1000'
+    :uid_min            => '1000',
+    :fqdn               => 'foo.example.com',
+    :init_systems       => [ "rc", "systemd", "sysv" ]
   }
 
   context 'base_rhel_6' do
