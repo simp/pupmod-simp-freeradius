@@ -1,7 +1,7 @@
 {
   "name": "simp-freeradius",
   "version": "5.0.4",
-  "author": "simp",
+  "author": "SIMP Team",
   "summary": "manages FreeRADIUS authentication servers",
   "license": "Apache-2.0",
   "source": "https://github.com/simp/pupmod-simp-freeradius",
