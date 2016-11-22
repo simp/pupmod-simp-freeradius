@@ -1,6 +1,6 @@
 #
 # Return the version of FreeRADIUS installed on the system.
-# 
+#
 # Returns 'unknown' if the version cannot be determined.
 #
 Facter.add("radius_version") do
