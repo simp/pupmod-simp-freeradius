@@ -1,8 +1,8 @@
 Obsoletes: pupmod-freeradius-test
 Requires: pupmod-simp-iptables < 6.0.0-0
 Requires: pupmod-simp-iptables >= 5.0.0-0
-Requires: pupmod-simp-pki < 5.0.0-0
-Requires: pupmod-simp-pki >= 4.2.4-0
+Requires: pupmod-simp-pki < 6.0.0-0
+Requires: pupmod-simp-pki >= 5.0.0-0
 Requires: pupmod-simp-rsync >= 5.0.0-0
 Requires: pupmod-simp-rsync < 6.0.0-0
 Requires: pupmod-simp-simplib >= 2.0.0-0
