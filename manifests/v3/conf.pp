@@ -71,23 +71,23 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::v3::conf (
-  $cleanup_delay = '5',
-  $client_nets = '127.0.0.1',
-  $default_acct_listener = true,
-  $extended_expressions = true,
-  $hostname_lookups  = false,
-  $localstatedir = '/var',
-  $logdir = $::freeradius::logdir,
-  $max_request_time = '30',
-  $max_requests = '1024',
-  $proxy_requests = false,
-  $rsync_source = "freeradius_${environment}/",
-  $rsync_server = hiera('rsync::server',''),
-  $rsync_timeout = hiera('rsync::timeout','2'),
-  $radius_ports = ['1812', '1813'],
-  $radius_rsync_user = 'freeradius_systems',
-  $radius_rsync_password = 'nil',
-  $regular_expressions = true,
+  $cleanup_delay          = '5',
+  $client_nets            = '127.0.0.1',
+  $default_acct_listener  = true,
+  $extended_expressions   = true,
+  $hostname_lookups       = false,
+  $localstatedir          = '/var',
+  $logdir                 = $::freeradius::logdir,
+  $max_request_time       = '30',
+  $max_requests           = '1024',
+  $proxy_requests         = false,
+  $rsync_source           = "freeradius_${::environment}/",
+  $rsync_server           = hiera('rsync::server',''),
+  $rsync_timeout          = hiera('rsync::timeout','2'),
+  $radius_ports           = ['1812', '1813'],
+  $radius_rsync_user      = "freeradius_systems_${::environment}",
+  $radius_rsync_password  = 'nil',
+  $regular_expressions    = true,
   $use_rsync_radiusd_conf = false
 ) inherits ::freeradius {
 
@@ -170,7 +170,7 @@ class freeradius::v3::conf (
     }
 
     $_password = $radius_rsync_password ? {
-      'nil'   => passgen("radius_rsync_${radius_rsync_user}"),
+      'nil'   => passgen($radius_rsync_user),
       default => $radius_rsync_password
     }
 

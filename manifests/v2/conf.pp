@@ -75,7 +75,7 @@
 #
 class freeradius::v2::conf (
   $use_rsync_radiusd_conf = false,
-  $rsync_source           = "freeradius_${environment}/",
+  $rsync_source           = "freeradius_${::environment}/",
   $rsync_server           = hiera('rsync::server',''),
   $rsync_timeout          = hiera('rsync::timeout','2'),
   $client_nets            = '127.0.0.1',
@@ -83,7 +83,7 @@ class freeradius::v2::conf (
   $logdir                 = $::freeradius::logdir,
   $expose_shadow          = false,
   $radius_port            = '1812',
-  $radius_rsync_user      = 'freeradius_systems',
+  $radius_rsync_user      = "freeradius_systems_${::environment}",
   $radius_rsync_password  = 'nil',
   $max_request_time       = '30',
   $cleanup_delay          = '5',
@@ -170,7 +170,7 @@ class freeradius::v2::conf (
     }
 
     $_password = $radius_rsync_password ? {
-      'nil'   => passgen("radius_rsync_${radius_rsync_user}"),
+      'nil'   => passgen($radius_rsync_user),
       default => $radius_rsync_password
     }
 
