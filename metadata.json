@@ -1,6 +1,6 @@
 {
   "name": "simp-freeradius",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "author": "SIMP Team",
   "summary": "manages FreeRADIUS authentication servers",
   "license": "Apache-2.0",
@@ -22,7 +22,7 @@
     },
     {
       "name": "simp/rsync",
-      "version_requirement": ">= 5.0.0 < 6.0.0"
+      "version_requirement": ">= 6.0.0 < 7.0.0"
     },
     {
       "name": "simp/simplib",
