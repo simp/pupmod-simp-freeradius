@@ -75,25 +75,36 @@
 #
 class freeradius::v2::conf (
   $use_rsync_radiusd_conf = false,
-  $rsync_server = hiera('rsync::server',''),
-  $rsync_timeout = hiera('rsync::timeout','2'),
-  $client_nets = '127.0.0.1',
-  $localstatedir = '/var',
-  $logdir = $::freeradius::logdir,
-  $expose_shadow = false,
-  $radius_port = '1812',
-  $radius_rsync_user = 'freeradius_systems',
-  $radius_rsync_password = 'nil',
-  $max_request_time = '30',
-  $cleanup_delay = '5',
-  $max_requests = '1024',
-  $default_acct_listener = true,
-  $hostname_lookups = false,
-  $allow_core_dumps = false,
-  $regular_expressions = true,
-  $extended_expressions = true,
-  $proxy_requests = false
+  $rsync_source           = "freeradius_${::environment}/",
+  $rsync_server           = hiera('rsync::server',''),
+  $rsync_timeout          = hiera('rsync::timeout','2'),
+  $client_nets            = '127.0.0.1',
+  $localstatedir          = '/var',
+  $logdir                 = $::freeradius::logdir,
+  $expose_shadow          = false,
+  $radius_port            = '1812',
+  $radius_rsync_user      = "freeradius_systems_${::environment}",
+  $radius_rsync_password  = 'nil',
+  $max_request_time       = '30',
+  $cleanup_delay          = '5',
+  $max_requests           = '1024',
+  $default_acct_listener  = true,
+  $hostname_lookups       = false,
+  $allow_core_dumps       = false,
+  $regular_expressions    = true,
+  $extended_expressions   = true,
+  $proxy_requests         = false
 ) inherits ::freeradius {
+
+  validate_bool($use_rsync_radiusd_conf)
+  validate_bool($expose_shadow)
+  validate_bool($default_acct_listener)
+  validate_bool($hostname_lookups)
+  validate_bool($allow_core_dumps)
+  validate_bool($regular_expressions)
+  validate_bool($extended_expressions)
+  validate_bool($proxy_requests)
+
   include '::rsync'
   include '::freeradius::conf::listen'
 
@@ -158,14 +169,13 @@ class freeradius::v2::conf (
       require => Package[$freeradius::l_freeradius_ver]
     }
 
-
     $_password = $radius_rsync_password ? {
-      'nil'   => passgen("radius_rsync_${radius_rsync_user}"),
+      'nil'   => passgen($radius_rsync_user),
       default => $radius_rsync_password
     }
 
     rsync { 'freeradius':
-      source   => 'freeradius/',
+      source   => $rsync_source,
       target   => '/etc/raddb',
       server   => $rsync_server,
       timeout  => $rsync_timeout,
@@ -194,13 +204,4 @@ class freeradius::v2::conf (
 
   # Hack to ensure that the passgen function is loaded.
   if false { passgen(false) }
-
-  validate_bool($use_rsync_radiusd_conf)
-  validate_bool($expose_shadow)
-  validate_bool($default_acct_listener)
-  validate_bool($hostname_lookups)
-  validate_bool($allow_core_dumps)
-  validate_bool($regular_expressions)
-  validate_bool($extended_expressions)
-  validate_bool($proxy_requests)
 }
