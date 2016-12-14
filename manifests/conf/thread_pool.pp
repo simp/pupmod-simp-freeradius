@@ -21,10 +21,10 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::thread_pool (
-  $start_servers = '5',
-  $max_servers = '32',
-  $min_spare_servers = '3',
-  $max_spare_servers = '10',
+  $start_servers           = '5',
+  $max_servers             = '32',
+  $min_spare_servers       = '3',
+  $max_spare_servers       = '10',
   $max_requests_per_server = '0'
 ) {
 
@@ -37,9 +37,9 @@ class freeradius::conf::thread_pool (
     notify  => Service['radiusd']
   }
 
-  validate_integer($start_servers)
-  validate_integer($max_servers)
-  validate_integer($min_spare_servers)
-  validate_integer($max_spare_servers)
-  validate_integer($max_requests_per_server)
+  #validate_integer($start_servers)
+  #validate_integer($max_servers)
+  #validate_integer($min_spare_servers)
+  #validate_integer($max_spare_servers)
+  #validate_integer($max_requests_per_server)
 }

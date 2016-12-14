@@ -150,13 +150,13 @@ ldap {
 <% else -%>
     start_tls = no
 <% end -%>
-<% if @ca_path =~ /\/$/ then -%>
-    ca_path = <%= @ca_path %>
+<% if @app_pki_ca_dir =~ /\/$/ then -%>
+    ca_path = <%= @app_pki_ca_dir %>
 <% else -%>
-    ca_path = <%= @ca_path + '/' %>
+    ca_path = <%= @app_pki_ca_dir + '/' %>
 <% end -%>
-    certificate_file = <%= @certificate_file %>
-    private_key_file = <%= @private_key_file %>
+    certificate_file = <%= @app_pki_ca %>
+    private_key_file = <%= @app_pki_key %>
     random_file = <%= @random_file %>
     require_cert = "<%= @require_cert %>"
   }

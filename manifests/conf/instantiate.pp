@@ -24,7 +24,7 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::instantiate (
-  $content = '',
+  $content       = '',
   $keep_defaults = true
 ) {
 
@@ -37,5 +37,5 @@ class freeradius::conf::instantiate (
     notify  => Service['radiusd']
   }
 
-  validate_bool($keep_defaults)
+  #validate_bool($keep_defaults)
 }

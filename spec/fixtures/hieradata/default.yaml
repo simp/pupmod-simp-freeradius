@@ -1,5 +1,6 @@
 ---
-ldap::uri : 'ldap://foo.bar.baz'
-ldap::base_dn : 'ou=foo,dc=bar,dc=baz'
-ldap::bind_pw : 'password'
-ldap::bind_dn : 'dn=test,ou=foo,dc=bar,dc=baz'
+simp_options::ldap::uri :
+ - 'ldap://foo.bar.baz'
+simp_options::ldap::base_dn : 'ou=foo,dc=bar,dc=baz'
+simp_options::ldap::bind_pw : 'password'
+simp_options::ldap::bind_dn : 'dn=test,ou=foo,dc=bar,dc=baz'

@@ -24,25 +24,24 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-# FIXME: paramas pattern this guy
 class freeradius::conf::log (
-  $destination = 'syslog',
-  $log_file = "${::freeradius::logdir}/radius.log",
+  $destination     = 'syslog',
+  $log_file        = "${::freeradius::config::logdir}/radius.log",
   $syslog_facility = 'local6',
-  $stripped_names = false,
-  $auth = true,
-  $auth_badpass = false,
-  $auth_goodpass = false,
-  $msg_goodpass = '',
-  $msg_badpass = ''
-) inherits ::freeradius {
+  $stripped_names  = false,
+  $auth            = true,
+  $auth_badpass    = false,
+  $auth_goodpass   = false,
+  $msg_goodpass    = '',
+  $msg_badpass     = ''
+) inherits ::freeradius::config {
 
   validate_absolute_path($log_file)
   validate_freeradius_destination($destination)
-  validate_bool($stripped_names)
-  validate_bool($auth)
-  validate_bool($auth_badpass)
-  validate_bool($auth_goodpass)
+  #validate_bool($stripped_names)
+  #validate_bool($auth)
+  #validate_bool($auth_badpass)
+  #validate_bool($auth_goodpass)
 
   file { '/etc/raddb/conf/log.inc':
     ensure  => 'file',

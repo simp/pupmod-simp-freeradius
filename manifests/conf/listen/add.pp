@@ -22,9 +22,9 @@
 #
 define freeradius::conf::listen::add (
   $listen_type,
-  $ipaddr = '*',
-  $port = '0',
-  $interface = 'nil',
+  $ipaddr             = '*',
+  $port               = '0',
+  $interface          = 'nil',
   $per_socket_clients = ''
 ) {
 
@@ -37,6 +37,6 @@ define freeradius::conf::listen::add (
   }
 
   validate_array_member($listen_type, ['auth', 'acct', 'proxy', 'detail', 'status', 'coa'])
-  validate_integer($port)
-  validate_string($per_socket_clients)
+  #validate_integer($port)
+  #validate_string($per_socket_clients)
 }

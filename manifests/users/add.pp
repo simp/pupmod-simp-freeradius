@@ -62,7 +62,7 @@
 define freeradius::users::add (
   $content,
   $is_default = false,
-  $order = '100'
+  $order      = '100'
 ) {
 
   file { "/etc/raddb/users.inc/${order}.${name}":
@@ -73,6 +73,6 @@ define freeradius::users::add (
     notify  => Exec['build_freeradius_users']
   }
 
-  validate_bool($is_default)
-  validate_integer($order)
+  #validate_bool($is_default)
+  #validate_integer($order)
 }
