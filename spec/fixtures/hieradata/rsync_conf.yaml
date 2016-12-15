@@ -1,0 +1,2 @@
+---
+freeradius::v3::conf::use_rsync_radiusd_conf: true
