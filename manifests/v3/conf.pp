@@ -108,7 +108,6 @@ class freeradius::v3::conf (
   validate_net_list($trusted_nets)
   validate_port($radius_ports)
 
-  include '::rsync'
   include '::freeradius'
   include '::freeradius::conf::listen'
   include '::freeradius::v3::conf::sites'
@@ -153,6 +152,8 @@ class freeradius::v3::conf (
     }
   }
   else {
+    include '::rsync'
+
     validate_net_list($rsync_server)
     #validate_integer($rsync_timeout)
 

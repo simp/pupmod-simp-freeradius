@@ -107,7 +107,6 @@ class freeradius::v2::conf (
   #validate_bool($extended_expressions)
   #validate_bool($proxy_requests)
 
-  include '::rsync'
   include '::freeradius::conf::listen'
 
   file { $logdir:
@@ -154,6 +153,7 @@ class freeradius::v2::conf (
     }
   }
   else {
+    include '::rsync'
 
     validate_net_list($rsync_server)
     #validate_integer($rsync_timeout)

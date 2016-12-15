@@ -35,7 +35,7 @@ end
 shared_examples_for 'config v3' do
   it_should_behave_like 'common config'
   it { is_expected.to contain_class('freeradius::v3::conf') }
-	it { is_expected.to contain_class('rsync') }
+	it { is_expected.to_not contain_class('rsync') }
 	it { is_expected.to contain_class('freeradius::v3::conf::sites') }
 	it { is_expected.to contain_class('freeradius::v3::conf::policy') }
 end
@@ -43,6 +43,7 @@ end
 # Items specific to v2
 shared_examples_for 'config v2' do
   it_should_behave_like 'common config'
+	it { is_expected.to_not contain_class('rsync') }
   it { is_expected.to contain_class('freeradius::v2::conf') }
 end
 
@@ -58,6 +59,7 @@ shared_examples_for 'config with pki = true and firewall = true' do
 end
 
 shared_examples_for 'use_rsync_radiusd_conf = true' do
+	it { is_expected.to contain_class('rsync') }
   it { is_expected.to contain_file('/etc/raddb/radiusd.conf').with_content(nil)}
   it { is_expected.to contain_rsync('freeradius').with({
     :server  => '127.0.0.1',
