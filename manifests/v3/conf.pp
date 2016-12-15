@@ -84,6 +84,7 @@ class freeradius::v3::conf (
   $rsync_source           = "freeradius_${::environment}/",
   $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
   $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => '2', 'value_type' => Stdlib::Compat::Integer }),
+  $rsync_bwlimit          = '',
   $radius_ports           = ['1812', '1813'],
   $radius_rsync_user      = "freeradius_systems_${::environment}",
   $radius_rsync_password  = 'nil',
@@ -177,7 +178,7 @@ class freeradius::v3::conf (
         File['/etc/raddb'],
         Service['radiusd']
       ],
-      bwlimit  => $::rsync_bwlimit,
+      bwlimit  => $rsync_bwlimit,
       user     => $radius_rsync_user,
       password => $_password
     }
