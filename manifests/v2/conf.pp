@@ -26,16 +26,16 @@
 #   rsync directory on the puppet server.
 #
 # [*rsync_server*]
-#   Default: hiera('rsync::server','')
+#   Default: 127.0.0.1
 #   If $use_rsync_radiusd_conf is true, specify the rsync server from
 #   which to pull here.
 #
 # [*rsync_timeout*]
-#   Default: hiera('rsync::timeout','2')
+#   Default: '2'
 #   If $use_rsync_radiusd_conf is true, specify the rsync connection
 #   timeout here.
 #
-# [*client_nets*]
+# [*trusted_nets*]
 #   An array of networks that are allowed to access the radius server.
 #
 # [*localstatedir*]
@@ -76,11 +76,12 @@
 class freeradius::v2::conf (
   $use_rsync_radiusd_conf = false,
   $rsync_source           = "freeradius_${::environment}/",
-  $rsync_server           = hiera('rsync::server',''),
-  $rsync_timeout          = hiera('rsync::timeout','2'),
-  $client_nets            = '127.0.0.1',
+  $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
+  $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => '2', 'value_type' => Stdlib::Compat::Integer }),
+  $rsync_bwlimit          = '',
+  $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
   $localstatedir          = '/var',
-  $logdir                 = $::freeradius::logdir,
+  $logdir                 = $::freeradius::config::logdir,
   $expose_shadow          = false,
   $radius_port            = '1812',
   $radius_rsync_user      = "freeradius_systems_${::environment}",
@@ -93,27 +94,26 @@ class freeradius::v2::conf (
   $allow_core_dumps       = false,
   $regular_expressions    = true,
   $extended_expressions   = true,
-  $proxy_requests         = false
-) inherits ::freeradius {
+  $proxy_requests         = false,
+  $firewall               = $::freeradius::firewall
+) inherits ::freeradius::config {
 
-  validate_bool($use_rsync_radiusd_conf)
-  validate_bool($expose_shadow)
-  validate_bool($default_acct_listener)
-  validate_bool($hostname_lookups)
-  validate_bool($allow_core_dumps)
-  validate_bool($regular_expressions)
-  validate_bool($extended_expressions)
-  validate_bool($proxy_requests)
+  #validate_bool($use_rsync_radiusd_conf)
+  #validate_bool($expose_shadow)
+  #validate_bool($default_acct_listener)
+  #validate_bool($hostname_lookups)
+  #validate_bool($allow_core_dumps)
+  #validate_bool($regular_expressions)
+  #validate_bool($extended_expressions)
+  #validate_bool($proxy_requests)
 
-  include '::rsync'
   include '::freeradius::conf::listen'
 
   file { $logdir:
-    ensure  => 'directory',
-    owner   => 'radiusd',
-    group   => 'radiusd',
-    mode    => '0640',
-    require => Package[$freeradius::l_freeradius_ver]
+    ensure => 'directory',
+    owner  => 'radiusd',
+    group  => 'radiusd',
+    mode   => '0640',
   }
 
   file { [
@@ -122,21 +122,19 @@ class freeradius::v2::conf (
     "${logdir}/radwtmp",
     "${logdir}/sradutmp"
   ]:
-    ensure  => 'file',
-    owner   => 'radiusd',
-    group   => 'radiusd',
-    mode    => '0640',
-    before  => Service['radiusd'],
-    require => Package[$freeradius::l_freeradius_ver]
+    ensure => 'file',
+    owner  => 'radiusd',
+    group  => 'radiusd',
+    mode   => '0640',
+    before => Service['radiusd'],
   }
 
   file { '/etc/raddb/conf':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'radiusd',
-    mode    => '0640',
-    before  => Service['radiusd'],
-    require => Package[$freeradius::l_freeradius_ver]
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'radiusd',
+    mode   => '0640',
+    before => Service['radiusd'],
   }
 
   if !$use_rsync_radiusd_conf {
@@ -152,21 +150,20 @@ class freeradius::v2::conf (
       mode    => '0640',
       content => template('freeradius/2/radiusd.conf.erb'),
       notify  => Service['radiusd'],
-      require => Package[$freeradius::l_freeradius_ver]
     }
   }
   else {
+    include '::rsync'
 
     validate_net_list($rsync_server)
-    validate_integer($rsync_timeout)
+    #validate_integer($rsync_timeout)
 
     file { '/etc/raddb/radiusd.conf':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'radiusd',
-      mode    => '0640',
-      notify  => Service['radiusd'],
-      require => Package[$freeradius::l_freeradius_ver]
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'radiusd',
+      mode   => '0640',
+      notify => Service['radiusd'],
     }
 
     $_password = $radius_rsync_password ? {
@@ -183,7 +180,7 @@ class freeradius::v2::conf (
         File['/etc/raddb'],
         Service['radiusd']
       ],
-      bwlimit  => $::rsync_bwlimit,
+      bwlimit  => $rsync_bwlimit,
       user     => $radius_rsync_user,
       password => $_password
     }
@@ -197,9 +194,11 @@ class freeradius::v2::conf (
     }
   }
 
-  iptables::add_udp_listen { 'radius_iptables':
-    client_nets => $client_nets,
-    dports      => $radius_port
+  if $firewall {
+    iptables::add_udp_listen { 'radius_iptables':
+      trusted_nets => $trusted_nets,
+      dports       => $radius_port
+    }
   }
 
   # Hack to ensure that the passgen function is loaded.

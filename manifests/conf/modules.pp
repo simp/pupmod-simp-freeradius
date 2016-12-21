@@ -29,15 +29,15 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::modules (
-  $include_eap = true,
-  $include_sql = false,
+  $include_eap           = true,
+  $include_sql           = false,
   $include_mysql_counter = false,
-  $include_sqlippool = false
+  $include_sqlippool     = false
 ) {
-  validate_bool($include_eap)
-  validate_bool($include_sql)
-  validate_bool($include_mysql_counter)
-  validate_bool($include_sqlippool)
+  #validate_bool($include_eap)
+  #validate_bool($include_sql)
+  #validate_bool($include_mysql_counter)
+  #validate_bool($include_sqlippool)
 
   include '::freeradius'
 

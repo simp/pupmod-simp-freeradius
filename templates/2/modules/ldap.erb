@@ -9,7 +9,7 @@ ldap {
   port = <%= @port %>
   identity = "<%= @identity %>"
   password = <%= @password %>
-  basedn = "<%= @basedn %>"
+  ldap_base_dn = "<%= @ldap_base_dn %>"
   filter = "<%= @filter %>"
   base_filter = "<%= @base_filter %>"
   ldap_connections_number = <%= @ldap_connections_number %>
@@ -23,13 +23,13 @@ ldap {
 <%   else -%>
     start_tls = yes
 <%   end -%>
-<%   if @cacertdir =~ /\/$/ then -%>
-    cacertdir = <%= @cacertdir %>
+<%   if @app_pki_ca_dir =~ /\/$/ then -%>
+     ca_path = <%= @app_pki_ca_dir %>
 <%   else -%>
-    cacertdir = <%= @cacertdir + '/' %>
+     ca_path = <%= @app_pki_ca_dir + '/' %>
 <%   end -%>
-    certfile = <%= @certfile %>
-    keyfile = <%= @keyfile %>
+    certificate_file = <%= @app_pki_cert %>
+    keyfile = <%= @app_pki_key %>
     randfile = <%= @randfile %>
     require_cert = "<%= @require_cert %>"
   }

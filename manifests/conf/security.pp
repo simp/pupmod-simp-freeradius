@@ -20,8 +20,8 @@
 #
 class freeradius::conf::security (
   $max_attributes = '200',
-  $reject_delay = '1',
-  $status_server = true
+  $reject_delay   = '1',
+  $status_server  = true
 ) {
 
   file { '/etc/raddb/conf/security.inc':
@@ -33,7 +33,7 @@ class freeradius::conf::security (
     notify  => Service['radiusd']
   }
 
-  validate_integer($max_attributes)
-  validate_integer($reject_delay)
-  validate_bool($status_server)
+  #validate_integer($max_attributes)
+  #validate_integer($reject_delay)
+  #validate_bool($status_server)
 }

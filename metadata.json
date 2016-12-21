@@ -26,7 +26,11 @@
     },
     {
       "name": "simp/simplib",
-      "version_requirement": ">= 2.0.0 < 3.0.0"
+      "version_requirement": ">= 2.1.0 < 3.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.9.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -44,5 +48,6 @@
         "7"
       ]
     }
-  ]
+  ],
+  "data_provider": "hiera"
 }

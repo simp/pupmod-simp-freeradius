@@ -62,6 +62,6 @@ class freeradius::v3::conf::sites (
     warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
   }
 
-  validate_bool($enable_default)
-  validate_bool($enable_inner_tunnel)
+  #validate_bool($enable_default)
+  #validate_bool($enable_inner_tunnel)
 }
