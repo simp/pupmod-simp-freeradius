@@ -8,5 +8,4 @@ class freeradius::params {
     $freeradius_name = 'freeradius'
   }
   $freeradius_ver = "${freeradius_name}.${::hardwaremodel}"
-  $app_pki_dir = '/etc/radius_simp'
 }

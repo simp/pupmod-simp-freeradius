@@ -118,7 +118,7 @@ class freeradius::v3::modules::ldap (
   $user_access_positive                           = 'nil',
   $user_scope                                     = 'nil',
   $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{hiera('simp_options::puppet::server')}"], 'value_type' => Array[String] })
-) inherits freeradius::params {
+) {
 
   file { '/etc/raddb/mods-enabled/ldap':
     owner   => 'root',

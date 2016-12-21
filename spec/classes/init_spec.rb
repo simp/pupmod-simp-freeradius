@@ -49,10 +49,18 @@ end
 
 shared_examples_for 'config with pki = false and firewall = false' do
   it { is_expected.to_not contain_class('pki') }
+  it { is_expected.to_not contain_pki__copy('/etc/radius_simp')}
+  it { is_expected.to create_file('/etc/radius_simp/pki')}
   it { is_expected.to_not contain_iptables__add_udp_listen('radius_iptables')}
 end
 
-shared_examples_for 'config with pki = true and firewall = true' do
+shared_examples_for 'config with pki = true' do
+  it { is_expected.to_not contain_class('pki')}
+  it { is_expected.to create_file('/etc/radius_simp') }
+  it { is_expected.to contain_pki__copy('/etc/radius_simp').with(:source => '/etc/pki/simp') }
+end
+
+shared_examples_for 'config with pki = simp and firewall = true' do
   it { is_expected.to contain_class('pki') }
   it { is_expected.to create_file('/etc/radius_simp') }
   it { is_expected.to contain_pki__copy('/etc/radius_simp').with(:source => '/etc/pki/simp') }
@@ -93,10 +101,15 @@ describe 'freeradius' do
 						it_should_behave_like 'service'
           end
 
-          context 'with pki = true and firewall = true' do
-            let(:params){{:pki => true, :firewall => true}}
+          context 'with pki = true' do
+            let(:params){{:pki => true}}
+            it_should_behave_like 'config with pki = true'
+          end
+
+          context 'with pki = simp and firewall = true' do
+            let(:params){{:pki => 'simp', :firewall => true}}
             it_should_behave_like 'install'
-            it_should_behave_like 'config with pki = true and firewall = true'
+            it_should_behave_like 'config with pki = simp and firewall = true'
             it_should_behave_like 'config v3'
             it_should_behave_like 'service'
           end
@@ -123,10 +136,15 @@ describe 'freeradius' do
             it_should_behave_like 'service'
           end
 
-	        context 'with pki = true and firewall = true' do
-            let(:params){{:pki => true, :firewall => true}}
+          context 'with pki = true' do
+            let(:params){{:pki => true}}
+            it_should_behave_like 'config with pki = true'
+          end
+
+	        context 'with pki = simp and firewall = true' do
+            let(:params){{:pki => 'simp', :firewall => true}}
             it_should_behave_like 'install'
-            it_should_behave_like 'config with pki = true and firewall = true'
+            it_should_behave_like 'config with pki = simp and firewall = true'
             it_should_behave_like 'config v2'
             it_should_behave_like 'service'
           end

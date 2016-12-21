@@ -13,20 +13,27 @@ class freeradius::config(
   $logdir      = '/var/log/freeradius'
 ) inherits freeradius {
 
+  file { $::freeradius::app_pki_dir:
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755'
+  }
+
   if $::freeradius::pki {
-    include '::pki'
-
-    file { $::freeradius::app_pki_dir:
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755'
-    }
-
     ::pki::copy { $::freeradius::app_pki_dir:
+      pki     => $::freeradius::pki,
       source  => $::freeradius::app_pki_external_source,
       group   => 'radiusd',
       require => File[$::freeradius::app_pki_dir],
+    }
+  }
+  else {
+    file { "${::freeradius::app_pki_dir}/pki":
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0640'
     }
   }
 
