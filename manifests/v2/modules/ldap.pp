@@ -17,7 +17,7 @@
 # [*port*]
 # [*start_tls*]
 # [*app_pki_ca_dir*]
-# [*app_pki_ca*]
+# [*app_pki_cert*]
 #   If you change this from the default, you will need to ensure that you
 #   manage the file and that apache restarts when the file is updated.
 #
@@ -64,9 +64,9 @@ class freeradius::v2::modules::ldap (
   $net_timeout                = '1',
   $port                       = '389',
   $start_tls                  = true,
-  $app_pki_ca_dir             = '/etc/pki/cacerts',
-  $app_pki_ca                 = "/etc/pki/public/${::fqdn}.pub",
-  $app_pki_key                = "/etc/pki/private/${::fqdn}.pem",
+  $app_pki_ca_dir             = "${::freeradius::app_pki_dir}/pki/cacerts",
+  $app_pki_cert               = "${::freeradius::app_pki_dir}/pki/public/${::fqdn}.pub",
+  $app_pki_key                = "${::freeradius::app_pki_dir}/pki/private/${::fqdn}.pem",
   $randfile                   = '/dev/urandom',
   $require_cert               = 'demand',
   $default_profile            = 'nil',

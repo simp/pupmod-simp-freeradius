@@ -8,7 +8,7 @@
 # [*base_filter*]
 # [*app_pki_ca_dir*]
 #
-# [*app_pki_ca*]
+# [*app_pki_cert*]
 #   If you change this from the default, you will need to ensure that you
 #   manage the file and that apache restarts when the file is updated.
 #
@@ -71,9 +71,9 @@
 #
 class freeradius::v3::modules::ldap (
   $ldap_base_dn                                   = simplib::lookup('simp_options::ldap::base_dn', { 'value_type'    => String }),
-  $app_pki_ca_dir                                 = '/etc/pki/cacerts',
-  $app_pki_ca                                     = "/etc/pki/public/${::fqdn}.pub",
-  $app_pki_key                                    = "/etc/pki/private/${::fqdn}.pem",
+  $app_pki_ca_dir                                 = "${::freeradius::app_pki_dir}/pki/cacerts",
+  $app_pki_cert                                   = "${::freeradius::app_pki_dir}/pki/public/${::fqdn}.pub",
+  $app_pki_key                                    = "${::freeradius::app_pki_dir}/pki/private/${::fqdn}.pem",
   $base_filter                                    = '(objectclass=radiusprofile)',
   $client_scope                                   = 'nil',
   $client_attribute_identifier                    = 'radiusClientIdentifier',
@@ -118,7 +118,7 @@ class freeradius::v3::modules::ldap (
   $user_access_positive                           = 'nil',
   $user_scope                                     = 'nil',
   $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{hiera('simp_options::puppet::server')}"], 'value_type' => Array[String] })
-) {
+) inherits freeradius::params {
 
   file { '/etc/raddb/mods-enabled/ldap':
     owner   => 'root',
