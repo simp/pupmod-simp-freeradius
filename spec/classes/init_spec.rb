@@ -54,7 +54,8 @@ end
 
 shared_examples_for 'config with pki = true and firewall = true' do
   it { is_expected.to contain_class('pki') }
-  it { is_expected.to contain_pki__copy('/var/radius_pki') }
+  it { is_expected.to create_file('/etc/radius_simp') }
+  it { is_expected.to contain_pki__copy('/etc/radius_simp').with(:source => '/etc/pki/simp') }
   it { is_expected.to contain_iptables__add_udp_listen('radius_iptables')}
 end
 

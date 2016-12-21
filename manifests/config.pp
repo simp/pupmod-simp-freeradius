@@ -10,7 +10,7 @@
 # * Nick Markowski <nmarkowski@keywcorp.com>
 #
 class freeradius::config(
-  $app_pki_dir = '/var/radius_pki',
+  $app_pki_dir = '/etc/radius_simp',
   $logdir      = '/var/log/freeradius'
 ) inherits freeradius {
 
@@ -25,6 +25,7 @@ class freeradius::config(
     }
 
     ::pki::copy { $app_pki_dir:
+      source  => $::freeradius::app_pki_external_source,
       group   => 'radiusd',
       require => File[$app_pki_dir],
     }
