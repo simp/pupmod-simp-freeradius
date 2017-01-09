@@ -83,7 +83,7 @@ class freeradius::v2::conf (
   $localstatedir          = '/var',
   $logdir                 = $::freeradius::config::logdir,
   $expose_shadow          = false,
-  $radius_port            = '1812',
+  $radius_port            = 1812,
   $radius_rsync_user      = "freeradius_systems_${::environment}",
   $radius_rsync_password  = 'nil',
   $max_request_time       = '30',
@@ -195,7 +195,7 @@ class freeradius::v2::conf (
   }
 
   if $firewall {
-    iptables::add_udp_listen { 'radius_iptables':
+    iptables::listen::udp { 'radius_iptables':
       trusted_nets => $trusted_nets,
       dports       => $radius_port
     }

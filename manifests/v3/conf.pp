@@ -85,7 +85,7 @@ class freeradius::v3::conf (
   $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
   $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => '2', 'value_type' => Stdlib::Compat::Integer }),
   $rsync_bwlimit          = '',
-  $radius_ports           = ['1812', '1813'],
+  $radius_ports           = [1812, 1813],
   $radius_rsync_user      = "freeradius_systems_${::environment}",
   $radius_rsync_password  = 'nil',
   $regular_expressions    = true,
@@ -194,7 +194,7 @@ class freeradius::v3::conf (
   }
 
   if $firewall {
-    iptables::add_udp_listen { 'radius_iptables':
+    iptables::listen::udp { 'radius_iptables':
       trusted_nets => $trusted_nets,
       dports       => $radius_ports
     }
