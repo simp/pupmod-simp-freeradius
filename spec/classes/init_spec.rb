@@ -51,7 +51,7 @@ shared_examples_for 'config with pki = false and firewall = false' do
   it { is_expected.to_not contain_class('pki') }
   it { is_expected.to_not contain_pki__copy('/etc/radius_simp')}
   it { is_expected.to create_file('/etc/radius_simp/pki')}
-  it { is_expected.to_not contain_iptables__add_udp_listen('radius_iptables')}
+  it { is_expected.to_not contain_iptables__listen__udp('radius_iptables')}
 end
 
 shared_examples_for 'config with pki = true' do
@@ -64,7 +64,7 @@ shared_examples_for 'config with pki = simp and firewall = true' do
   it { is_expected.to contain_class('pki') }
   it { is_expected.to create_file('/etc/radius_simp') }
   it { is_expected.to contain_pki__copy('/etc/radius_simp').with(:source => '/etc/pki/simp') }
-  it { is_expected.to contain_iptables__add_udp_listen('radius_iptables')}
+  it { is_expected.to contain_iptables__listen__udp('radius_iptables')}
 end
 
 shared_examples_for 'use_rsync_radiusd_conf = true' do
