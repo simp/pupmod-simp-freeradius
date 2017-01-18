@@ -18,53 +18,53 @@
 #
 # == Parameters
 #
-# [*use_rsync_radiusd_conf*]
+# @param use_rsync_radiusd_conf
 #   If set to true, then the variables here will not be used, instead the
 #   system will use a radiusd.conf that is pulled from rsync. To make this
 #   work, you will need to create your own radiusd.conf in the freeradius
 #   rsync directory on the puppet server.
 #
-# [*rsync_server*]
+# @param rsync_server
 #   Default: 127.0.0.1
 #   If $use_rsync_radiusd_conf is true, specify the rsync server from
 #   which to pull here.
 #
-# [*rsync_timeout*]
+# @param rsync_timeout
 #   Default: '2'
 #   If $use_rsync_radiusd_conf is true, specify the rsync connection
 #   timeout here.
 #
-# [*trusted_nets*]
+# @param trusted_nets
 #   An array of networks that are allowed to access the radius server.
 #
-# [*localstatedir*]
-# [*logdir*]
+# @param localstatedir
+# @param logdir
 #
-# [*radius_ports*]
+# @param radius_ports
 #   Type: Array
 #   Default: ['1812','1813']
 #   The ports where radius will listen.
 #
-# [*radius_rsync_user*]
+# @param radius_rsync_user
 #   Since radius holds sensitive information, the rsync space should be accordingly protected.
 #   This define has been designed with the assuption that you will utilize
 #   the internal passgen mechanism to set the password. You can optionally specify
 #   $radius_rsync_password
 #
-# [*radius_rsync_password*]
+# @param radius_rsync_password
 #   If no password is specified, passgen will be used
 #
-# [*max_request_time*]
-# [*cleanup_delay*]
-# [*max_requests*]
-# [*default_acct_listener*]
+# @param max_request_time
+# @param cleanup_delay
+# @param max_requests
+# @param default_acct_listener
 #   Whether or not to set up the default acct listener.
 #
-# [*hostname_lookups*]
-# [*allow_core_dumps*]
-# [*regular_expressions*]
-# [*extended_expressions*]
-# [*proxy_requests*]
+# @param hostname_lookups
+# @param allow_core_dumps
+# @param regular_expressions
+# @param extended_expressions
+# @param proxy_requests
 #
 # == Authors
 #

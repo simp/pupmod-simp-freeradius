@@ -30,24 +30,24 @@
 #
 # == Parameters
 #
-# [*name*]
+# @param name
 #   The name of the user.
 #   If $is_default is set to true, this will be treated as a DEFAULT user
 #   entry and the name will be used for uniqueness.
 #   It is recommended to use something like 'default_ppp', 'default_slip',
 #   etc... for these entries.
 #
-# [*content*]
+# @param content
 #   The actual content of the entry per users(5). The $name will be used as
 #   the left hand initial value unless $is_default = true. All other
 #   portions must be properly included, starting with the initial comparison
 #   or assignment.
 #   Leading whitespace is ignored.
 #
-# [*is_default*]
+# @param is_default
 #   Whether or not the entry is for a DEFAULT user entry.
 #
-# [*order*]
+# @param order
 #   An ordering number for including the entries in the file. This does not
 #   *have* to be numeric, but you may end up with strange results if it is
 #   not. The default is alphabetic.

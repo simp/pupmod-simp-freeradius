@@ -15,8 +15,6 @@ fixtures:
     rsyslog: https://github.com/simp/pupmod-simp-rsyslog
     simpcat: https://github.com/simp/pupmod-simp-simpcat
     simplib: https://github.com/simp/pupmod-simp-simplib
-    stdlib:
-      repo: https://github.com/simp/puppetlabs-stdlib
-      branch: master
+    stdlib: https://github.com/simp/puppetlabs-stdlib
   symlinks:
     freeradius: "#{source_dir}"

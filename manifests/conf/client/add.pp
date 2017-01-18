@@ -9,18 +9,18 @@
 #
 # == Parameters
 #
-# [*ipaddr*]
+# @param ipaddr
 #   If set to something with a ':' in it, will be treated as ipv6addr instead.
 #
-# [*netmask*]
-# [*secret*]
-# [*shortname*]
-# [*require_message_authenticator*]
-# [*nas_type*]
-# [*login*]
-# [*password*]
-# [*virtual_server*]
-# [*coa_server*]
+# @param netmask
+# @param secret
+# @param shortname
+# @param require_message_authenticator
+# @param nas_type
+# @param login
+# @param password
+# @param virtual_server
+# @param coa_server
 #
 # == Authors
 #
