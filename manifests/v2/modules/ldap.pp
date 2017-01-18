@@ -4,48 +4,48 @@
 #
 # == Parameters
 #
-# [*server*]
-# [*identity*]
-# [*password*]
-# [*ldap_base_dn*]
-# [*filter*]
-# [*base_filter*]
-# [*ldap_connections_number*]
-# [*ldap_timeout*]
-# [*ldap_timelimit*]
-# [*net_timeout*]
-# [*port*]
-# [*start_tls*]
-# [*app_pki_ca_dir*]
-# [*app_pki_cert*]
-#   If you change this from the default, you will need to ensure that you
-#   manage the file and that apache restarts when the file is updated.
+# @param server
+# @param identity
+# @param password
+# @param ldap_base_dn
+# @param filter
+# @param base_filter
+# @param ldap_connections_number
+# @param ldap_timeout
+# @param ldap_timelimit
+# @param net_timeout
+# @param port
+# @param start_tls
+# @param app_pki_key
+#   Path and name of the private SSL key file
 #
-# [*app_pki_key*]
-#   If you change this from the default, you will need to ensure that you
-#   manage the file and that apache restarts when the file is updated.
+# @param app_pki_cert
+#   Path and name of the public SSL certificate
 #
-# [*randfile*]
-# [*require_cert*]
-# [*default_profile*]
-# [*profile_attribute*]
-# [*access_attr*]
-# [*dictionary_mapping*]
-# [*password_attribute*]
-# [*edir_account_policy_check*]
-# [*groupname_attribute*]
-# [*groupmembership_filter*]
-# [*groupmembership_attribute*]
+# @param app_pki_ca_dir
+#   Path to the CA.
+#
+# @param randfile
+# @param require_cert
+# @param default_profile
+# @param profile_attribute
+# @param access_attr
+# @param dictionary_mapping
+# @param password_attribute
+# @param edir_account_policy_check
+# @param groupname_attribute
+# @param groupmembership_filter
+# @param groupmembership_attribute
 #   If this does not contain a value then Group Membership Checking will not
 #   be enabled.
 #
-# [*compare_check_items*]
-# [*do_xlat*]
-# [*access_attr_used_for_allow*]
-# [*chase_referrals*]
-# [*rebind*]
-# [*set_auth_type*]
-# [*ldap_debug*]
+# @param compare_check_items
+# @param do_xlat
+# @param access_attr_used_for_allow
+# @param chase_referrals
+# @param rebind
+# @param set_auth_type
+# @param ldap_debug
 #
 # == Authors
 #
@@ -64,9 +64,9 @@ class freeradius::v2::modules::ldap (
   $net_timeout                = '1',
   $port                       = '389',
   $start_tls                  = true,
-  $app_pki_ca_dir             = "${::freeradius::app_pki_dir}/pki/cacerts",
-  $app_pki_cert               = "${::freeradius::app_pki_dir}/pki/public/${::fqdn}.pub",
-  $app_pki_key                = "${::freeradius::app_pki_dir}/pki/private/${::fqdn}.pem",
+  $app_pki_ca_dir             = $::freeradius::config::app_pki_ca_dir,
+  $app_pki_cert               = $::freeradius::config::app_pki_cert,
+  $app_pki_key                = $::freeradius::config::app_pki_key,
   $randfile                   = '/dev/urandom',
   $require_cert               = 'demand',
   $default_profile            = 'nil',

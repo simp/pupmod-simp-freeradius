@@ -1,6 +1,7 @@
-* Tue Dec 13 2016 Nick Markowski <nmarkowski@keywcorp.com> - 7.0.0-0
+* Tue Jan 17 2016 Nick Markowski <nmarkowski@keywcorp.com> - 7.0.0-0
 - Updated global catalysts
 - Refactored module
+- Application certs now managed in /etc/pki/simp_apps/freeradius/x509
 
 * Thu Dec 01 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 7.0.0-0
 - Updated to use the environment-aware rsync in SIMP 6

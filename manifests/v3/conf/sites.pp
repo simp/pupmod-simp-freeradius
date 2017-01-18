@@ -10,12 +10,12 @@
 #
 # == Parameters
 #
-# [*enable_default*]
+# @param enable_default
 #  Boolean:
 #   Whether or not to enable the default site from the FreeRADIUS package.
 #  Default: true
 #
-# [*enable_inner_tunnel*]
+# @param enable_inner_tunnel
 #  Boolean:
 #   Whether or not to enable the inner_tunnel site.
 #  Default: true

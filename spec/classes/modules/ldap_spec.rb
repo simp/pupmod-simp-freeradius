@@ -5,9 +5,9 @@ describe 'freeradius::modules::ldap' do
     on_supported_os.each do |os, facts|
       let(:facts) { facts }
 
-$file_v3 = "ca_path = /etc/radius_simp/pki/cacerts/\n    certificate_file = /etc/radius_simp/pki/public/#{facts[:fqdn]}.pub\n    private_key_file = /etc/radius_simp/pki/private/#{facts[:fqdn]}.pem\n"
+$file_v3 = "ca_path = /etc/pki/simp_apps/freeradius/x509/cacerts/\n    certificate_file = /etc/pki/simp_apps/freeradius/x509/public/#{facts[:fqdn]}.pub\n    private_key_file = /etc/pki/simp_apps/freeradius/x509/private/#{facts[:fqdn]}.pem\n"
 
-$file_v2 = "ca_path = /etc/radius_simp/pki/cacerts/\n    certificate_file = /etc/radius_simp/pki/public/#{facts[:fqdn]}.pub\n    keyfile = /etc/radius_simp/pki/private/#{facts[:fqdn]}.pem\n"
+$file_v2 = "ca_path = /etc/pki/simp_apps/freeradius/x509/cacerts/\n    certificate_file = /etc/pki/simp_apps/freeradius/x509/public/#{facts[:fqdn]}.pub\n    keyfile = /etc/pki/simp_apps/freeradius/x509/private/#{facts[:fqdn]}.pem\n"
 
       context 'base v3' do
         let(:facts) { facts.merge({:radius_version => '3', :grub_version => '2'})}

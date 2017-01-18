@@ -4,66 +4,65 @@
 #
 # == Parameters
 #
-# [*base_dn*]
-# [*base_filter*]
-# [*app_pki_ca_dir*]
+# @param base_dn
 #
-# [*app_pki_cert*]
-#   If you change this from the default, you will need to ensure that you
-#   manage the file and that apache restarts when the file is updated.
+# @param app_pki_key
+#   Path and name of the private SSL key file
 #
-# [*client_scope*]
-# [*client_attribute_identifier*]
-# [*client_attribute_secret*]
-# [*client_attribute_shortname*]
-# [*client_attribute_nas_type*]
-# [*client_attribute_virtual_server*]
-# [*client_attribute_require_message_authenticator*]
-# [*default_profile*]
-# [*filter*]
-# [*group_scope*]
-# [*group_name_attribute*]
-# [*group_membership_filter*]
+# @param app_pki_cert
+#   Path and name of the public SSL certificate
 #
-# [*group_membership_attribute*]
+# @param app_pki_ca_dir
+#   Path to the CA.
+#
+# @param base_filter
+# @param client_scope
+# @param client_attribute_identifier
+# @param client_attribute_secret
+# @param client_attribute_shortname
+# @param client_attribute_nas_type
+# @param client_attribute_virtual_server
+# @param client_attribute_require_message_authenticator
+# @param default_profile
+# @param filter
+# @param group_scope
+# @param group_name_attribute
+# @param group_membership_filter
+#
+# @param group_membership_attribute
 #   If this does not contain a value then Group Membership Checking will not
 #   be enabled.
 #
-# [*group_cacheable_name*]
-# [*group_cacheable_dn*]
-# [*identity*]
-# [*ldap_connections_number*]
-# [*ldap_debug*]
-# [*ldap_timeout*]
-# [*ldap_timelimit*]
-# [*options_chase_referrals*]
-# [*options_idle*]
-# [*options_interval*]
-# [*options_net_timeout*]
-# [*options_probes*]
-# [*options_rebind*]
-# [*password*]
-# [*pool_start*]
-# [*pool_min*]
-# [*pool_max*]
-# [*pool_spare*]
-# [*pool_uses*]
-# [*pool_lifetime*]
-# [*pool_idle_timeout*]
-# [*port*]
-# [*app_pki_key*]
-#
-#   If you change this from the default, you will need to ensure that you
-#   manage the file and that apache restarts when the file is updated.
-#
-# [*profile_attribute*]
-# [*random_file*]
-# [*require_cert*]
-# [*start_tls*]
-# [*user_access_attribute*]
-# [*user_access_positive*]
-# [*user_scope*]
-# [*server*]
+# @param group_cacheable_name
+# @param group_cacheable_dn
+# @param identity
+# @param ldap_connections_number
+# @param ldap_debug
+# @param ldap_timeout
+# @param ldap_timelimit
+# @param options_chase_referrals
+# @param options_idle
+# @param options_interval
+# @param options_net_timeout
+# @param options_probes
+# @param options_rebind
+# @param password
+# @param pool_start
+# @param pool_min
+# @param pool_max
+# @param pool_spare
+# @param pool_uses
+# @param pool_lifetime
+# @param pool_idle_timeout
+# @param port
+# @param profile_attribute
+# @param random_file
+# @param require_cert
+# @param start_tls
+# @param user_access_attribute
+# @param user_access_positive
+# @param user_scope
+# @param server
 #
 # == Authors
 #
@@ -71,9 +70,9 @@
 #
 class freeradius::v3::modules::ldap (
   $ldap_base_dn                                   = simplib::lookup('simp_options::ldap::base_dn', { 'value_type'    => String }),
-  $app_pki_ca_dir                                 = "${::freeradius::app_pki_dir}/pki/cacerts",
-  $app_pki_cert                                   = "${::freeradius::app_pki_dir}/pki/public/${::fqdn}.pub",
-  $app_pki_key                                    = "${::freeradius::app_pki_dir}/pki/private/${::fqdn}.pem",
+  $app_pki_ca_dir                                 = $::freeradius::config::app_pki_ca_dir,
+  $app_pki_cert                                   = $::freeradius::config::app_pki_cert,
+  $app_pki_key                                    = $::freeradius::config::app_pki_key,
   $base_filter                                    = '(objectclass=radiusprofile)',
   $client_scope                                   = 'nil',
   $client_attribute_identifier                    = 'radiusClientIdentifier',
