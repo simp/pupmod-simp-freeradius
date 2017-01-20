@@ -1,4 +1,4 @@
-* Tue Jan 17 2016 Nick Markowski <nmarkowski@keywcorp.com> - 7.0.0-0
+* Tue Jan 17 2017 Nick Markowski <nmarkowski@keywcorp.com> - 7.0.0-0
 - Updated global catalysts
 - Refactored module
 - Application certs now managed in /etc/pki/simp_apps/freeradius/x509
