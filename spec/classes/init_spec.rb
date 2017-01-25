@@ -71,8 +71,10 @@ shared_examples_for 'use_rsync_radiusd_conf = true' do
 	it { is_expected.to contain_class('rsync') }
   it { is_expected.to contain_file('/etc/raddb/radiusd.conf').with_content(nil)}
   it { is_expected.to contain_rsync('freeradius').with({
+    :source  => "freeradius_#{environment}_#{facts[:os][:name]}/",
+    :user    => "freeradius_systems_#{environment}_#{facts[:os][:name].downcase}",
     :server  => '127.0.0.1',
-    :timeout => '2'})
+    :timeout => 2})
   }
 end
 
@@ -152,7 +154,7 @@ describe 'freeradius' do
 					# Not sure why this is not working
           context 'with use_rsync_radiusd_conf = true' do
 						let(:hieradata) { "rsync_conf" }
-            pending("it_should_behave_like use_rsync_radiusd_conf = true'")
+            it_should_behave_like "use_rsync_radiusd_conf = true"
           end
         end
       end
