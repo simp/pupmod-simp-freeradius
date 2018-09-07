@@ -1,55 +1,76 @@
 # The testing matrix considers ruby/puppet versions supported by SIMP and PE:
 # ------------------------------------------------------------------------------
 #  release    pup   ruby      eol
-# PE 2016.4   4.7   2.1.9  TBD (LTS)
-# PE 2016.5   4.8   2.1.9  2017-10-31
-# SIMP6.0.0   4.8   2.1.9  TBD
-# PE 2017.1   4.9   2.1.9  2017-10-31
 # PE 2017.2   4.10  2.1.9  TBD
 ---
 language: ruby
-sudo: false
 cache: bundler
-before_script:
-  - bundle update
+sudo: false
+
 bundler_args: --without development system_tests --path .vendor
-before_install: rm Gemfile.lock || true
-script:
-  - bundle exec rake test
+
+
 notifications:
   email: false
-rvm:
-  - 2.1.9
-env:
-  global:
-    - STRICT_VARIABLES=yes
-  matrix:
-    - PUPPET_VERSION="~> 4.8.2" FORGE_PUBLISH=true
-    - PUPPET_VERSION="~> 4.10.0"
-    - PUPPET_VERSION="~> 4.9.2"
-    - PUPPET_VERSION="~> 4.7.0"
-matrix:
-  fast_finish: true
 
-before_deploy:
-  - 'bundle exec rake metadata_lint'
-  - 'bundle exec rake clobber'
-  - 'bundle exec rake spec_clean'
-  - "export PUPMOD_METADATA_VERSION=`ruby -r json -e \"puts JSON.parse(File.read('metadata.json')).fetch('version')\"`"
-  - '[[ $TRAVIS_TAG =~ ^simp-${PUPMOD_METADATA_VERSION}$|^${PUPMOD_METADATA_VERSION}$ ]]'
-deploy:
-  - provider: puppetforge
-    user: simp
-    password:
-        secure: "l0I3IaMk7f6cem+UIS2cYQ0syTpHkBknifM5/5UFfJtgR87lP2akoodLrokDDsssGKna5kCJ4DC1+hkXlgS/W3G3NHDKgLJ9kSo60mVbVk8QaSKiIKrBvQkZdgsokYK/BnWKeuIa/S66p2rBADbaG7h5DRPRCqJNiaLXIN4ZlM43NRBLK6y5Avd4h3NUqYyCsx2u8Ipr6FQJDnMeQwwgBnXyHMy87jMKz/doIoDgIC3GqbEyoGBJqrJQ+Ro3pf4VNkAgvOlwu0ND7ge/v85d0rk3bi9QTBr3e0fO27AZmh0Q8HWv9E7rkng4yiyBzYP1MlFKSS6pVfKrDp7xTEOBQyLi3l5wBAEgo1/JgO9x35I4w1UxFmktHo6aexoM5X7QBtrnHae6unasgf+nxSMoyjNY9sXsRCjnfc36SiRUmWoArDbV5uhqdiCkdBG/Xx8U7mOettqm5hfECxnncEnaaic+Nf3QII18Rt9RUeSryLHLDFsVZS3uqdPaCiICXnM4IfL4DBDnRNdPzARPlYxEa7C3oRRrtwBUStoO0IYUPwXFUv1gb0a030pzzvcLy8ePvjTm2Kskbmwcsjhbo7d1TZmCvDJ3SVc6C/USFK1uDG/or7nHVLH61UzXXi7mNqGC/EfjHD15vOLLmRBFRg3ej41crzB2dhiNvziOM1u/ohc="
-    on:
-      tags: true
+addons:
+  apt:
+    packages:
+      - rpm
+
+before_install:
+  - rm -f Gemfile.lock
+
+jobs:
+  allow_failures:
+    - env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.0"
+
+  include:
+    - stage: check
+      rvm: 2.4.1
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5"
+      script:
+        - bundle exec rake check:dot_underscore
+        - bundle exec rake check:test_file
+        - bundle exec rake pkg:check_version
+        - bundle exec rake lint
+        - bundle exec rake metadata_lint
+        - bundle exec rake pkg:compare_latest_tag
+        - bundle exec rake pkg:create_tag_changelog
+        - bundle exec puppet module build
+
+    - stage: spec
+      rvm: 2.4.1
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.0"
+      script:
+        - bundle exec rake spec
+
+    - stage: spec
       rvm: 2.1.9
-      condition: '($SKIP_FORGE_PUBLISH != true) && ($FORGE_PUBLISH = true)'
-  - provider: releases
-    api_key:
-        secure: "IGEUhvF+fKl+bmgBJ7J1Wv9DNPvkGf1xevzZQGPxqO/uKimxcvLx5saiBgwnN79PWiG3qZluFlWCUGsBQth03G1tBFsYk371TZTkqvhFoW2U51ZtvOT7tMt0JNiBKulS1TCEVrhQ89hA2U+UaECsNi1KxLOnY/FU2uUhReaCSPa3J51CyHV+r6eooFZs3Fc3oZYF9k2HYDkNEvAlkcW4ttbknw3K97uhyXAb9ZZz2rU44iH/iOfeHfawdBcvsjKWv2WOjqd4XZCrb6t+DIBDXnfgcYre2H+irWsRucRhxVvs7GiUBCZMJeHDQB4qDhTBPQ+WZugffbyBwyUpFYgaG/D1CaxcA2MXlsXrdm1GQuwzT8opU/t7k4M4AwHxxkoTT9SVnpQI3khdeWfl9VlSUCHys/39X6qaIwI2fCMvHcDX0y6jx2KLGDCezhVLne3zBy1zfcXnPWQI1z1jv+5II0JExPDLhhmVSICajekhIf3zDcfE+hnD0gzTwOqnQ2n+uFXsFZnzXjaGh4aIqBJ1+eulzHC9xXSIxKvF2ZJ/6xPZCCYNQB3CPlSw5itcQahRdgb9Hw/sqwqmhC0S1pWwopWQz2uO93BPFMYFW/aoJUITxSzyRYvRzI2cHHl6YOaruYk2X9LWzetDZ1NgNgbbN5BglQBi0Ur9Uv2QwglksHI="
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: '($SKIP_FORGE_PUBLISH != true) && ($FORGE_PUBLISH = true)'
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 4.10.0"
+      script:
+        - bundle exec rake spec
+
+    - stage: deploy
+      rvm: 2.4.1
+      script:
+        - true
+      before_deploy:
+        - "export PUPMOD_METADATA_VERSION=`ruby -r json -e \"puts JSON.parse(File.read('metadata.json')).fetch('version')\"`"
+        - '[[ $TRAVIS_TAG =~ ^simp-${PUPMOD_METADATA_VERSION}$|^${PUPMOD_METADATA_VERSION}$ ]]'
+      deploy:
+        - provider: releases
+          api_key:
+            secure: "IGEUhvF+fKl+bmgBJ7J1Wv9DNPvkGf1xevzZQGPxqO/uKimxcvLx5saiBgwnN79PWiG3qZluFlWCUGsBQth03G1tBFsYk371TZTkqvhFoW2U51ZtvOT7tMt0JNiBKulS1TCEVrhQ89hA2U+UaECsNi1KxLOnY/FU2uUhReaCSPa3J51CyHV+r6eooFZs3Fc3oZYF9k2HYDkNEvAlkcW4ttbknw3K97uhyXAb9ZZz2rU44iH/iOfeHfawdBcvsjKWv2WOjqd4XZCrb6t+DIBDXnfgcYre2H+irWsRucRhxVvs7GiUBCZMJeHDQB4qDhTBPQ+WZugffbyBwyUpFYgaG/D1CaxcA2MXlsXrdm1GQuwzT8opU/t7k4M4AwHxxkoTT9SVnpQI3khdeWfl9VlSUCHys/39X6qaIwI2fCMvHcDX0y6jx2KLGDCezhVLne3zBy1zfcXnPWQI1z1jv+5II0JExPDLhhmVSICajekhIf3zDcfE+hnD0gzTwOqnQ2n+uFXsFZnzXjaGh4aIqBJ1+eulzHC9xXSIxKvF2ZJ/6xPZCCYNQB3CPlSw5itcQahRdgb9Hw/sqwqmhC0S1pWwopWQz2uO93BPFMYFW/aoJUITxSzyRYvRzI2cHHl6YOaruYk2X9LWzetDZ1NgNgbbN5BglQBi0Ur9Uv2QwglksHI="
+          skip_cleanup: true
+          on:
+            tags: true
+            condition: '($SKIP_FORGE_PUBLISH != true)'
+        - provider: puppetforge
+          user: simp
+          password:
+            secure: "l0I3IaMk7f6cem+UIS2cYQ0syTpHkBknifM5/5UFfJtgR87lP2akoodLrokDDsssGKna5kCJ4DC1+hkXlgS/W3G3NHDKgLJ9kSo60mVbVk8QaSKiIKrBvQkZdgsokYK/BnWKeuIa/S66p2rBADbaG7h5DRPRCqJNiaLXIN4ZlM43NRBLK6y5Avd4h3NUqYyCsx2u8Ipr6FQJDnMeQwwgBnXyHMy87jMKz/doIoDgIC3GqbEyoGBJqrJQ+Ro3pf4VNkAgvOlwu0ND7ge/v85d0rk3bi9QTBr3e0fO27AZmh0Q8HWv9E7rkng4yiyBzYP1MlFKSS6pVfKrDp7xTEOBQyLi3l5wBAEgo1/JgO9x35I4w1UxFmktHo6aexoM5X7QBtrnHae6unasgf+nxSMoyjNY9sXsRCjnfc36SiRUmWoArDbV5uhqdiCkdBG/Xx8U7mOettqm5hfECxnncEnaaic+Nf3QII18Rt9RUeSryLHLDFsVZS3uqdPaCiICXnM4IfL4DBDnRNdPzARPlYxEa7C3oRRrtwBUStoO0IYUPwXFUv1gb0a030pzzvcLy8ePvjTm2Kskbmwcsjhbo7d1TZmCvDJ3SVc6C/USFK1uDG/or7nHVLH61UzXXi7mNqGC/EfjHD15vOLLmRBFRg3ej41crzB2dhiNvziOM1u/ohc="
+          on:
+            tags: true
+            rvm: 2.4.1
+            condition: '($SKIP_FORGE_PUBLISH != true)'
