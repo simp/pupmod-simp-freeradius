@@ -71,42 +71,29 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::v3::conf (
-  $cleanup_delay          = '5',
-  $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
-  $default_acct_listener  = true,
-  $extended_expressions   = true,
-  $hostname_lookups       = false,
-  $localstatedir          = '/var',
-  $logdir                 = $::freeradius::config::logdir,
-  $max_request_time       = '30',
-  $max_requests           = '1024',
-  $proxy_requests         = false,
-  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
-  $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
-  $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2, 'value_type' => Integer }),
-  $rsync_bwlimit          = '',
-  $radius_ports           = [1812, 1813],
+  Integer[2,10]           $cleanup_delay          = 5,
+  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
+  Boolean                 $default_acct_listener  = true,
+  Boolean                 $extended_expressions   = true,
+  Boolean                 $hostname_lookups       = false,
+  Stdlib::AbsolutePath    $localstatedir          = '/var',
+  Stdlib::AbsolutePath    $logdir                 = $::freeradius::logdir,
+  Integer[5,120]          $max_request_time       = 30,
+  Integer[256]            $max_requests           = 1024,
+  Boolean                 $proxy_requests         = false,
+  String                  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
+  String                  $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'}),
+  Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2}),
+  Optional[Integer]       $rsync_bwlimit          = undef,
+  Array[Simplib::Port]    $radius_ports           = [1812, 1813],
   $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
-  $radius_rsync_password  = 'nil',
-  $regular_expressions    = true,
-  $use_rsync_radiusd_conf = false,
+  Optional[String]        $radius_rsync_password  = undef,
+  Boolean                 $regular_expressions    = true,
+  Boolean                 $use_rsync_radiusd_conf = false,
   $firewall               = $::freeradius::firewall
 ) inherits ::freeradius::config {
 
-  validate_between(to_integer($cleanup_delay), 2, 10)
-  validate_between(to_integer($max_request_time), 5, 120)
-  if to_integer($max_requests) <= 256 {
-    fail('max_requests must be greater than 256')
   }
-  #validate_bool($use_rsync_radiusd_conf)
-  #validate_bool($default_acct_listener)
-  #validate_bool($hostname_lookups)
-  #validate_bool($regular_expressions)
-  #validate_bool($extended_expressions)
-  #validate_bool($proxy_requests)
-  #validate_integer($max_requests)
-  validate_net_list($trusted_nets)
-  validate_port($radius_ports)
 
   include '::freeradius'
   include '::freeradius::conf::listen'

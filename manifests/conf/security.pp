@@ -10,18 +10,18 @@
 #
 # == Parameters
 #
-# [*max_attributes*]
-# [*reject_delay*]
-# [*status_server*]
+# @param max_attributes
+# @param reject_delay
+# @param status_server
 #
 # == Authors
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::security (
-  $max_attributes = '200',
-  $reject_delay   = '1',
-  $status_server  = true
+  Integer         $max_attributes = 200,
+  Integer[1,5]    $reject_delay   = 1,
+  Boolean         $status_server  = true
 ) {
 
   file { '/etc/raddb/conf/security.inc':
@@ -33,7 +33,4 @@ class freeradius::conf::security (
     notify  => Service['radiusd']
   }
 
-  #validate_integer($max_attributes)
-  #validate_integer($reject_delay)
-  #validate_bool($status_server)
 }

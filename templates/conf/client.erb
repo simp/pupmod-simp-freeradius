@@ -10,38 +10,25 @@ client <%= Array(@client_name).first %> {
 <% elsif ! @ipaddr.empty? -%>
     ipaddr = <%= Array(@ipaddr).first %>
 <% end -%>
-<% if not @netmask.eql?('nil') then -%>
+<% if @netmask then -%>
     netmask = <%= @netmask %>
 <% end -%>
-<%
-  t_secret = @secret
-  if t_secret.eql?('nil') then
-    Puppet::Parser::Functions::function('passgen')
-    t_secret = scope.function_passgen([@name])
-  elsif t_secret =~ /^lookup:/ then
-    to_find = t_secret.split(':').last
-    if not ( to_find.nil? or to_find.empty? ) then
-      Puppet::Parser::Functions::function('passgen')
-      t_secret = scope.function_passgen([to_find])
-    end
-  end
--%>
-    secret = <%= t_secret %>
-<% if not @shortname.eql?('nil') then -%>
+    secret = <%= @secret %>
+<% if @shortname then -%>
     shortname = <%= @shortname %>
 <% end -%>
     require_message_authenticator = <%= bool2str[@require_message_authenticator] %>
     nas_type = <%= @nas_type %>
-<% if not @login.eql?('nil') then -%>
+<% if @login then -%>
     login = <%= @login %>
 <% end -%>
-<% if not @password.eql?('nil') then -%>
+<% if @password then -%>
     password = <%= @password %>
 <% end -%>
-<% if not @virtual_server.eql?('nil') then -%>
+<% if @virtual_server then -%>
     virtual_server = <%= @virtual_server %>
 <% end -%>
-<% if not @coa_server.eql?('nil') then -%>
+<% if @coa_server then -%>
     coa-server = <%= @coa_server %>
 <% end -%>
 }

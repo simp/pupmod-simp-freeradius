@@ -25,18 +25,17 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::log (
-  $destination     = 'syslog',
-  $log_file        = "${::freeradius::config::logdir}/radius.log",
-  $syslog_facility = 'local6',
-  $stripped_names  = false,
-  $auth            = true,
-  $auth_badpass    = false,
-  $auth_goodpass   = false,
-  $msg_goodpass    = '',
-  $msg_badpass     = ''
+  Freeradius::LogDest    $destination     = 'syslog',
+  Stdlib::AbsolutePath   $log_file        = "${::freeradius::logdir}/radius.log",
+  String                 $syslog_facility = 'local6',
+  Boolean                $stripped_names  = false,
+  Boolean                $auth            = true,
+  Boolean                $auth_badpass    = false,
+  Boolean                $auth_goodpass   = false,
+  Optional[String]       $msg_goodpass    = undef,
+  Optional[String]       $msg_badpass     = undef
 ) inherits ::freeradius::config {
 
-  validate_absolute_path($log_file)
   validate_freeradius_destination($destination)
   #validate_bool($stripped_names)
   #validate_bool($auth)

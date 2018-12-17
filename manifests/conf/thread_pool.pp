@@ -21,11 +21,11 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::thread_pool (
-  $start_servers           = '5',
-  $max_servers             = '32',
-  $min_spare_servers       = '3',
-  $max_spare_servers       = '10',
-  $max_requests_per_server = '0'
+  Integer   $start_servers           = 5,
+  Integer   $max_servers             = 32,
+  Integer   $min_spare_servers       = 3,
+  Integer   $max_spare_servers       = 10,
+  Integer   $max_requests_per_server = 0
 ) {
 
   file { '/etc/raddb/conf/thread_pool.inc':
@@ -37,9 +37,4 @@ class freeradius::conf::thread_pool (
     notify  => Service['radiusd']
   }
 
-  #validate_integer($start_servers)
-  #validate_integer($max_servers)
-  #validate_integer($min_spare_servers)
-  #validate_integer($max_spare_servers)
-  #validate_integer($max_requests_per_server)
 }

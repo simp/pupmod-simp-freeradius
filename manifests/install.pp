@@ -24,9 +24,9 @@ class freeradius::install inherits freeradius {
   }
 
   package { [$::freeradius::freeradius_ver,
-            "${::freeradius::freeradius_name}-ldap.${::hardwaremodel}",
-            "${::freeradius::freeradius_name}-utils.${::hardwaremodel}"]:
-    ensure  => 'latest',
+            "${::freeradius::freeradius_name}-ldap.${facts['hardwaremodel']}",
+            "${::freeradius::freeradius_name}-utils.${facts['hardwaremodel']}"]:
+    ensure  => $::freeradius::package_ensure,
     require => User['radiusd']
   }
 }

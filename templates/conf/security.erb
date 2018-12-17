@@ -1,19 +1,6 @@
 security {
   max_attributes = <%= @max_attributes %>
-<%
-  t_reject_delay = @reject_delay.to_i
-  if t_reject_delay < 1 then
-    if t_reject_delay.to_s == @reject_delay then
-      t_reject_delay = 0
-    else
-      t_reject_delay = 1
-    end
-  end
-  if t_reject_delay > 5 then
-    t_reject_delay = 5
-  end
--%>
-  reject_delay = <%= t_reject_delay %>
+  reject_delay = <%= @reject_delay %>
 <% if @status_server then -%>
   status_server = yes
 <% else -%>

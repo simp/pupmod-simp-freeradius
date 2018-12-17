@@ -24,8 +24,8 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::instantiate (
-  $content       = '',
-  $keep_defaults = true
+  Optional[String]  $content       = undef,
+  Boolean           $keep_defaults = true
 ) {
 
   file { '/etc/raddb/conf/instantiate.inc':

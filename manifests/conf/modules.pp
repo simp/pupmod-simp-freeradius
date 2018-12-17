@@ -29,19 +29,15 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::modules (
-  $include_eap           = true,
-  $include_sql           = false,
-  $include_mysql_counter = false,
-  $include_sqlippool     = false
+  Boolean   $include_eap           = true,
+  Boolean   $include_sql           = false,
+  Boolean   $include_mysql_counter = false,
+  Boolean   $include_sqlippool     = false
 ) {
-  #validate_bool($include_eap)
-  #validate_bool($include_sql)
-  #validate_bool($include_mysql_counter)
-  #validate_bool($include_sqlippool)
 
   include '::freeradius'
 
-  if $::operatingsystem in ['RedHat', 'CentOS'] {
+  if $facts['os']['name'] in ['RedHat', 'CentOS'] {
     if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
         file { '/etc/raddb/conf/modules.inc':
@@ -69,6 +65,6 @@ class freeradius::conf::modules (
     }
   }
   else {
-    warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
+    warning("${facts['os']['name']} not yet supported. Current options are RedHat and CentOS")
   }
 }

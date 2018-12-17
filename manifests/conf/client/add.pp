@@ -27,17 +27,17 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define freeradius::conf::client::add (
-  $client_name                   = $name,
-  $ipaddr                        = '',
-  $netmask                       = 'nil',
-  $secret                        = 'nil',
-  $shortname                     = 'nil',
-  $require_message_authenticator = true,
-  $nas_type                      = 'other',
-  $login                         = 'nil',
-  $password                      = 'nil',
-  $virtual_server                = 'nil',
-  $coa_server                    = 'nil'
+  String                         $client_name                   = $name,
+  Optional[Simplib::IP]          $ipaddr                        = undef,
+  Optional[String]               $netmask                       = undef,
+  String                         $secret                        = simplib::passgen("freeradius_${name}"),
+  Optional[String]               $shortname                     = undef,
+  Boolean                        $require_message_authenticator = true,
+  Freeradius::Nas                $nas_type                      = 'other',
+  Optional[String]               $login                         = undef,
+  Optional[String]               $password                      = undef,
+  Optional[String]               $virtual_server                = undef,
+  Optional[String]               $coa_server                    = undef
 ) {
 
   file { "/etc/raddb/conf/clients/${name}.conf":
@@ -48,9 +48,4 @@ define freeradius::conf::client::add (
     notify  => Service['radiusd']
   }
 
-  #validate_bool($require_message_authenticator)
-  validate_array_member($nas_type,
-    [
-      'cisco','computone','livingston','max40xx','multitech',
-      'netserver','pathras','patton','portslave','tc','usrhiper','other'])
 }

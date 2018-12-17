@@ -74,38 +74,29 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::v2::conf (
-  $use_rsync_radiusd_conf = false,
-  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
-  $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
-  $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2, 'value_type' => Integer }),
-  $rsync_bwlimit          = '',
-  $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
-  $localstatedir          = '/var',
-  $logdir                 = $::freeradius::config::logdir,
-  $expose_shadow          = false,
-  $radius_port            = 1812,
-  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
-  $radius_rsync_password  = 'nil',
-  $max_request_time       = '30',
-  $cleanup_delay          = '5',
-  $max_requests           = '1024',
-  $default_acct_listener  = true,
-  $hostname_lookups       = false,
-  $allow_core_dumps       = false,
-  $regular_expressions    = true,
-  $extended_expressions   = true,
-  $proxy_requests         = false,
-  $firewall               = $::freeradius::firewall
+  Boolean                 $use_rsync_radiusd_conf = false,
+  String                  $rsync_source           = "freeradius_${facts['puppet_settings']['environment']}_${facts['os']['name']}/",
+  Simblib::Netlist        $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
+  Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2, 'value_type' => Integer }),
+  Optional[Integer]       $rsync_bwlimit          = undef,
+  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
+  Stdlib::Absolutepath    $localstatedir          = '/var',
+  Stdlib::Absolutepath    $logdir                 = $::freeradius::config::logdir,
+  Boolean                 $expose_shadow          = false,
+  Simplib::Port           $radius_port            = 1812,
+  Optional[String]        $radius_rsync_password  = undef,
+  Integer[2,120]          $max_request_time       = 30,
+  Integer[2,10]           $cleanup_delay          = 5,
+  Integer[256]            $max_requests           = 1024,
+  Boolean                 $default_acct_listener  = true,
+  Boolean                 $hostname_lookups       = false,
+  Boolean                 $allow_core_dumps       = false,
+  Boolean                 $regular_expressions    = true,
+  Boolean                 $extended_expressions   = true,
+  Boolean                 $proxy_requests         = false,
+  Boolean                 $firewall               = $::freeradius::firewall
+  String                  $radius_rsync_user      = "freeradius_systems_${facts['puppet_settings']['environment']}_${facts['os']['name'].downcase}",
 ) inherits ::freeradius::config {
-
-  #validate_bool($use_rsync_radiusd_conf)
-  #validate_bool($expose_shadow)
-  #validate_bool($default_acct_listener)
-  #validate_bool($hostname_lookups)
-  #validate_bool($allow_core_dumps)
-  #validate_bool($regular_expressions)
-  #validate_bool($extended_expressions)
-  #validate_bool($proxy_requests)
 
   include '::freeradius::conf::listen'
 
@@ -139,10 +130,6 @@ class freeradius::v2::conf (
 
   if !$use_rsync_radiusd_conf {
 
-    validate_freeradius_max_requests($max_requests)
-    validate_freeradius_max_request_time($max_request_time)
-    validate_freeradius_cleanup_delay($cleanup_delay)
-
     file { '/etc/raddb/radiusd.conf':
       ensure  => 'file',
       owner   => 'root',
@@ -156,7 +143,6 @@ class freeradius::v2::conf (
     include '::rsync'
 
     validate_net_list($rsync_server)
-    #validate_integer($rsync_timeout)
 
     file { '/etc/raddb/radiusd.conf':
       ensure => 'file',
@@ -167,7 +153,7 @@ class freeradius::v2::conf (
     }
 
     $_password = $radius_rsync_password ? {
-      'nil'   => passgen($radius_rsync_user),
+      undef   => passgen($radius_rsync_user),
       default => $radius_rsync_password
     }
 

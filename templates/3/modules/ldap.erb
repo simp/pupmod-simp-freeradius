@@ -19,13 +19,13 @@ ldap {
   user {
     base_dn = "<%= @base_dn %>"
     filter = "<%= @filter %>"
-<% if not @user_scope.eql?('nil') then -%>
+<% if @user_scope then -%>
     scope = '<%= @user_scope %>'
 <% end -%>
-<% if not @user_access_attribute.eql?('nil') then -%>
+<% if  @user_access_attribute then -%>
     access_attribute = "<%= @user_access_attribute %>"
 <% end -%>
-<% if not @user_access_positive.eql?('nil') then -%>
+<% if @user_access_positive then -%>
     access_positive = "<%= @user_access_positive %>"
 <% end -%>
   }
@@ -33,16 +33,16 @@ ldap {
   group {
     base_dn = "<%= @base_dn %>"
     filter = "<%= @base_filter %>"
-<% if not @group_scope.eql?('nil') then -%>
+<% if @group_scope then -%>
     scope = <%= @group_scope %>'
 <% end -%>
-<% if not @group_name_attribute.eql?('nil') then -%>
+<% if not @group_scope.empty? then -%>
     name_attribute = <%= @group_name_attribute %>
 <% end -%>
-<% if not @group_membership_filter.eql?('nil') then -%>
+<% if not @group_membership_filter.empty? then -%>
     membership_filter = "<%= @group_membership_filter %>"
 <% end -%>
-<% if not @group_membership_attribute.eql?('nil') then -%>
+<% if @group_membership_attribute then -%>
     membership_attribute = "<%= @group_membership_attribute %>"
 <% end -%>
 <% if @group_cacheable_name -%>
@@ -59,10 +59,10 @@ ldap {
 
   profile {
     filter = "<%= @base_filter %>"
-<% if not @default_profile.eql?('nil') then -%>
+<% if @default_profile then -%>
     default = "<%= @default_profile %>"
 <% end -%>
-<% if not @profile_attribute.eql?('nil') then -%>
+<% if @profile_attribute then -%>
     attribute = "<%= @profile_attribute %>"
 <% end -%>
   }
@@ -70,23 +70,23 @@ ldap {
   client {
     base_dn = "<%= @base_dn %>"
     filter = '(objectClass=frClient)'
-<% if not @client_scope.eql?('nil') then -%>
+<% if @client_scope then -%>
     scope = '<%= @client_scope %>'
 <% end -%>
 
     attribute {
       identifier = '<%= @client_attribute_identifier %>'
       secret = '<%= @client_attribute_secret %>'
-<% if ! @client_attribute_shortname.eql?('nil') then -%>
+<% if @client_attribute_shortname then -%>
       shortname = '<%= @client_attribute_shortname %>'
 <% end -%>
-<% if ! @client_attribute_nas_type.eql?('nil') then -%>
+<% if @client_attribute_nas_type then -%>
       nas_type = '<%= @client_attribute_nas_type %>'
 <% end -%>
-<% if ! @client_attribute_virtual_server.eql?('nil') then -%>
+<% if @client_attribute_virtual_server then -%>
       virtual_server = '<%= @client_attribute_virtual_server %>'
 <% end -%>
-<% if ! @client_attribute_require_message_authenticator.eql?('nil') then -%>
+<% if @client_attribute_require_message_authenticator then -%>
       require_message_authenticator = '<%= @client_attribute_require_message_authenticator %>'
 <% end -%>
     }
@@ -139,7 +139,7 @@ ldap {
     idle = <%= @options_idle %>
     probes = <%= @options_probes %>
     interval = <%= @options_interval %>
-<% if not @ldap_debug.eql?('nil') then -%>
+<% if @ldap_debug then -%>
     ldap_debug = <%= @ldap_debug %>
 <% end -%>
   }

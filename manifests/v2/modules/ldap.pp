@@ -4,9 +4,9 @@
 #
 # == Parameters
 #
-# @param server
-# @param identity
-# @param password
+# @param server     ldap server
+# @param identity   ldap bind user
+# @param password   ldap bind user password
 # @param ldap_base_dn
 # @param filter
 # @param base_filter
@@ -14,7 +14,7 @@
 # @param ldap_timeout
 # @param ldap_timelimit
 # @param net_timeout
-# @param port
+# @param port      ldap port
 # @param start_tls
 # @param app_pki_key
 #   Path and name of the private SSL key file
@@ -47,44 +47,41 @@
 # @param set_auth_type
 # @param ldap_debug
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::v2::modules::ldap (
-  $server                     = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{hiera('simp_options::puppet::server')}"], 'value_type' => Array[String] }),
-  $identity                   = simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{hiera('simp_options::ldap::base_dn')}", 'value_type' => String }),
-  $password                   = simplib::lookup('simp_options::ldap::bind_pw', { 'value_type'    => String }),
-  $ldap_base_dn               = simplib::lookup('simp_options::ldap::base_dn', { 'value_type'    => String }),
-  $filter                     = '(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
-  $base_filter                = '(objectclass=radiusprofile)',
-  $ldap_connections_number    = '5',
-  $ldap_timeout               = '4',
-  $ldap_timelimit             = '3',
-  $net_timeout                = '1',
-  $port                       = '389',
-  $start_tls                  = true,
-  $app_pki_ca_dir             = $::freeradius::config::app_pki_ca_dir,
-  $app_pki_cert               = $::freeradius::config::app_pki_cert,
-  $app_pki_key                = $::freeradius::config::app_pki_key,
-  $randfile                   = '/dev/urandom',
-  $require_cert               = 'demand',
-  $default_profile            = 'nil',
-  $profile_attribute          = 'nil',
-  $access_attr                = 'nil',
-  $dictionary_mapping         = '/etc/raddb/ldap.attrmap',
-  $password_attribute         = 'userPassword',
-  $edir_account_policy_check  = false,
-  $groupname_attribute        = 'cn',
-  $groupmembership_filter     = '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))',
-  $groupmembership_attribute  = 'nil',
-  $compare_check_items        = false,
-  $do_xlat                    = false,
-  $access_attr_used_for_allow = false,
-  $chase_referrals            = false,
-  $rebind                     = false,
-  $set_auth_type              = true,
-  $ldap_debug                 = 'nil'
+  Array[String]                $server                     = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{hiera('simp_options::puppet::server')}"], 'value_type' => Array[String] }),
+  String                       $identity                   = simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{hiera('simp_options::ldap::base_dn')}", 'value_type' => String }),
+  String                       $password                   = simplib::lookup('simp_options::ldap::bind_pw', { 'value_type'    => String }),
+  String                       $ldap_base_dn               = simplib::lookup('simp_options::ldap::base_dn', { 'value_type'    => String }),
+  String                       $filter                     = '(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
+  String                       $base_filter                = '(objectclass=radiusprofile)',
+  Integer                      $ldap_connections_number    = 5,
+  Integer                      $ldap_timeout               = 4,
+  Integer                      $ldap_timelimit             = 3,
+  Integer                      $net_timeout                = 1,
+  Simplib::Port                $port                       = 389,
+  Variant[Boolean,Enum['ssl']] $start_tls                  = true,
+  Stdlib::AbsolutePath         $app_pki_ca_dir             = $::freeradius::app_pki_ca_dir,
+  Stdlib::AbsolutePath         $app_pki_cert               = $::freeradius::app_pki_cert,
+  Stdlib::AbsolutePath         $app_pki_key                = $::freeradius::app_pki_key,
+  Stdlib::AbsolutePath         $randfile                   = '/dev/urandom',
+  String                       $require_cert               = 'demand',
+  Optional[String]             $default_profile            = undef,
+  Optional[String]             $profile_attribute          = undef,
+  Optional[String]             $access_attr                = undef,
+  Stdlib::AbsolutePath         $dictionary_mapping         = '/etc/raddb/ldap.attrmap',
+  String                       $password_attribute         = 'userPassword',
+  Boolean                      $edir_account_policy_check  = false,
+  String                       $groupname_attribute        = 'cn',
+  String                       $groupmembership_filter     = '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))',
+  Optional[String]             $groupmembership_attribute  = undef,
+  Boolean                      $compare_check_items        = false,
+  Boolean                      $do_xlat                    = false,
+  Boolean                      $access_attr_used_for_allow = false,
+  Boolean                      $chase_referrals            = false,
+  Boolean                      $rebind                     = false,
+  Boolean                      $set_auth_type              = true,
+  Optional[String]             $ldap_debug                 = undef
 ) {
 
   file { '/etc/raddb/modules/ldap':
@@ -95,12 +92,4 @@ class freeradius::v2::modules::ldap (
     notify  => Service['radiusd']
   }
 
-  validate_array_member($start_tls,[true,false,'ssl'])
-  #validate_bool($edir_account_policy_check)
-  #validate_bool($compare_check_items)
-  #validate_bool($do_xlat)
-  #validate_bool($access_attr_used_for_allow)
-  #validate_bool($chase_referrals)
-  #validate_bool($rebind)
-  #validate_bool($set_auth_type)
 }

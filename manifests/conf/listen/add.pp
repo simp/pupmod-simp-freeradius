@@ -21,11 +21,11 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define freeradius::conf::listen::add (
-  $listen_type,
-  $ipaddr             = '*',
-  $port               = '0',
-  $interface          = 'nil',
-  $per_socket_clients = ''
+  Freeradius::Listen  $listen_type,
+  Simplib::Netlist    $ipaddr             = '*',
+  Simplib::Port       $port               = 0,
+  String              $interface           = undef,
+  Optional[String]    $per_socket_clients = undef
 ) {
 
   file { "/etc/raddb/conf/listen.inc/${name}":
@@ -36,7 +36,4 @@ define freeradius::conf::listen::add (
     notify  => Service['radiusd']
   }
 
-  validate_array_member($listen_type, ['auth', 'acct', 'proxy', 'detail', 'status', 'coa'])
-  #validate_integer($port)
-  #validate_string($per_socket_clients)
 }
