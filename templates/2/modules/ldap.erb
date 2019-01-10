@@ -34,13 +34,13 @@ ldap {
     require_cert = "<%= @require_cert %>"
   }
 <% end -%>
-<% if not @default_profile.eql?('nil') then -%>
+<% if @default_profile then -%>
   default_profile = "<%= @default_profile %>"
 <% end -%>
-<% if not @profile_attribute.eql?('nil') then -%>
+<% if @profile_attribute then -%>
   profile_attribute = "<%= @profile_attribute %>"
 <% end -%>
-<% if not @access_attr.eql?('nil') then -%>
+<% if not @access_attr then -%>
   access_attr = "<%= @access_attr %>"
 <% end -%>
   dictionary_mapping = <%= @dictionary_mapping %>
@@ -48,13 +48,13 @@ ldap {
 <% if @edir_account_policy_check then -%>
   edir_account_policy_check = yes
 <% end -%>
-<% if not @groupname_attribute.eql?('nil') then -%>
+<% if not @groupname_attribute then -%>
   groupname_attribute = <%= @groupname_attribute %>
 <% end -%>
-<% if not @groupmembership_filter.eql?('nil') then -%>
+<% if not @groupmembership_filter then -%>
   groupmembership_filter = "<%= @groupmembership_filter %>"
 <% end -%>
-<% if not @groupmembership_attribute.eql?('nil') then -%>
+<% if not @groupmembership_attribute then -%>
   groupmembership_attribute = <%= @groupmembership_attribute %>
 <% end -%>
   compare_check_items = <%= bool2str[@compare_check_items] %>
@@ -63,7 +63,7 @@ ldap {
   chase_referrals = <%= bool2str[@chase_referrals] %>
   rebind = <%= bool2str[@rebind] %>
   set_auth_type = <%= bool2str[@set_auth_type] %>
-<% if not @ldap_debug.eql?('nil') then -%>
+<% if not @ldap_debug then -%>
   ldap_debug = <%= @ldap_debug %>
 <% end -%>
 }

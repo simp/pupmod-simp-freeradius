@@ -1,15 +1,17 @@
 listen {
   type = <%= @listen_type %>
-<% if @ipaddr.include?(':') then -%>
+<% if [ 'ALL', 'any' ].include? @ipaddr -%>
+  ipaddr = *
+<% elsif @ipaddr.include?(':') then -%>
   ipv6addr = <%= @ipaddr %>
 <% else -%>
   ipaddr = <%= @ipaddr %>
 <% end -%>
-  port = <%= @port.to_i %>
-<% if not @interface.eql?('nil') then -%>
+  port = <%= @port %>
+<% if @interface then -%>
   interface = <%= @interface %>
 <% end -%>
-<% if not @per_socket_clients.eql?('') then -%>
+<% if @per_socket_clients then -%>
   clients = <%= @per_socket_clients %>
 <% end -%>
 }

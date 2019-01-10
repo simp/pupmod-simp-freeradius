@@ -1,9 +1,13 @@
 security {
   max_attributes = <%= @max_attributes %>
   reject_delay = <%= @reject_delay %>
-<% if @status_server then -%>
-  status_server = yes
-<% else -%>
-  status_server = no
+  allow_core_dumps = <%= @allow_core_dumps %>
+  status_server = <%= @status_server %>
+<% if @chroot then -%>
+  chroot = <%= @chroot_path %>
+  user =  <%= @chroot_user %>
+  <% if @chroot_group -%>
+  group = <%= @chroot_group %>
+  <% end -%>
 <% end -%>
 }

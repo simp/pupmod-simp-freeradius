@@ -2,10 +2,6 @@
 #
 # Add a 'log' section to freeradius.
 #
-# You can only call this *once* within a node scope. If you try to call it more
-# than once, it will fail your manifest compilation due to conflicting
-# resources.
-#
 # See /etc/raddb/radiusd.conf.sample for additional information.
 #
 # == Parameters
@@ -25,22 +21,19 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::conf::log (
-  Freeradius::LogDest    $destination     = 'syslog',
-  Stdlib::AbsolutePath   $log_file        = "${::freeradius::logdir}/radius.log",
-  String                 $syslog_facility = 'local6',
-  Boolean                $stripped_names  = false,
-  Boolean                $auth            = true,
-  Boolean                $auth_badpass    = false,
-  Boolean                $auth_goodpass   = false,
-  Optional[String]       $msg_goodpass    = undef,
-  Optional[String]       $msg_badpass     = undef
-) inherits ::freeradius::config {
+  Freeradius::Logdest        $destination     = 'syslog',
+  Stdlib::AbsolutePath       $log_file        = "${::freeradius::logdir}/radius.log",
+  Simplib::Syslog::Facility  $syslog_facility = 'local6',
+  Enum['yes','no']                    $stripped_names  = 'no',
+  Enum['yes','no']                    $auth            = 'yes',
+  Enum['yes','no']                    $auth_badpass    = 'no',
+  Enum['yes','no']                    $auth_goodpass   = 'no',
+  Enum['yes','no']           $msg_goodpass    = 'no',
+  Enum['yes','no']           $msg_badpass     = 'no',
+  Optional[String]           $deny_message    = undef
+) {
 
-  validate_freeradius_destination($destination)
-  #validate_bool($stripped_names)
-  #validate_bool($auth)
-  #validate_bool($auth_badpass)
-  #validate_bool($auth_goodpass)
+  Class['freeradius::config'] -> Class['freeradius::conf::log']
 
   file { '/etc/raddb/conf/log.inc':
     ensure  => 'file',

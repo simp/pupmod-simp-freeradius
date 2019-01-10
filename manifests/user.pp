@@ -1,4 +1,4 @@
-# == Define: freeradius::users::add
+# == Define: freeradius::user
 #
 # This define sets up the files that dicatates how to authorize and authenticate
 # each user request.
@@ -11,7 +11,7 @@
 # Examples
 #
 # Adding the normal defaults for PPP
-#  freeradius::users::add { 'default_ppp':
+#  freeradius::user { 'default_ppp':
 #    is_default => true,
 #    order => '500',
 #    content => '
@@ -21,7 +21,7 @@
 #  }
 #
 # Adding a disabled user
-#  freeradius::users::add { 'lameuser':
+#  freeradius::user { 'lameuser':
 #   order => '0',
 #   content => '
 #    Auth-Type := Reject
@@ -59,10 +59,10 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-define freeradius::users::add (
-  $content,
-  $is_default = false,
-  $order      = '100'
+define freeradius::user (
+  String     $content,
+  Boolean    $is_default   = false,
+  Integer    $order        = 100
 ) {
 
   file { "/etc/raddb/users.inc/${order}.${name}":
@@ -73,6 +73,4 @@ define freeradius::users::add (
     notify  => Exec['build_freeradius_users']
   }
 
-  #validate_bool($is_default)
-  #validate_integer($order)
 }

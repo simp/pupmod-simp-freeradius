@@ -1,1 +1,1 @@
-type Freeradius::Scope = Optional[Enum ['base','one','sub','children']]
+type Freeradius::Scope = Enum[ 'base', 'one', 'sub', 'children' ]

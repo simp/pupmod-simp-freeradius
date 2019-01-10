@@ -36,10 +36,10 @@ ldap {
 <% if @group_scope then -%>
     scope = <%= @group_scope %>'
 <% end -%>
-<% if not @group_scope.empty? then -%>
+<% if @group_scope then -%>
     name_attribute = <%= @group_name_attribute %>
 <% end -%>
-<% if not @group_membership_filter.empty? then -%>
+<% if @group_membership_filter then -%>
     membership_filter = "<%= @group_membership_filter %>"
 <% end -%>
 <% if @group_membership_attribute then -%>

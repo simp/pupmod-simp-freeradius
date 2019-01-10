@@ -1,31 +1,16 @@
 log {
-  destination = <%= @destination %>
-  file = <%= @log_file %>
-  syslog_facility = <%= @syslog_facility %>
-<% if @stripped_names then -%>
-  stripped_names = yes
-<% else -%>
-  stripped_names = no
-<% end -%>
-<% if @auth then -%>
-  auth = yes
-<% else -%>
-  auth = no
-<% end -%>
-<% if @auth_badpass then -%>
-  auth_badpass = yes
-<% else -%>
-  auth_badpass = no
-<% end -%>
-<% if @auth_goodpass then -%>
-  auth_goodpass = yes
-<% else -%>
-  auth_goodpass = no
-<% end -%>
-<% if not @msg_goodpass.empty? then -%>
+  destination = <%= @destination -%>
+  file = <%= @log_file -%>
+  syslog_facility = <%= @syslog_facility -%>
+  stripped_names = <%= @stripped_names -%>
+  auth =  <%= @auth -%>
+  auth_badpass = <%= @auth_badpass -%>
+  auth_goodpass = <%= @auth_goodpass -%>
+<% if @msg_goodpass then -%>
   msg_goodpass = "<%= @msg_goodpass %>"
 <% end -%>
-<% if not @msg_badpass.empty? then -%>
+<% if @msg_badpass then -%>
   msg_badpass = "<%= @msg_badpass %>"
 <% end -%>
+  msg_denied = "<%= @msg_denied %>"
 }

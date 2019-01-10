@@ -1,0 +1,46 @@
+prefix = /usr
+exec_prefix = /usr
+sysconfdir = /etc
+localstatedir = /var
+sbindir = /usr/sbin
+logdir = /var/log/freeradius
+raddbdir = ${sysconfdir}/raddb
+radacctdir = ${logdir}/radacct
+name = radiusd
+confdir = ${raddbdir}
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${raddbdir}
+modconfdir = ${raddbdir}/mods-config
+certdir = ${raddbdir}/certs
+cadir = ${raddbdir}/certs
+libdir = /usr/lib64/freeradius
+pidfile = ${run_dir}/${name}.pid
+max_request_time = 30
+cleanup_delay = 5
+max_requests = 1024
+
+$INCLUDE conf/listen.inc/
+
+hostname_lookups = no
+
+regular_expressions	= yes
+extended_expressions	= yes
+
+$INCLUDE conf/log.inc
+
+checkrad = ${sbindir}/checkrad
+
+$INCLUDE conf/security.inc
+
+
+$INCLUDE conf/clients/
+
+$INCLUDE conf/thread_pool.inc
+
+$INCLUDE conf/modules.inc
+
+$INCLUDE conf/instantiate.inc
+
+$INCLUDE conf/sites.inc
+
+$INCLUDE conf/policy.inc

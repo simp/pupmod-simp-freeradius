@@ -4,6 +4,7 @@ describe 'freeradius::modules' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       let(:facts) { facts }
+      let(:pre_condition) { 'include "freeradius::service"' }
 
       context 'rhel_7' do
         let(:facts) {facts.merge({

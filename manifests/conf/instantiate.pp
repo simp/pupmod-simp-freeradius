@@ -37,5 +37,4 @@ class freeradius::conf::instantiate (
     notify  => Service['radiusd']
   }
 
-  #validate_bool($keep_defaults)
 }

@@ -25,12 +25,12 @@
 # * Kendall Moore <kmoore@keywcorp.com>
 #
 class freeradius::v3::conf::sites (
-  $enable_default      = true,
-  $enable_inner_tunnel = true
+  Boolean    $enable_default      = true,
+  Boolean    $enable_inner_tunnel = true
 ){
   include '::freeradius'
 
-  if $::operatingsystem in ['RedHat', 'CentOS'] {
+  if $facts['os']['name'] in ['RedHat', 'CentOS'] {
     if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
         file { '/etc/raddb/conf/sites.inc':
@@ -62,6 +62,4 @@ class freeradius::v3::conf::sites (
     warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
   }
 
-  #validate_bool($enable_default)
-  #validate_bool($enable_inner_tunnel)
 }

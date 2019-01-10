@@ -20,7 +20,6 @@ shared_examples_for 'common config' do
   it { is_expected.to contain_file('/etc/raddb') }
 
 	# freeradius::v3::config and freeradius::v2::config
-	it { is_expected.to contain_class('freeradius::conf::listen') }
 	it { is_expected.to contain_file('/var/log/freeradius') }
 	it { is_expected.to contain_file('/var/log/freeradius/linelog') }
 	it { is_expected.to contain_file('/var/log/freeradius/radutmp') }
@@ -28,7 +27,7 @@ shared_examples_for 'common config' do
 	it { is_expected.to contain_file('/var/log/freeradius/sradutmp') }
 	it { is_expected.to contain_file('/etc/raddb/conf')}
 	it { is_expected.to contain_file('/etc/raddb/radiusd.conf') }
-	it { is_expected.to contain_freeradius__conf__listen__add('default_acct') }
+	it { is_expected.to contain_freeradius__conf__listener('default_acct') }
 end
 
 # Items specific to v3
@@ -92,7 +91,8 @@ describe 'freeradius' do
 				context 'version 3 (v3)' do
           let(:facts) do
             facts.merge({
-              :radius_version => '3'
+              :radius_version => '3',
+              :hardwaremodel  => 'x86_64'
             })
           end
 
@@ -127,7 +127,8 @@ describe 'freeradius' do
         context 'version 2 (v2)' do
           let(:facts) do
             facts.merge({
-              :radius_version => '2'
+              :radius_version => '2',
+              :hardwaremodel  => 'x86_64'
             })
           end
 

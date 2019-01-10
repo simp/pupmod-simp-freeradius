@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'freeradius::conf::listen::add', :type => :define do
+describe 'freeradius::conf::listener', :type => :define do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       let(:facts) { facts }
@@ -9,6 +9,7 @@ describe 'freeradius::conf::listen::add', :type => :define do
         :listen_type => 'proxy'
       }}
 
+      it { is_expected.to create_file('/etc/raddb/conf/listen.inc') }
       it { is_expected.to create_file('/etc/raddb/conf/listen.inc/test_add_listen').with_content(/type = proxy/) }
     end
   end

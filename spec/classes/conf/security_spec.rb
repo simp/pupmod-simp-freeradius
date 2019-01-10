@@ -4,8 +4,9 @@ describe 'freeradius::conf::security' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       let(:facts) { facts }
+      let(:pre_condition) { "include 'freeradius::service'" }
       let(:params) {{
-        :max_attributes => '200'
+        :max_attributes => 200
       }}
 
       it { is_expected.to create_class('freeradius::conf::security') }

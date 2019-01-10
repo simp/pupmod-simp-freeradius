@@ -1,37 +1,30 @@
 prefix = /usr
 exec_prefix = /usr
 sysconfdir = /etc
-localstatedir = <%= @localstatedir %>
+localstatedir = /var/local
 sbindir = /usr/sbin
-logdir = <%= @logdir %>
+logdir = /var/log/radiusx
 raddbdir = ${sysconfdir}/raddb
 radacctdir = ${logdir}/radacct
-#
 name = radiusd
-#
 confdir = ${raddbdir}
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${raddbdir}
 modconfdir = ${raddbdir}/mods-config
 certdir = ${raddbdir}/certs
 cadir = ${raddbdir}/certs
-run_dir = ${localstatedir}/run/${name}
-db_dir = ${localstatedir}/lib/radiusd
-#
-<% if @hardwaremodel.eql?("x86_64") then -%>
-libdir = /usr/lib64/freeradius
-<% else -%>
 libdir = /usr/lib/freeradius
-<% end -%>
 pidfile = ${run_dir}/${name}.pid
-#
-max_request_time = <%= @max_request_time %>
-cleanup_delay = <%= @cleanup_delay %>
-max_requests = <%= @max_requests %>
-correct_escapes = <%= @correct_escapes %>
-hostname_lookups = <%= @hostname_lookups %>
-regular_expressions = <%= @regular_expressions -%>
-extended_expressions  = <%= @extended_expressions -%>
+max_request_time = 120
+cleanup_delay = 10
+max_requests = 2024
 
 $INCLUDE conf/listen.inc/
+
+hostname_lookups = yes
+
+regular_expressions	= no
+extended_expressions	= no
 
 $INCLUDE conf/log.inc
 
@@ -39,12 +32,8 @@ checkrad = ${sbindir}/checkrad
 
 $INCLUDE conf/security.inc
 
-<% if @proxy_requests then -%>
 proxy_requests  = yes
 $INCLUDE proxy.conf
-<% else -%>
-proxy_requests  = no
-<% end -%>
 
 $INCLUDE conf/clients/
 

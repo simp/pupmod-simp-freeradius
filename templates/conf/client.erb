@@ -4,31 +4,33 @@
     false => 'no'
   }
 -%>
-client <%= Array(@client_name).first %> {
+client <%= @client_name %> {
 <% if @ipaddr.include?(':') then -%>
-    ipv6addr = <%= Array(@ipaddr).first %>
-<% elsif ! @ipaddr.empty? -%>
-    ipaddr = <%= Array(@ipaddr).first %>
+  ipv6addr = <%= @ipaddr %>
+<% else -%>
+  ipaddr = <%= @ipaddr %>
 <% end -%>
 <% if @netmask then -%>
-    netmask = <%= @netmask %>
+  netmask = <%= @netmask %>
 <% end -%>
-    secret = <%= @secret %>
+  secret = <%= @secret %>
 <% if @shortname then -%>
-    shortname = <%= @shortname %>
+  shortname = <%= @shortname %>
 <% end -%>
-    require_message_authenticator = <%= bool2str[@require_message_authenticator] %>
-    nas_type = <%= @nas_type %>
+  require_message_authenticator = <%= bool2str[@require_message_authenticator] %>
+<% if @nas_type then -%>
+  nas_type = <%= @nas_type %>
+<% end -%>
 <% if @login then -%>
-    login = <%= @login %>
+  login = <%= @login %>
 <% end -%>
 <% if @password then -%>
-    password = <%= @password %>
+  password = <%= @password %>
 <% end -%>
 <% if @virtual_server then -%>
-    virtual_server = <%= @virtual_server %>
+  virtual_server = <%= @virtual_server %>
 <% end -%>
 <% if @coa_server then -%>
-    coa-server = <%= @coa_server %>
+  coa-server = <%= @coa_server %>
 <% end -%>
 }

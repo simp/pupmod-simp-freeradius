@@ -8,10 +8,10 @@
 # additional information.
 #
 # If you use this class and do not set 'use_rsync_radiusd_conf = true' then
-# you *must* also declare the follwing classes within the node scope:
+# you *must* also declare the following classes within the node scope:
 # * freeradius::conf::client
 # * freeradius::conf::instantiate
-# * freeradius::conf::listen::add
+# * freeradius::conf::listener
 # * freeradius::conf::log
 # * freeradius::conf::modules
 # * freeradius::conf::security
@@ -75,13 +75,13 @@
 #
 class freeradius::v2::conf (
   Boolean                 $use_rsync_radiusd_conf = false,
-  String                  $rsync_source           = "freeradius_${facts['puppet_settings']['environment']}_${facts['os']['name']}/",
-  Simblib::Netlist        $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
+  String                  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
+  Simplib::Host           $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
   Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2, 'value_type' => Integer }),
   Optional[Integer]       $rsync_bwlimit          = undef,
   Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
   Stdlib::Absolutepath    $localstatedir          = '/var',
-  Stdlib::Absolutepath    $logdir                 = $::freeradius::config::logdir,
+  Stdlib::Absolutepath    $logdir                 = $::freeradius::logdir,
   Boolean                 $expose_shadow          = false,
   Simplib::Port           $radius_port            = 1812,
   Optional[String]        $radius_rsync_password  = undef,
@@ -94,11 +94,9 @@ class freeradius::v2::conf (
   Boolean                 $regular_expressions    = true,
   Boolean                 $extended_expressions   = true,
   Boolean                 $proxy_requests         = false,
-  Boolean                 $firewall               = $::freeradius::firewall
-  String                  $radius_rsync_user      = "freeradius_systems_${facts['puppet_settings']['environment']}_${facts['os']['name'].downcase}",
-) inherits ::freeradius::config {
-
-  include '::freeradius::conf::listen'
+  Boolean                 $firewall               = $::freeradius::firewall,
+  String                  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
+) {
 
   file { $logdir:
     ensure => 'directory',
@@ -128,21 +126,9 @@ class freeradius::v2::conf (
     before => Service['radiusd'],
   }
 
-  if !$use_rsync_radiusd_conf {
+  if $use_rsync_radiusd_conf {
 
-    file { '/etc/raddb/radiusd.conf':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'radiusd',
-      mode    => '0640',
-      content => template('freeradius/2/radiusd.conf.erb'),
-      notify  => Service['radiusd'],
-    }
-  }
-  else {
     include '::rsync'
-
-    validate_net_list($rsync_server)
 
     file { '/etc/raddb/radiusd.conf':
       ensure => 'file',
@@ -171,11 +157,21 @@ class freeradius::v2::conf (
       password => $_password
     }
   }
+  else {
+    file { '/etc/raddb/radiusd.conf':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'radiusd',
+      mode    => '0640',
+      content => template('freeradius/2/radiusd.conf.erb'),
+      notify  => Service['radiusd'],
+    }
+  }
 
   if $default_acct_listener {
-    freeradius::conf::listen::add { 'default_acct':
-      ipaddr      => '*',
-      port        => '0',
+    freeradius::conf::listener { 'default_acct':
+      ipaddr      => 'ALL',
+      port        => 0,
       listen_type => 'acct'
     }
   }

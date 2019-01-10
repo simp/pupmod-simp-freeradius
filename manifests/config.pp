@@ -3,7 +3,7 @@
 # Configure a freeradius server.
 #
 # This can only be defined *once* in a namespace.
-#
+
 class freeradius::config(
 ) {
 
