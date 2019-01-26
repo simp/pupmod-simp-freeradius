@@ -19,15 +19,6 @@ shared_examples_for 'common config' do
   it { is_expected.to contain_exec('/bin/chgrp -R radiusd /etc/raddb/certs') }
   it { is_expected.to contain_file('/etc/raddb') }
 
-	# freeradius::v3::config and freeradius::v2::config
-	it { is_expected.to contain_file('/var/log/freeradius') }
-	it { is_expected.to contain_file('/var/log/freeradius/linelog') }
-	it { is_expected.to contain_file('/var/log/freeradius/radutmp') }
-	it { is_expected.to contain_file('/var/log/freeradius/radwtmp') }
-	it { is_expected.to contain_file('/var/log/freeradius/sradutmp') }
-	it { is_expected.to contain_file('/etc/raddb/conf')}
-	it { is_expected.to contain_file('/etc/raddb/radiusd.conf') }
-	it { is_expected.to contain_freeradius__conf__listener('default_acct') }
 end
 
 # Items specific to v3
@@ -37,13 +28,6 @@ shared_examples_for 'config v3' do
 	it { is_expected.to_not contain_class('rsync') }
 	it { is_expected.to contain_class('freeradius::v3::conf::sites') }
 	it { is_expected.to contain_class('freeradius::v3::conf::policy') }
-end
-
-# Items specific to v2
-shared_examples_for 'config v2' do
-  it_should_behave_like 'common config'
-	it { is_expected.to_not contain_class('rsync') }
-  it { is_expected.to contain_class('freeradius::v2::conf') }
 end
 
 shared_examples_for 'config with pki = false and firewall = false' do
@@ -121,38 +105,6 @@ describe 'freeradius' do
             it_should_behave_like "use_rsync_radiusd_conf = true"
           end
 
-        end
-
-        # Version 2
-        context 'version 2 (v2)' do
-          let(:facts) do
-            facts.merge({
-              :radius_version => '2',
-              :hardwaremodel  => 'x86_64'
-            })
-          end
-
-          context 'with default parameters' do
-            it_should_behave_like 'install'
-            it_should_behave_like 'config with pki = false and firewall = false'
-            it_should_behave_like 'config v2'
-            it_should_behave_like 'service'
-          end
-
-          context 'with pki = true' do
-            let(:params){{:pki => true}}
-            it_should_behave_like 'config with pki = true'
-          end
-
-	        context 'with pki = simp and firewall = true' do
-            let(:params){{:pki => 'simp', :firewall => true}}
-            it_should_behave_like 'install'
-            it_should_behave_like 'config with pki = simp and firewall = true'
-            it_should_behave_like 'config v2'
-            it_should_behave_like 'service'
-          end
-
-					# Not sure why this is not working
           context 'with use_rsync_radiusd_conf = true' do
 						let(:hieradata) { "rsync_conf" }
             it_should_behave_like "use_rsync_radiusd_conf = true"

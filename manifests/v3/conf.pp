@@ -71,30 +71,30 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::v3::conf (
-  Integer[2,10]           $cleanup_delay          = 5,
   Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
+  Boolean                 $firewall               = $::freeradius::firewall,
+  Integer[2,10]           $cleanup_delay          = 5,
+  Boolean                 $correct_escapes        = true,
   Boolean                 $default_acct_listener  = true,
-  Boolean                 $extended_expressions   = true,
-  Boolean                 $hostname_lookups       = false,
+  Enum['yes','no']        $hostname_lookups       = 'no',
   Stdlib::AbsolutePath    $localstatedir          = '/var',
   Stdlib::AbsolutePath    $logdir                 = $::freeradius::logdir,
   Integer[2,120]          $max_request_time       = 30,
   Integer[256]            $max_requests           = 1024,
   Boolean                 $proxy_requests         = false,
+  Array[Simplib::Port]    $radius_ports           = [1812, 1813],
   String                  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
   Simplib::Host           $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'}),
   Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2}),
   Optional[Integer]       $rsync_bwlimit          = undef,
-  Array[Simplib::Port]    $radius_ports           = [1812, 1813],
   String                  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
   Optional[String]        $radius_rsync_password  = undef,
-  Boolean                 $regular_expressions    = true,
   Boolean                 $use_rsync_radiusd_conf = false,
-  Boolean                 $firewall               = $::freeradius::firewall,
 ) {
 
-  include '::freeradius::v3::conf::sites'
-  include '::freeradius::v3::conf::policy'
+  include 'freeradius::v3::conf::sites'
+  include 'freeradius::v3::conf::policy'
+  include 'freeradius::v3::modules'
 
   file { $logdir:
     ensure => 'directory',
@@ -116,13 +116,6 @@ class freeradius::v3::conf (
     before => Service['radiusd'],
   }
 
-  file { '/etc/raddb/conf':
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'radiusd',
-    mode   => '0640',
-    before => Service['radiusd'],
-  }
 
   if $use_rsync_radiusd_conf {
     include '::rsync'
@@ -163,6 +156,15 @@ class freeradius::v3::conf (
       content => template('freeradius/3/radiusd.conf.erb'),
       notify  => Service['radiusd'],
     }
+
+    file { '/etc/raddb/conf.d':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'radiusd',
+      mode   => '0640',
+      purge  => true,
+      before => Service['radiusd'],
+    }
   }
 
   if $default_acct_listener {
@@ -179,4 +181,5 @@ class freeradius::v3::conf (
       dports       => $radius_ports
     }
   }
+
 }

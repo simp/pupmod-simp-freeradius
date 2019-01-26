@@ -124,6 +124,7 @@ class freeradius::v3::modules::ldap (
     group   => 'radiusd',
     mode    => '0640',
     content => template('freeradius/3/modules/ldap.erb'),
+    require => File['/etc/raddb/mods-enabled'],
     notify  => Service['radiusd']
   }
 

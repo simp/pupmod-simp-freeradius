@@ -24,13 +24,13 @@ class freeradius::conf::log (
   Freeradius::Logdest        $destination     = 'syslog',
   Stdlib::AbsolutePath       $log_file        = "${::freeradius::logdir}/radius.log",
   Simplib::Syslog::Facility  $syslog_facility = 'local6',
-  Enum['yes','no']                    $stripped_names  = 'no',
-  Enum['yes','no']                    $auth            = 'yes',
-  Enum['yes','no']                    $auth_badpass    = 'no',
-  Enum['yes','no']                    $auth_goodpass   = 'no',
-  Enum['yes','no']           $msg_goodpass    = 'no',
-  Enum['yes','no']           $msg_badpass     = 'no',
-  Optional[String]           $deny_message    = undef
+  Enum['yes','no']           $stripped_names  = 'no',
+  Enum['yes','no']           $auth            = 'yes',
+  Enum['yes','no']           $auth_badpass    = 'no',
+  Enum['yes','no']           $auth_goodpass   = 'no',
+  Optional[String]           $msg_goodpass    = undef,
+  Optional[String]           $msg_badpass     = undef,
+  Optional[String]           $msg_denied      = undef
 ) {
 
   Class['freeradius::config'] -> Class['freeradius::conf::log']

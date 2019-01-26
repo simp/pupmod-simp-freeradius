@@ -8,7 +8,7 @@ describe 'freeradius::conf::log' do
 
       context "on #{os}" do
         it { is_expected.to create_class('freeradius::conf::log') }
-        it { is_expected.to create_file('/etc/raddb/conf/log.inc').with_content(<<-EOM)
+        it { is_expected.to create_file('/etc/raddb/conf.d/log.inc').with_content(<<-EOM)
 log {
   destination = syslog
   file = /var/log/freeradius/radius.log
@@ -17,6 +17,7 @@ log {
   auth = yes
   auth_badpass = no
   auth_goodpass = no
+  msg_denied = "You are already logged in - access denied"
 }
 EOM
         }

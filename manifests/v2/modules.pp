@@ -13,4 +13,8 @@ class freeradius::v2::modules {
     group  => 'radiusd',
     mode   => '0640'
   }
+
+  if $freeradius::ldap {
+    include 'freeradius::v2::modules::ldap
+  }
 }

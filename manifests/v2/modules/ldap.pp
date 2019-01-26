@@ -84,11 +84,13 @@ class freeradius::v2::modules::ldap (
   Optional[String]             $ldap_debug                 = undef
 ) {
 
+
   file { '/etc/raddb/modules/ldap':
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
     content => template('freeradius/2/modules/ldap.erb'),
+    require => File['/etc/raddb/modules'],
     notify  => Service['radiusd']
   }
 

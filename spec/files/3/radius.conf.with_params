@@ -8,27 +8,23 @@ raddbdir = ${sysconfdir}/raddb
 radacctdir = ${logdir}/radacct
 name = radiusd
 confdir = ${raddbdir}
-run_dir = ${localstatedir}/run/${name}
-db_dir = ${raddbdir}
 modconfdir = ${raddbdir}/mods-config
 certdir = ${raddbdir}/certs
 cadir = ${raddbdir}/certs
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${localstatedir}/lib/${name}
 libdir = /usr/lib/freeradius
 pidfile = ${run_dir}/${name}.pid
+correct_escapes = true
 max_request_time = 120
 cleanup_delay = 10
 max_requests = 2024
+hostname_lookups = yes
+checkrad = ${sbindir}/checkrad
 
 $INCLUDE conf/listen.inc/
 
-hostname_lookups = yes
-
-regular_expressions	= no
-extended_expressions	= no
-
 $INCLUDE conf/log.inc
-
-checkrad = ${sbindir}/checkrad
 
 $INCLUDE conf/security.inc
 

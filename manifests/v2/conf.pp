@@ -97,6 +97,7 @@ class freeradius::v2::conf (
   Boolean                 $firewall               = $::freeradius::firewall,
   String                  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
 ) {
+  include freeradius::v2::modules
 
   file { $logdir:
     ensure => 'directory',

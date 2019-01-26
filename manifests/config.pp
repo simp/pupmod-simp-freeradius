@@ -15,18 +15,17 @@ class freeradius::config(
     }
   }
 
-  # Version agnostic configuration
-  include '::freeradius::modules'
-  exec { '/etc/raddb/certs/bootstrap':
-    path      => '/usr/bin:/usr/sbin:/bin:/etc/raddb/certs',
-    unless    => 'test -f /etc/raddb/certs/server.pem',
-    logoutput => true,
-  }
-  exec { '/bin/chgrp -R radiusd /etc/raddb/certs': }
   file { '/etc/raddb':
-    owner => 'root',
-    group => 'radiusd',
-    mode  => '0750',
+    owner     => 'root',
+    group     => 'radiusd',
+    mode      => '0750',
+  }
+
+  file { '/etc/raddb/certs':
+    owner     => 'root',
+    group     => 'radiusd',
+    mode      => '0750',
+    recursive => true
   }
 
   # Version specific configuration
@@ -39,7 +38,8 @@ class freeradius::config(
         $ver = '2'
       }
 
-      include "::freeradius::v${ver}::conf"
+      include "freeradius::v${ver}::conf"
+
     }
     else {
       warning('FreeRADIUS does not yet appear to be installed. Please install FreeRADIUS and then continue.')

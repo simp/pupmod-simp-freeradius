@@ -23,10 +23,18 @@ class freeradius::install inherits freeradius {
     require   => Group['radiusd']
   }
 
-  package { [$::freeradius::freeradius_ver,
-            "${::freeradius::freeradius_name}-ldap.${facts['hardwaremodel']}",
-            "${::freeradius::freeradius_name}-utils.${facts['hardwaremodel']}"]:
+  package { ["$::freeradius::freeradius",
+            "${::freeradius::freeradius_name}-ldap",
+            "${::freeradius::freeradius_name}-utils"]:
     ensure  => $::freeradius::package_ensure,
     require => User['radiusd']
   }
+
+  exec { '/etc/raddb/certs/bootstrap':
+    path      => '/usr/bin:/usr/sbin:/bin:/etc/raddb/certs',
+    unless    => 'test -f /etc/raddb/certs/server.pem',
+    logoutput => true,
+    require   => Package["$::freeradius::freeradius"]
+  }
+
 }

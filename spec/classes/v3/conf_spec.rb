@@ -34,13 +34,11 @@ describe 'freeradius::v3::conf' do
           end
           let(:params) {{
             :cleanup_delay        => 10,
-            :extended_expressions => false,
-            :hostname_lookups     => true,
+            :hostname_lookups     => 'yes',
             :localstatedir        => '/var/local',
             :max_request_time     => 120,
             :proxy_requests       => true,
             :max_requests         => 2024,
-            :regular_expressions  => false,
             :trusted_nets         => ['127.0.0.1', '::1'],
             :firewall             => true,
             :logdir               => '/var/log/radiusx'
