@@ -1,0 +1,92 @@
+dn: ou=Radiusclient,<%= base_dn %>
+objectClass: top
+ou: Radiusclient
+objectClass: organizationalUnit
+
+dn: cn=radius,ou=Group,<%= base_dn %>
+objectClass: posixGroup
+objectClass: top
+cn: Radius
+gidNumber: 10000
+description: 'Radius group'
+
+dn: ou=Radiususer,<%= base_dn %>
+objectClass: top
+ou: Radiususer
+objectClass: organizationalUnit
+
+dn: cn=notradius,ou=Group,<%= base_dn %>
+objectClass: posixGroup
+objectClass: top
+cn: notRadius
+gidNumber: 10001
+description: 'Not Radius group'
+
+dn: uid=radius1,ou=Radiususer,<%= base_dn %>
+uid: radius1
+cn: radius1
+givenName: Radius
+sn: One
+mail: radius1@funurl.net
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+objectClass: ldapPublicKey
+shadowMax: 1
+shadowMin: 1
+shadowWarning: 7
+shadowLastChange: 10701
+sshPublicKey:
+loginShell: /bin/bash
+uidNumber: 10000
+gidNumber: 10000
+homeDirectory: /home/radius1
+#suP3rP@ssw0r!
+userPassword: {SSHA}r2GaizHFWY8pcHpIClU0ye7v
+
+dn: uid=radius2,ou=Radiususer <%= base_dn %>
+uid: radius2
+cn: radius2
+givenName: Radius
+sn: Two
+mail: radius2@funurl.net
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+objectClass: ldapPublicKey
+shadowMax: 1
+shadowMin: 1
+shadowWarning: 7
+shadowLastChange: 10701
+sshPublicKey:
+loginShell: /bin/bash
+uidNumber: 10001
+gidNumber: 10000
+homeDirectory: /home/radius2
+#suP3rP@ssw0r!
+userPassword: {SSHA}r2GaizHFWY8pcHpIClU0ye7v
+
+dn: uid=notradius,ou=People,<%= base_dn %>
+uid: notradius
+cn: notradius
+givenName: Radius
+sn: Not
+mail: notradius@funurl.net
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+objectClass: ldapPublicKey
+shadowMax: 1
+shadowMin: 1
+shadowWarning: 7
+shadowLastChange: 10701
+sshPublicKey:
+loginShell: /bin/bash
+uidNumber: 10002
+gidNumber: 10001
+homeDirectory: /home/notradius
+#suP3rP@ssw0r!
+userPassword: {SSHA}r2GaizHFWY8pcHpIClU0ye7v
