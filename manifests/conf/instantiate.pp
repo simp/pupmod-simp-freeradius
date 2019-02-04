@@ -28,12 +28,25 @@ class freeradius::conf::instantiate (
   Boolean           $keep_defaults = true
 ) {
 
-  file { '/etc/raddb/conf/instantiate.inc':
+  include 'freeradius'
+
+    ensure_resource ('file',  "${freeradius::confdir}/conf.d",
+      {
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'radiusd',
+        mode   => '0640',
+        purge  => true,
+        before => Service['radiusd'],
+      })
+
+  file { "${freeradius::confdir}/conf.d/instantiate.inc":
     ensure  => 'file',
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
-    content => template('freeradius/conf/instantiate.erb'),
+    require => File["${freeradius::confdir}/conf.d"],
+    content => template('freeradius/conf.d/instantiate.erb'),
     notify  => Service['radiusd']
   }
 

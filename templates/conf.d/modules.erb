@@ -4,15 +4,12 @@ modules {
 #<% if @include_eap then -%>
 #  $INCLUDE eap.conf
 #<% end -%>
-
 <% if @include_sql or @include_mysql_counter or @include_sqlippool then -%>
   $INCLUDE sql.conf
 <% end -%>
-
 <% if @include_mysql_counter then -%>
   $INCLUDE sql/mysql/counter.conf
 <% end -%>
-
 <% if @include_sqlippool then -%>
   $INCLUDE sqlippool.conf
 <% end -%>

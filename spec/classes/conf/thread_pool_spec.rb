@@ -10,7 +10,7 @@ describe 'freeradius::conf::thread_pool' do
       }}
 
       it { is_expected.to create_class('freeradius::conf::thread_pool') }
-      it { is_expected.to create_file('/etc/raddb/conf/thread_pool.inc').with_content(/max_servers = 32/) }
+      it { is_expected.to create_file('/etc/raddb/conf.d/thread_pool.inc').with_content(/max_servers = 32/) }
     end
   end
 end

@@ -7,7 +7,7 @@
 class freeradius::config(
 ) {
 
-  if $::freeradius::pki {
+  if $freeradius::pki {
     ::pki::copy { 'freeradius':
       source => $::freeradius::app_pki_external_source,
       pki    => $::freeradius::pki,
@@ -15,17 +15,17 @@ class freeradius::config(
     }
   }
 
-  file { '/etc/raddb':
-    owner     => 'root',
-    group     => 'radiusd',
-    mode      => '0750',
+  file { $freeradius::confdir:
+    owner => 'root',
+    group => 'radiusd',
+    mode  => '0750',
   }
 
-  file { '/etc/raddb/certs':
-    owner     => 'root',
-    group     => 'radiusd',
-    mode      => '0750',
-    recursive => true
+  file { "${freeradius::confdir}/certs":
+    owner   => 'root',
+    group   => 'radiusd',
+    mode    => '0750',
+    recurse => true
   }
 
   # Version specific configuration
@@ -33,12 +33,11 @@ class freeradius::config(
     if defined('$::radius_version') and ($::radius_version != 'unknown') {
       if (versioncmp($::radius_version, '3') >= 0) {
         $ver = '3'
+        include "freeradius::v${ver}::conf"
       }
       else {
-        $ver = '2'
+        warning('Only version 3 and later is supported at this time.')
       }
-
-      include "freeradius::v${ver}::conf"
 
     }
     else {

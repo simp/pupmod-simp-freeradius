@@ -28,43 +28,19 @@
 #
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
-class freeradius::conf::modules (
+class freeradius::v3::conf::modules (
   Boolean   $include_eap           = true,
   Boolean   $include_sql           = false,
   Boolean   $include_mysql_counter = false,
   Boolean   $include_sqlippool     = false
 ) {
 
-  include '::freeradius'
-
-  if $facts['os']['name'] in ['RedHat', 'CentOS'] {
-    if defined('$::radius_version') and ($::radius_version != 'unknown') {
-      if (versioncmp($::radius_version, '3') >= 0) {
-        file { '/etc/raddb/conf/modules.inc':
-          ensure  => 'file',
-          owner   => 'root',
-          group   => 'radiusd',
-          mode    => '0640',
-          content => template('freeradius/3/conf/modules.erb'),
-          notify  => Service['radiusd']
-        }
-      }
-      else {
-        file { '/etc/raddb/conf/modules.inc':
-          ensure  => 'file',
-          owner   => 'root',
-          group   => 'radiusd',
-          mode    => '0640',
-          content => template('freeradius/2/conf/modules.erb'),
-          notify  => Service['radiusd']
-        }
-      }
-    }
-    else {
-      warning('FreeRADIUS does not yet appear to be installed. Please install FreeRADIUS and then continue.')
-    }
-  }
-  else {
-    warning("${facts['os']['name']} not yet supported. Current options are RedHat and CentOS")
+  file { '/etc/raddb/conf.d/modules.inc':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'radiusd',
+    mode    => '0640',
+    content => template('freeradius/3/conf.d/modules.erb'),
+    notify  => Service['radiusd']
   }
 }

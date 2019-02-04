@@ -5,7 +5,7 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 # * Nick Markowski <nmarkowski@keywcorp.com>
 #
-class freeradius::install inherits freeradius {
+class freeradius::install {
   assert_private()
 
   group { 'radiusd':
@@ -23,7 +23,7 @@ class freeradius::install inherits freeradius {
     require   => Group['radiusd']
   }
 
-  package { ["$::freeradius::freeradius",
+  package { [$::freeradius::freeradius_name,
             "${::freeradius::freeradius_name}-ldap",
             "${::freeradius::freeradius_name}-utils"]:
     ensure  => $::freeradius::package_ensure,
@@ -34,7 +34,7 @@ class freeradius::install inherits freeradius {
     path      => '/usr/bin:/usr/sbin:/bin:/etc/raddb/certs',
     unless    => 'test -f /etc/raddb/certs/server.pem',
     logoutput => true,
-    require   => Package["$::freeradius::freeradius"]
+    require   => Package[$::freeradius::freeradius_name]
   }
 
 }

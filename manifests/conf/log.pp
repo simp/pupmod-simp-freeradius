@@ -33,14 +33,26 @@ class freeradius::conf::log (
   Optional[String]           $msg_denied      = undef
 ) {
 
+  include 'freeradius'
   Class['freeradius::config'] -> Class['freeradius::conf::log']
 
-  file { '/etc/raddb/conf/log.inc':
+  ensure_resource ('file',  "${freeradius::confdir}/conf.d",
+    {
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'radiusd',
+      mode   => '0640',
+      purge  => true,
+      before => Service['radiusd'],
+    })
+
+  file { "${freeradius::confdir}/conf.d/log.inc":
     ensure  => 'file',
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
-    content => template('freeradius/conf/log.erb'),
+    require => File["${freeradius::confdir}/conf.d"],
+    content => template('freeradius/conf.d/log.erb'),
     notify  => Service['radiusd']
   }
 }

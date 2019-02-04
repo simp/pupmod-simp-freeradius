@@ -4,7 +4,7 @@ describe 'freeradius::conf::instantiate' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       let(:facts) { facts }
-      let(:pre_condition) { 'include "freeradius::service"' }
+      let(:pre_condition) { 'include "freeradius"' }
 
       it { is_expected.to create_class('freeradius::conf::instantiate') }
       it { is_expected.to create_file('/etc/raddb/conf.d/instantiate.inc').with_content(/logintime/) }

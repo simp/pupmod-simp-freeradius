@@ -1,1 +1,1 @@
-type Freeradius::Logdest = Enum[ "files", "syslog", "stdout", "stderr" ]
+type Freeradius::Logdest = Enum[ 'files', 'syslog', 'stdout', 'stderr' ]

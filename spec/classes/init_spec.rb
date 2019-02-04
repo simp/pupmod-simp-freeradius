@@ -3,9 +3,10 @@ require 'spec_helper'
 shared_examples_for 'install' do
   it { is_expected.to create_group('radiusd') }
 	it { is_expected.to create_user('radiusd').that_requires('Group[radiusd]') }
-  it { is_expected.to contain_package('freeradius-ldap.x86_64') }
-  it { is_expected.to contain_package('freeradius-utils.x86_64') }
-  it { is_expected.to contain_package('freeradius.x86_64') }
+  it { is_expected.to contain_package('freeradius-ldap') }
+  it { is_expected.to contain_package('freeradius-utils') }
+  it { is_expected.to contain_package('freeradius') }
+  it { is_expected.to contain_exec('/etc/raddb/certs/bootstrap') }
 end
 
 # Shared itemsm in freeradius::config, freeradius::v3::config, and
@@ -14,10 +15,8 @@ shared_examples_for 'common config' do
 	# freeradius::config
   it { is_expected.to compile.with_all_deps }
   it { is_expected.to create_class('freeradius') }
-  it { is_expected.to contain_class('freeradius::modules') }
-  it { is_expected.to contain_exec('/etc/raddb/certs/bootstrap') }
-  it { is_expected.to contain_exec('/bin/chgrp -R radiusd /etc/raddb/certs') }
   it { is_expected.to contain_file('/etc/raddb') }
+  it { is_expected.to contain_file('/etc/raddb/certs').with(:recurse => true) }
 
 end
 
@@ -26,8 +25,6 @@ shared_examples_for 'config v3' do
   it_should_behave_like 'common config'
   it { is_expected.to contain_class('freeradius::v3::conf') }
 	it { is_expected.to_not contain_class('rsync') }
-	it { is_expected.to contain_class('freeradius::v3::conf::sites') }
-	it { is_expected.to contain_class('freeradius::v3::conf::policy') }
 end
 
 shared_examples_for 'config with pki = false and firewall = false' do

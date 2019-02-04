@@ -4,7 +4,7 @@
 #
 # This can only be defined *once* in a namespace.
 #
-# See radiusd.conf(5) and /etc/raddb/radiusd.conf.sample for
+# See radiusd.conf(5) and ${freeradius::confdir/radiusd.conf.sample for
 # additional information.
 #
 # If you use this class and do not set 'use_rsync_radiusd_conf = true' then
@@ -69,10 +69,6 @@
 # @param extended_expressions
 # @param proxy_requests
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-#
 class freeradius::v2::conf (
   Boolean                 $use_rsync_radiusd_conf = false,
   String                  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
@@ -81,7 +77,6 @@ class freeradius::v2::conf (
   Optional[Integer]       $rsync_bwlimit          = undef,
   Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
   Stdlib::Absolutepath    $localstatedir          = '/var',
-  Stdlib::Absolutepath    $logdir                 = $::freeradius::logdir,
   Boolean                 $expose_shadow          = false,
   Simplib::Port           $radius_port            = 1812,
   Optional[String]        $radius_rsync_password  = undef,
@@ -94,12 +89,10 @@ class freeradius::v2::conf (
   Boolean                 $regular_expressions    = true,
   Boolean                 $extended_expressions   = true,
   Boolean                 $proxy_requests         = false,
-  Boolean                 $firewall               = $::freeradius::firewall,
   String                  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
 ) {
-  include freeradius::v2::modules
 
-  file { $logdir:
+  file { $freeradius::logdir :
     ensure => 'directory',
     owner  => 'radiusd',
     group  => 'radiusd',
@@ -107,10 +100,10 @@ class freeradius::v2::conf (
   }
 
   file { [
-    "${logdir}/linelog",
-    "${logdir}/radutmp",
-    "${logdir}/radwtmp",
-    "${logdir}/sradutmp"
+    "${freeradius::logdir}/linelog",
+    "${freeradius::logdir}/radutmp",
+    "${freeradius::logdir}/radwtmp",
+    "${freeradius::logdir}/sradutmp"
   ]:
     ensure => 'file',
     owner  => 'radiusd',
@@ -119,7 +112,7 @@ class freeradius::v2::conf (
     before => Service['radiusd'],
   }
 
-  file { '/etc/raddb/conf':
+  file { "${freeradius::confdir}/conf":
     ensure => 'directory',
     owner  => 'root',
     group  => 'radiusd',
@@ -131,7 +124,7 @@ class freeradius::v2::conf (
 
     include '::rsync'
 
-    file { '/etc/raddb/radiusd.conf':
+    file { "${freeradius::confdir}/radiusd.conf":
       ensure => 'file',
       owner  => 'root',
       group  => 'radiusd',
@@ -146,11 +139,11 @@ class freeradius::v2::conf (
 
     rsync { 'freeradius':
       source   => $rsync_source,
-      target   => '/etc/raddb',
+      target   => $freeradius::confdir,
       server   => $rsync_server,
       timeout  => $rsync_timeout,
       notify   => [
-        File['/etc/raddb'],
+        File[$freeradius::confdir],
         Service['radiusd']
       ],
       bwlimit  => $rsync_bwlimit,
@@ -159,7 +152,8 @@ class freeradius::v2::conf (
     }
   }
   else {
-    file { '/etc/raddb/radiusd.conf':
+    include freeradius::v2::modules
+    file { "${freeradius::confdir}/radiusd.conf":
       ensure  => 'file',
       owner   => 'root',
       group   => 'radiusd',
@@ -177,7 +171,7 @@ class freeradius::v2::conf (
     }
   }
 
-  if $firewall {
+  if $freeradius::firewall {
     iptables::listen::udp { 'radius_iptables':
       trusted_nets => $trusted_nets,
       dports       => $radius_port

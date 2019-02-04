@@ -15,6 +15,6 @@ class freeradius::v2::modules {
   }
 
   if $freeradius::ldap {
-    include 'freeradius::v2::modules::ldap
+    include 'freeradius::v2::modules::ldap'
   }
 }

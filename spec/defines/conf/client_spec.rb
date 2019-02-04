@@ -4,7 +4,7 @@ describe 'freeradius::conf::client', :type => :define do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       let(:facts) { facts }
-      let(:pre_condition) {"include  'freeradius::service'"}
+      let(:pre_condition) {"include  'freeradius'"}
       context 'with default parameters' do
         let(:title) {'test_client'}
         let(:params) {{
@@ -12,8 +12,8 @@ describe 'freeradius::conf::client', :type => :define do
           :secret => 'MyLittlePony'
         }}
 
-        it { is_expected.to create_file('/etc/raddb/conf/clients') }
-        it { is_expected.to create_file('/etc/raddb/conf/clients/test_client.conf').with_content(<<-EOM)
+        it { is_expected.to create_file('/etc/raddb/clients.d') }
+        it { is_expected.to create_file('/etc/raddb/clients.d/test_client.conf').with_content(<<-EOM)
 client test_client {
   ipaddr = 1.2.3.4
   secret = MyLittlePony
@@ -37,8 +37,8 @@ client test_client {
           :shortname      => 'Scootaloo'
         }}
 
-        it { is_expected.to create_file('/etc/raddb/conf/clients') }
-        it { is_expected.to create_file('/etc/raddb/conf/clients/test2_client.conf').with_content(<<-EOM)
+        it { is_expected.to create_file('/etc/raddb/clients.d') }
+        it { is_expected.to create_file('/etc/raddb/clients.d/test2_client.conf').with_content(<<-EOM)
 client test2_client {
   ipv6addr = ::1
   netmask = 24

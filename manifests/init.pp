@@ -59,6 +59,8 @@ class freeradius (
   Stdlib::Absolutepath           $app_pki_ca              = "${app_pki_dir}/cacerts/cacerts.pem",
   Stdlib::Absolutepath           $app_pki_ca_dir          = "${app_pki_dir}/cacerts",
   Stdlib::Absolutepath           $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
+  Stdlib::Absolutepath           $sysconfdir              = '/etc',
+  Stdlib::Absolutepath           $confdir                 = "${sysconfdir}/raddb",
   Stdlib::Absolutepath           $logdir                  = '/var/log/freeradius',
   String                         $package_ensure          = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
 
@@ -68,9 +70,6 @@ class freeradius (
   include '::freeradius::config'
   include '::freeradius::service'
 
-  Class['freeradius::install'] ->
-  Class['freeradius::config'] ~>
-  Class['freeradius::service'] ->
-  Class['freeradius']
+  Class['freeradius::install'] -> Class['freeradius::config'] ~> Class['freeradius::service']
 
 }

@@ -3,8 +3,8 @@ exec_prefix = /usr
 sysconfdir = /etc
 localstatedir = /var/local
 sbindir = /usr/sbin
-logdir = /var/log/radiusx
-raddbdir = ${sysconfdir}/raddb
+logdir = /var/log/freeradius
+raddbdir = /etc/raddb
 radacctdir = ${logdir}/radacct
 name = radiusd
 confdir = ${raddbdir}
@@ -22,23 +22,17 @@ max_requests = 2024
 hostname_lookups = yes
 checkrad = ${sbindir}/checkrad
 
-$INCLUDE conf/listen.inc/
-
-$INCLUDE conf/log.inc
-
-$INCLUDE conf/security.inc
+$INCLUDE conf.d/
 
 proxy_requests  = yes
 $INCLUDE proxy.conf
 
-$INCLUDE conf/clients/
+$INCLUDE trigger.conf
 
-$INCLUDE conf/thread_pool.inc
+$INCLUDE clients.d/
 
-$INCLUDE conf/modules.inc
+$INCLUDE sites-enabled/
 
-$INCLUDE conf/instantiate.inc
-
-$INCLUDE conf/sites.inc
-
-$INCLUDE conf/policy.inc
+policy {
+  ${confdir}/policy.d
+}

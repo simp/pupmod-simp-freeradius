@@ -12,28 +12,22 @@
 # @see See /etc/raddb/radiusd.conf.sample for additional information.
 #
 define freeradius::conf::listener (
-  Freeradius::Listen  $listen_type,
-  Simplib::Host       $ipaddr             = 'ALL',
-  Simplib::Port       $port               = 0,
-  Optional[String]    $interface          = undef,
-  Optional[String]    $per_socket_clients = undef
+  Freeradius::Listen   $listen_type,
+  Simplib::Host        $ipaddr             = 'ALL',
+  Simplib::Port        $port               = 0,
+  Optional[String]     $interface          = undef,
+  Optional[String]     $per_socket_clients = undef,
+  Stdlib::Absolutepath $confdir            = simplib::lookup('freeradius::confdir', { 'default_value' => '/etc/raddb'})
 ) {
 
-  ensure_resource ( 'file', '/etc/raddb/conf/listen.inc',
-    {
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'radiusd',
-      mode   => '0640',
-      before => Service['radiusd']
-    }
-  )
+  include 'freeradius'
 
-  file { "/etc/raddb/conf/listen.inc/${name}":
+
+  file { "${confdir}/listen.${name}":
     ensure  => 'file',
     owner   => 'root',
     group   => 'radiusd',
-    content => template('freeradius/conf/listen.erb'),
+    content => template('freeradius/conf.d/listen.erb'),
     notify  => Service['radiusd']
   }
 

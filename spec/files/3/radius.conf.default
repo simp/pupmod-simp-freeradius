@@ -4,7 +4,7 @@ sysconfdir = /etc
 localstatedir = /var
 sbindir = /usr/sbin
 logdir = /var/log/freeradius
-raddbdir = ${sysconfdir}/raddb
+raddbdir = /etc/raddb
 radacctdir = ${logdir}/radacct
 name = radiusd
 confdir = ${raddbdir}
@@ -22,22 +22,15 @@ max_requests = 1024
 hostname_lookups = no
 checkrad = ${sbindir}/checkrad
 
-$INCLUDE conf/listen.inc/
-
-$INCLUDE conf/log.inc
-
-$INCLUDE conf/security.inc
+$INCLUDE conf.d/
 
 proxy_requests = no
 
-$INCLUDE conf/clients/
 
-$INCLUDE conf/thread_pool.inc
+$INCLUDE clients.d/
 
-$INCLUDE conf/modules.inc
+$INCLUDE sites-enabled/
 
-$INCLUDE conf/instantiate.inc
-
-$INCLUDE conf/sites.inc
-
-$INCLUDE conf/policy.inc
+policy {
+  ${confdir}/policy.d
+}

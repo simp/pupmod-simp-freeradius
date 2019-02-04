@@ -36,23 +36,28 @@ define freeradius::conf::client (
   Optional[String]               $login                         = undef,
   Optional[String]               $password                      = undef,
   Optional[String]               $virtual_server                = undef,
-  Optional[String]               $coa_server                    = undef
+  Optional[String]               $coa_server                    = undef,
+  Stdlib::Absolutepath           $confdir                       = simplib::lookup('freeradius::confdir',{ 'default_value' => '/etc/raddb'}),
 ) {
 
-  ensure_resource ('file', '/etc/raddb/conf/clients',
-    {
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'radiusd',
-      mode   => '0640'
-    }
-  )
+  include 'freeradius'
 
-  file { "/etc/raddb/conf/clients/${name}.conf":
+  ensure_resource ( 'file', "${confdir}/clients.d",
+    {
+      'ensure'  => 'directory',
+      'owner'   => 'root',
+      'group'   => 'radiusd',
+      'mode'    => '0640',
+      'require' => [File[$confdir],Group['radiusd']]
+    })
+
+
+  file { "${confdir}/clients.d/${name}.conf":
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
-    content => template('freeradius/conf/client.erb'),
+    content => template('freeradius/clients.d/client.erb'),
+    require => File["${confdir}/clients.d"],
     notify  => Service['radiusd']
   }
 

@@ -32,12 +32,22 @@ class freeradius::conf::security (
 
   include 'freeradius'
 
-  file { '/etc/raddb/conf/security.inc':
+  ensure_resource ('file',  "${freeradius::confdir}/conf.d",
+    {
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'radiusd',
+      mode   => '0640',
+      purge  => true,
+      before => Service['radiusd'],
+    })
+
+  file { "${freeradius::confdir}/conf.d/security.inc":
     ensure  => 'file',
     owner   => 'root',
     group   => 'radiusd',
     mode    => '0640',
-    content => template('freeradius/conf/security.erb'),
+    content => template('freeradius/conf.d/security.erb'),
     notify  => Service['radiusd']
   }
 
