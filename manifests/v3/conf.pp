@@ -1,7 +1,5 @@
 # == Class: freeradius::v3::conf
 #
-#
-#
 # If you use this class and do not copy configurations files using
 # rsync ('use_rsync_radiusd_conf = true') then
 # you *must* also declare the follwing classes within the node scope:
@@ -62,15 +60,14 @@
 #   Default: ['1812','1813']
 #   The ports where radius will listen.
 #
-# The following are configuration directories and should be defined
+# The following are configuration directories and should be set
 # in freeradius::init.  They are included here to simplify templates
 # and testing modules.
-#  @param  $sysconfdir             = $::freeradius::sysconfdir,
-#  @param  $confdir                = $::freeradius::confdir,
-#  @param  $logdir                 = $::freeradius::logdir,
+#  @param  $sys::freeradius::confdir             = $::freeradius::sys::freeradius::confdir,
+#  @param  $::freeradius::confdir                = $::freeradius::::freeradius::confdir,
+#  @param  $::freeradius::logdir                 = $::freeradius::::freeradius::logdir,
 #
 class freeradius::v3::conf (
-  Boolean                 $use_rsync_radiusd_conf = false,
   Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
   Integer[2,10]           $cleanup_delay          = 5,
   Boolean                 $correct_escapes        = true,
@@ -86,19 +83,23 @@ class freeradius::v3::conf (
   Boolean                 $include_sql            = false,
   Boolean                 $include_mysql_counter  = false,
   Boolean                 $include_sqlippool      = false,
-  String                  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
-  Simplib::Host           $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'}),
-  Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2}),
-  Optional[Integer]       $rsync_bwlimit          = undef,
-  String                  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
-  Optional[String]        $radius_rsync_password  = undef,
-  Stdlib::Absolutepath    $sysconfdir             = $::freeradius::sysconfdir,
-  Stdlib::Absolutepath    $confdir                = $::freeradius::confdir,
-  Stdlib::Absolutepath    $logdir                 = $::freeradius::logdir,
-  Boolean                 $firewall               = $::freeradius::firewall,
+  Optional[String]        $client_source          = undef,
 ) {
 
-  file { $logdir:
+  include 'freeradius::v3::conf::sites'
+  include 'freeradius::v3::modules'
+
+  Class[freeradius::config]
+  -> Class[freeradius::v3::conf]
+  -> [Class[freeradius::v3::conf::sites],
+      Class[freeradius::conf::log],
+      Class[freeradius::conf::security],
+      Class[freeradius::v3::modules]]
+
+  ############################
+  #  Create log directories
+  #
+  file { $freeradius::logdir:
     ensure => 'directory',
     owner  => 'radiusd',
     group  => 'radiusd',
@@ -106,10 +107,10 @@ class freeradius::v3::conf (
   }
 
   file { [
-    "${logdir}/linelog",
-    "${logdir}/radutmp",
-    "${logdir}/radwtmp",
-    "${logdir}/sradutmp"
+    "${freeradius::logdir}/linelog",
+    "${freeradius::logdir}/radutmp",
+    "${freeradius::logdir}/radwtmp",
+    "${freeradius::logdir}/sradutmp"
   ]:
     ensure => 'file',
     owner  => 'radiusd',
@@ -117,85 +118,96 @@ class freeradius::v3::conf (
     mode   => '0640',
     before => Service['radiusd'],
   }
+  #
+  ###########################
 
+  ############################
+  #  Create radiusd.conf
+  #  and  its included sections
+  #  in conf.d
+  #
+  file { "${freeradius::confdir}/radiusd.conf":
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'radiusd',
+    mode    => '0640',
+    content => epp('freeradius/3/radiusd.conf.epp'),
+    notify  => Service['radiusd'],
+  }
 
-  if $use_rsync_radiusd_conf {
-    include '::rsync'
-
-    file { "${confdir}/radiusd.conf":
-      ensure => 'file',
+  ensure_resource ('file',  "${freeradius::confdir}/conf.d",
+    {
+      ensure => 'directory',
       owner  => 'root',
       group  => 'radiusd',
       mode   => '0640',
-      notify => Service['radiusd'],
-    }
+      purge  => true,
+      before => Service['radiusd'],
+    })
 
-    $_password = $radius_rsync_password ? {
-      'nil'   => passgen($radius_rsync_user),
-      default => $radius_rsync_password
+  #  This does not create the trigger file
+  #  it just sets the permissions and the
+  #  if include trigger is true it will ensure
+  #  the radiusd.conf file includes the file.
+  if $include_trigger {
+    file { "${freeradius::confdir}/trigger.conf":
+      ensure => 'file',
+      owner  => 'root',
+      group  => $freeradius::group,
+      mode   => '0640'
     }
-
-    rsync { 'freeradius':
-      source   => $rsync_source,
-      target   => $confdir,
-      server   => $rsync_server,
-      timeout  => $rsync_timeout,
-      notify   => Service['radiusd'],
-      bwlimit  => $rsync_bwlimit,
-      user     => $radius_rsync_user,
-      password => $_password
-    }
-
   }
-  else {
+  include 'freeradius::conf::log'
+  include 'freeradius::conf::security'
+  #
+  ##########################
 
-    # Rsync is not being used.  Create configuration files.
-
-    include 'freeradius::v3::conf::sites'
-    include 'freeradius::v3::modules'
-    include 'freeradius::conf::log'
-    include 'freeradius::conf::security'
-    include 'freeradius::conf::thread_pool'
-
-    file { "${confdir}/radiusd.conf":
-      ensure  => 'file',
+  #########################
+  # create clients
+  #
+  # If you have a specific client file to copy
+  if $client_source {
+    file { "${freeradius::confdir}/clients.conf":
+      ensure => file,
+      owner  => 'root',
+      group  => $freeradius::group,
+      mode   => '0640',
+      source => $client_source
+    }
+  } else {
+    # create individual files in the clients directory
+    ensure_resource('file', "${freeradius::confdir}/clients.d",
+    {
+      ensure  => 'directory',
       owner   => 'root',
-      group   => 'radiusd',
+      group   => $freeradius::group,
       mode    => '0640',
-      content => template('freeradius/3/radiusd.conf.erb'),
-      notify  => Service['radiusd'],
+    })
+    file { "${freeradius::confdir}/clients.conf":
+      ensure  => file,
+      owner   => 'root',
+      group   => $freeradius::group,
+      mode    => '0640',
+      content => epp("${module_name}/3/client.conf.epp")
     }
-
-    ensure_resource ('file',  "${confdir}/conf.d",
-      {
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'radiusd',
-        mode   => '0640',
-        purge  => true,
-        before => Service['radiusd'],
-      })
-
-    if $include_trigger {
-      file { "${confdir}/trigger.conf":
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'radiusd',
-        mode   => '0640'
-      }
-    }
-
   }
+  #
+  ##########################
 
+  #
+  # Create a default account listener.
+  # Note this is already included in the default site.
   if $default_acct_listener {
-    freeradius::conf::listener { 'default_acct':
+    freeradius::v3::conf::listener { 'default_acct':
       ipaddr      => 'ALL',
       port        => 0,
       listen_type => 'acct'
     }
   }
 
-  if $firewall {
+  #
+  #  If using firewall open the radius ports to listen on.
+  if $freeradius::firewall {
     iptables::listen::udp { 'radius_iptables':
       trusted_nets => $trusted_nets,
       dports       => $radius_ports

@@ -17,7 +17,7 @@ class freeradius::v3::modules (
   file { "${freeradius::confdir}/conf.d/modules.inc":
     ensure  => 'file',
     owner   => 'root',
-    group   => 'radiusd',
+    group   => $freeradius::group,
     mode    => '0640',
     content => template('freeradius/3/conf.d/modules.erb'),
     notify  => Service['radiusd']
@@ -26,21 +26,21 @@ class freeradius::v3::modules (
   file { "${freeradius::confdir}/mods-config":
     ensure => 'directory',
     owner  => 'root',
-    group  => 'radiusd',
+    group  => $freeradius::group,
     mode   => '0640'
   }
 
   file { "${freeradius::confdir}/mods-available":
     ensure => 'directory',
     owner  => 'root',
-    group  => 'radiusd',
+    group  => $freeradius::group,
     mode   => '0640'
   }
 
   file { "${freeradius::confdir}/mods-enabled":
     ensure => 'directory',
     owner  => 'root',
-    group  => 'radiusd',
+    group  => $freeradius::group,
     mode   => '0640'
   }
 

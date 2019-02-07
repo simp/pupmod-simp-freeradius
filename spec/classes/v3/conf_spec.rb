@@ -8,6 +8,7 @@ shared_examples_for 'conf v3 no rsync' do
   it { is_expected.to contain_class('freeradius::conf::security' )}
   it { is_expected.to contain_class('freeradius::conf::thread_pool' )}
   it {is_expected.to contain_file('/etc/raddb/conf.d')}
+  it {is_expected.to contain_file('/etc/raddb/clients.d')}
   it {is_expected.to contain_file('/var/log/freeradius')}
 end
 #  The logic is tested in the init_spec test.
@@ -18,10 +19,6 @@ describe 'freeradius::v3::conf' do
       context "on #{os}" do
 
         let(:common_params) {{
-            :firewall       => false,
-            :sysconfdir     => '/etc',
-            :confdir        => '/etc/raddb',
-            :logdir         => '/var/log/freeradius',
             :trusted_nets   => ['127.0.0.1', '::1'],
         }}
 
@@ -35,7 +32,6 @@ describe 'freeradius::v3::conf' do
             })
           end
           # set parammeters from main module
-          let(:params) { common_params.merge( { :firewall => true } ) }
           expected_content_radius_conf = File.read(File.join(File.dirname(__FILE__),
              '../../files/3/','radius.conf.default'))
 

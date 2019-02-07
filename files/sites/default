@@ -53,6 +53,9 @@ server default {
   session {
   }
   post-auth {
+    update {
+       &reply: += &session-state:
+    }
     -sql
     exec
     remove_reply_message_if_eap

@@ -8,19 +8,19 @@
 class freeradius::install {
   assert_private()
 
-  group { 'radiusd':
+  group { $freeradius::group :
     ensure => 'present',
-    gid    => '95'
+    gid    => $freeradius::gid
   }
 
-  user { 'radiusd':
+  user { $freeradius::user:
     ensure    => 'present',
-    uid       => '95',
-    gid       => 'radiusd',
+    uid       => $freeradius::uid,
+    gid       => $freeradius::group,
     allowdupe => false,
     shell     => '/sbin/nologin',
     home      => '/var/run/radiusd',
-    require   => Group['radiusd']
+    require   => Group[$freeradius::group]
   }
 
   package { [$::freeradius::freeradius_name,
@@ -28,13 +28,6 @@ class freeradius::install {
             "${::freeradius::freeradius_name}-utils"]:
     ensure  => $::freeradius::package_ensure,
     require => User['radiusd']
-  }
-
-  exec { '/etc/raddb/certs/bootstrap':
-    path      => '/usr/bin:/usr/sbin:/bin:/etc/raddb/certs',
-    unless    => 'test -f /etc/raddb/certs/server.pem',
-    logoutput => true,
-    require   => Package[$::freeradius::freeradius_name]
   }
 
 }

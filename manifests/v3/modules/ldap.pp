@@ -69,7 +69,7 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class freeradius::v3::modules::ldap (
-  String                       $ldap_base_dn                                   = simplib::lookup('simp_options::ldap::base_dn'),
+  String                       $base_dn                                        = simplib::lookup('simp_options::ldap::base_dn'),
   String                       $password                                       = simplib::lookup('simp_options::ldap::bind_pw'),
   String                       $identity                                       = simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{lookup('simp_options::ldap::base_dn')}", 'value_type' => String }),
   Array[Simplib::Uri]          $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{lookup('simp_options::puppet::server')}"]}),

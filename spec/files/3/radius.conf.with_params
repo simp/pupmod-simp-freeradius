@@ -29,10 +29,10 @@ $INCLUDE proxy.conf
 
 $INCLUDE trigger.conf
 
-$INCLUDE clients.d/
+$INCLUDE clients.conf
 
 $INCLUDE sites-enabled/
 
 policy {
-  ${confdir}/policy.d
+  $INCLUDE policy.d/
 }

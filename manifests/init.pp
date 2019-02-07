@@ -42,6 +42,15 @@
 #   name of the package
 #
 # @param logdir  logging directory
+#
+# @param testcerts
+#   Whether or not freeradius should generate test certs at installation time.
+#
+# @param use_rsync
+#   If true rsync will be used to copy configuration files into place.
+#   The other configuration manifests only work with freeradius version 3 or later,
+#   if you are using an earlier version you will need to copy files this way.
+#
 # @param package_ensure
 #   String to pass to the freeradius package ensure attribute
 #
@@ -52,6 +61,12 @@ class freeradius (
   Boolean                        $ldap                     = simplib::lookup('simp_options::ldap', { 'default_value' => false }),
   Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value' => false}),
   String                         $freeradius_name         = 'freeradius',
+  String                         $user                    = 'radiusd',
+  Integer                        $uid                     = 95,
+  String                         $group                   = 'radiusd',
+  Integer                        $gid                     = 95,
+  Boolean                        $testcerts               = false,
+  Boolean                        $use_rsync               = false,
 
   Stdlib::Absolutepath           $app_pki_dir             = '/etc/pki/simp_apps/freeradius/x509',
   Stdlib::Absolutepath           $app_pki_cert            = "${app_pki_dir}/public/${::fqdn}.pub",
