@@ -30,7 +30,6 @@ default_hiera_config =<<-EOM
   :datadir: "stub"
 :hierarchy:
   - "%{custom_hiera}"
-  - "%{spec_title}"
   - "%{module_name}"
   - "default"
 EOM
@@ -119,17 +118,9 @@ RSpec.configure do |c|
   end
 
   c.before(:each) do
-    @spec_global_env_temp = Dir.mktmpdir('simpspec')
-
     if defined?(environment)
       set_environment(environment)
-      FileUtils.mkdir_p(File.join(@spec_global_env_temp,environment.to_s))
     end
-
-    # ensure the user running these tests has an accessible environmentpath
-    Puppet[:environmentpath] = @spec_global_env_temp
-    Puppet[:user] = Etc.getpwuid(Process.uid).name
-    Puppet[:group] = Etc.getgrgid(Process.gid).name
 
     # sanitize hieradata
     if defined?(hieradata)
@@ -137,12 +128,6 @@ RSpec.configure do |c|
     elsif defined?(class_name)
       set_hieradata(class_name.gsub(':','_'))
     end
-  end
-
-  c.after(:each) do
-    # clean up the mocked environmentpath
-    FileUtils.rm_rf(@spec_global_env_temp)
-    @spec_global_env_temp = nil
   end
 end
 

@@ -1,0 +1,31 @@
+listen {
+  type = <%= @listen_type %>
+<% if [ 'ALL', 'any' ].include? @ipaddr -%>
+  ipaddr = *
+<% elsif @ipaddr.include?(':') then -%>
+  ipv6addr = <%= @ipaddr %>
+<% else -%>
+  ipaddr = <%= @ipaddr %>
+<% end -%>
+  port = <%= @port %>
+<% if @interface then -%>
+  interface = <%= @interface %>
+<% end -%>
+<% if @per_socket_clients then -%>
+  clients = <%= @per_socket_clients %>
+<% end -%>
+  limit {
+<% if @max_pps then -%>
+    max_pps = <%= @max_pps %>
+<% end -%>
+<% if @lifetime then -%>
+    lifetime = <%= @lifetime %>
+<% end -%>
+<% if @idle_timeout then -%>
+    idle_timeout = <%= @idle_timeout %>
+<% end -%>
+<% if @max_connections then -%>
+    max_connections = <%= @max_connections %>
+<% end -%>
+  }
+}

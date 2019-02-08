@@ -1,47 +1,34 @@
 # == Class: freeradius::v3::conf
 #
-# If you use this class and do not copy configurations files using
-# rsync ('use_rsync_radiusd_conf = true') then
-# you *must* also declare the follwing classes within the node scope:
-# * freeradius::conf::client
-# * freeradius::conf::instantiate
-# * freeradius::conf::listener
+#  This class will configure the radiusd.conf file.
+#
+#  If clients_conf_source is set, it will copy the file
+#  from the source to the clients.conf file and include it
+#  in the source. Otherwise it includes clients.d/* and clients
+#  will have to be set up using the v3/client manifest.
+#
+#  If trigger_conf_source is set it will copy the file indicated in
+#  source to trigger.conf and include this file in the radius.conf.
 #
 # == Parameters
 #
-# @param default_acct_listener
-#   Whether or not to set up the default acct listener.
-#
-# @param firewall
-#   Whether or not to configure the firewall for radius ports
-#
-# @param use_rsync_radiusd_conf
-#   If set to true, then the variables here will not be used, instead the
-#   system will use configuration files pulled from  rsync. To make this
-#   work, you will need to create your own radiusd.conf and other config
-#   files in the freeradius rsync directory on the puppet server.
-#
-# @param rsync_server
-#   Default: 127.0.0.1
-#   If $use_rsync_radiusd_conf is true, specify the rsync server from
-#   which to pull here.
-#
-# @param rsync_timeout
-#   Default: '2'
-#   If $use_rsync_radiusd_conf is true, specify the rsync connection
-#   timeout here.
-#
-# @param radius_rsync_user
-#   Since radius holds sensitive information, the rsync space should be accordingly protected.
-#   This has been designed with the assuption that you will utilize
-#   the internal passgen mechanism to set the password. You can optionally specify
-#   $radius_rsync_password
-#
-# @param radius_rsync_password
-#   If no password is specified, passgen will be used
+# @param protocol
+#   What protocols will be used to make sure the firewall is opened correctly
 #
 # @param trusted_nets
 #   An array of networks that are allowed to access the radius server.
+#
+# @param clients_conf_source
+#   Source for the clients.conf file if not creating clients individualy
+#
+# @param proxy_conf_source
+#   If proxy_request is true it will use this source for the proxy.conf file
+#
+# @param include_trigger
+#   Whether or not to include trigger.conf file in the radiusd.conf
+#
+# @param trigger_conf_source
+#   If include_trigger is true  it will use this source for the trigger.conf file
 #
 # The following parameters are settings in the radius.conf file.
 # @see radiusd.conf(5) and /etc/raddb/radiusd.conf.sample for additional information.
@@ -49,23 +36,14 @@
 # @param localstatedir
 # @param max_request_time
 # @param cleanup_delay
+# @param correct_escapes
 # @param max_requests
 # @param hostname_lookups
-# @param allow_core_dumps
-# @param regular_expressions
-# @param extended_expressions
 # @param proxy_requests
 # @param radius_ports
 #   Type: Array
 #   Default: ['1812','1813']
 #   The ports where radius will listen.
-#
-# The following are configuration directories and should be set
-# in freeradius::init.  They are included here to simplify templates
-# and testing modules.
-#  @param  $sys::freeradius::confdir             = $::freeradius::sys::freeradius::confdir,
-#  @param  $::freeradius::confdir                = $::freeradius::::freeradius::confdir,
-#  @param  $::freeradius::logdir                 = $::freeradius::::freeradius::logdir,
 #
 class freeradius::v3::conf (
   Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
@@ -77,33 +55,43 @@ class freeradius::v3::conf (
   Integer[2,120]          $max_request_time       = 30,
   Integer[256]            $max_requests           = 1024,
   Boolean                 $proxy_requests         = false,
+  Optional[String]        $proxy_conf_source      = undef,
   Array[Simplib::Port]    $radius_ports           = [1812, 1813],
+  Enum['udp','tcp','ALL'] $protocol               = 'ALL',
   Boolean                 $include_trigger        = false,
-  Boolean                 $include_eap            = true,
-  Boolean                 $include_sql            = false,
-  Boolean                 $include_mysql_counter  = false,
-  Boolean                 $include_sqlippool      = false,
-  Optional[String]        $client_source          = undef,
+  Optional[String]        $clients_conf_source    = undef,
+  Optional[String]        $trigger_conf_source    = undef,
+  Optional[String]        $users_conf_source      = undef,
 ) {
 
-  include 'freeradius::v3::conf::sites'
-  include 'freeradius::v3::modules'
+  assert_private()
+
+  include 'freeradius::v3::radiusd_conf::log'
+  include 'freeradius::v3::radiusd_conf::security'
+  include 'freeradius::v3::radiusd_conf::thread_pool'
 
   Class[freeradius::config]
   -> Class[freeradius::v3::conf]
-  -> [Class[freeradius::v3::conf::sites],
-      Class[freeradius::conf::log],
-      Class[freeradius::conf::security],
-      Class[freeradius::v3::modules]]
+  -> [Class[freeradius::v3::radiusd_conf::thread_pool],
+      Class[freeradius::v3::radiusd_conf::log],
+      Class[freeradius::v3::radiusd_conf::security]]
 
   ############################
-  #  Create log directories
-  #
+  #  Manage permissions on log files
+
+  $log_file_settings = {
+    owner => $freeradius::user,
+    group => $freeradius::group,
+    mode  => '0640',
+  }
   file { $freeradius::logdir:
     ensure => 'directory',
-    owner  => 'radiusd',
-    group  => 'radiusd',
-    mode   => '0640',
+    *      => $log_file_settings,
+  }
+
+  file { "${freeradius::logdir}/radacct":
+    ensure => 'directory',
+    *      => $log_file_settings,
   }
 
   file { [
@@ -112,38 +100,47 @@ class freeradius::v3::conf (
     "${freeradius::logdir}/radwtmp",
     "${freeradius::logdir}/sradutmp"
   ]:
-    ensure => 'file',
-    owner  => 'radiusd',
-    group  => 'radiusd',
-    mode   => '0640',
-    before => Service['radiusd'],
+    ensure  => 'file',
+    *       => $log_file_settings,
+    require => File[$freeradius::logdir],
+    before  => Service['radiusd'],
   }
   #
-  ###########################
+  ############################
 
   ############################
   #  Create radiusd.conf
   #  and  its included sections
   #  in conf.d
   #
+  $file_settings = {
+    owner => 'root',
+    group => $freeradius::group,
+    mode  => '0640',
+  }
+
   file { "${freeradius::confdir}/radiusd.conf":
     ensure  => 'file',
-    owner   => 'root',
-    group   => 'radiusd',
-    mode    => '0640',
     content => epp('freeradius/3/radiusd.conf.epp'),
     notify  => Service['radiusd'],
+    *       => $file_settings,
   }
 
   ensure_resource ('file',  "${freeradius::confdir}/conf.d",
     {
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'radiusd',
-      mode   => '0640',
-      purge  => true,
-      before => Service['radiusd'],
+      ensure   => 'directory',
+      before   => Service['radiusd'],
+      owner    => 'root',
+      group    => $freeradius::group,
+      recurse  => true,
+      purge    => true,
+      mode     => '0640',
     })
+
+  file { "${freeradius::confdir}/policy.d":
+    ensure => 'directory',
+    *      => $file_settings,
+  }
 
   #  This does not create the trigger file
   #  it just sets the permissions and the
@@ -152,65 +149,74 @@ class freeradius::v3::conf (
   if $include_trigger {
     file { "${freeradius::confdir}/trigger.conf":
       ensure => 'file',
-      owner  => 'root',
-      group  => $freeradius::group,
-      mode   => '0640'
+      source => $trigger_conf_source,
+      *      => $file_settings,
     }
   }
-  include 'freeradius::conf::log'
-  include 'freeradius::conf::security'
+
+  if $proxy_requests {
+    file { "${freeradius::confdir}/proxy.conf":
+      ensure => 'file',
+      source => $proxy_conf_source,
+      *      => $file_settings,
+    }
+  }
+
   #
   ##########################
 
   #########################
-  # create clients
+  # Create clients.conf file
   #
-  # If you have a specific client file to copy
-  if $client_source {
+  if $clients_conf_source {
+    # If you have a specific client file to copy
     file { "${freeradius::confdir}/clients.conf":
       ensure => file,
-      owner  => 'root',
-      group  => $freeradius::group,
-      mode   => '0640',
-      source => $client_source
+      source => $clients_conf_source,
+      *      => $file_settings,
     }
   } else {
     # create individual files in the clients directory
     ensure_resource('file', "${freeradius::confdir}/clients.d",
     {
-      ensure  => 'directory',
-      owner   => 'root',
-      group   => $freeradius::group,
-      mode    => '0640',
+      ensure => 'directory',
+      owner  => 'root',
+      group  => $freeradius::group,
+      mode   => '0640',
     })
     file { "${freeradius::confdir}/clients.conf":
       ensure  => file,
-      owner   => 'root',
-      group   => $freeradius::group,
-      mode    => '0640',
-      content => epp("${module_name}/3/client.conf.epp")
-    }
-  }
-  #
-  ##########################
-
-  #
-  # Create a default account listener.
-  # Note this is already included in the default site.
-  if $default_acct_listener {
-    freeradius::v3::conf::listener { 'default_acct':
-      ipaddr      => 'ALL',
-      port        => 0,
-      listen_type => 'acct'
+      content => epp("${module_name}/3/clients.conf.epp"),
+      *       => $file_settings,
     }
   }
 
+  #
+  #  If managing users create the users file.
+  if $users_conf_source {
+    file { "${freeradius::confdir}/mods-config/files/authorize":
+      ensure => file,
+      source => $users_conf_source,
+      *      => $file_settings,
+    }
+  } else {
+    Class[freeradius::v3::conf] -> Class[freeradius::v3::conf::users]
+    include 'freeradius::v3::conf::users'
+  }
   #
   #  If using firewall open the radius ports to listen on.
   if $freeradius::firewall {
-    iptables::listen::udp { 'radius_iptables':
-      trusted_nets => $trusted_nets,
-      dports       => $radius_ports
+    if $protocol == 'udp' or $protocol == 'ALL' {
+      iptables::listen::udp { 'radius_iptables_udp':
+        trusted_nets => $trusted_nets,
+        dports       => $radius_ports
+      }
+    }
+    if $protocol == 'tcp' or $protocol == 'ALL' {
+      iptables::listen::tcp_stateful  {'radius_iptables_tcp':
+        trusted_nets => $trusted_nets,
+        dports       => $radius_ports
+      }
     }
   }
 

@@ -1,14 +1,188 @@
-[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html) [![Build Status](https://travis-ci.org/simp/pupmod-simp-freeradius.svg)](https://travis-ci.org/simp/pupmod-simp-freeradius) [![SIMP compatibility](https://img.shields.io/badge/SIMP%20compatibility-4.2.*%2F5.1.*-orange.svg)](https://img.shields.io/badge/SIMP%20compatibility-4.2.*%2F5.1.*-orange.svg)
+
+[![License](https://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/73/badge)](https://bestpractices.coreinfrastructure.org/projects/73)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/simp/libreswan.svg)](https://forge.puppetlabs.com/simp/freeradius)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/simp/libreswan.svg)](https://forge.puppetlabs.com/simp/freeradius)
+[![Build Status](https://travis-ci.org/simp/pupmod-simp-libreswan.svg)](https://travis-ci.org/simp/pupmod-simp-freeradius)
+
+#### Table of Contents
+
+1. [Overview](#overview)
+2. [Module Description - What the module does and why it is useful](#module-description)
+3. [Setup - The basics of getting started with ipsec](#setup)
+    * [What ipsec affects](#what-ipsec-affects)
+    * [Setup requirements](#setup-requirements)
+    * [Beginning with ipsec](#beginning-with-ipsec)
+4. [Usage - Configuration options and additional functionality](#usage)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
+      * [Acceptance Tests - Beaker env variables](#acceptance-tests)
+
+## Overview
+
+This module installs freeradius. The v3 manifests can be used to configure version 3 of freeradius.
+If an older version of freeradius is being used, rsync can be used to copy over configuration files.
+Rsync can also be used to copy over version 3 files.
+
+This modules includes a  radiusd site and module that can be used to configure freeradius to
+work with and  openldap server.
 
 ## This is a SIMP module
-This module is a component of the [System Integrity Management Platform](https://github.com/NationalSecurityAgency/SIMP), a compliance-management framework built on Puppet.
+
+This module is a component of the [System Integrity Management Platform](https://simp-project.com),
+a compliance-management framework built on Puppet.
 
 If you find any issues, they can be submitted to our [JIRA](https://simp-project.atlassian.net/).
 
-Please read our [Contribution Guide](https://simp-project.atlassian.net/wiki/display/SD/Contributing+to+SIMP) and visit our [developer wiki](https://simp-project.atlassian.net/wiki/display/SD/SIMP+Development+Home).
+Please read our [Contribution Guide](http://simp-doc.readthedocs.io/en/stable/contributors_guide/index.html).
 
-## Work in Progress
+This module is optimally designed for use within a larger SIMP ecosystem, but it can be used independently:
+* When included within the SIMP ecosystem, security compliance settings will be managed from the Puppet server.
 
-Please excuse us as we transition this code into the public domain.
+## Module Description
 
-Downloads, discussion, and patches are still welcome!
+This module installs and configures freeradius.  Its main purpose is to integrate freeradius
+with an existing LDAP server. It includes manifests that configure the ldap module and create
+vitual server (site)  that configure freeradius to listen on all available interfaces and authenticate
+via LDAP.
+
+## Beginning with freeradius
+
+Before installing pupmod-simp-freeradius make sure to read the [freeradius documentation](http://freeradius.org/documentation)
+
+## Setup
+* Ensure the freeradius, freeradius-ldap and freeradius-utils  packages are available.
+
+
+### Defaults
+* Configuration directory: /etc/raddb
+* Log Directory: /var/log/freeradius
+* Ldap Bind user:  bind_dn
+* Rsync:  false
+
+### Set up Radius Server to use LDAP
+
+This basic setup will configure Radius to listen on all interfaces and authenticate
+using LDAP.
+
+#### Install freeradius and the LDAP module and site configuration.
+
+Add the following to hiera for the radius server:
+```yaml
+---
+
+classes:
+  - 'freeradius'
+  - 'freeradius::v3::sites::ldap'
+  - 'freeradius::v3::modules::ldap'
+```
+
+The default setting for radiusd.conf can be found in freeradius::v3::conf
+and can be changed using heira.
+
+#### Add radius clients:
+
+Client configurations will need to be created to allow clients to talk to the server.
+See the default client.conf file installed by radius for information on how to
+configure clients.
+
+This module lets clients be created individually with freeradius::v3::conf::client or
+a complete clients.conf file can be copied in by specifying the source in hiera with
+variable freeradius::v3::conf::clients_conf_source.
+
+Example clients:
+
+``` ruby
+  freeradius::v3::client { 'localhost':
+    ipaddr => '127.0.0.1',
+    secret => 'testing123',
+    require_message_authenticator => false,
+    nas_type => 'other',
+    }
+
+  freeradius::v3::client { 'mynetwork':
+    ipaddr => '10.0.71.0/24',
+    secret => 'testing123'
+  }
+```
+or to  copy over a file with clients defined set the hiera variable:
+
+``` yaml
+---
+# The setting is
+# freeradius::v3::conf::clients_conf_source: <source for file>
+# For example if using a puppet source:
+freeradius::v3::conf::clients_conf_source: puppet:///modules/myconfigmod/freeradius/client.conf
+```
+### Other configuration
+
+#### Add local radius users and  trigger.
+
+Note:  you do not need to add any local users to get LDAP to work.
+Users can be created by setting a source in hiera to copy a complete file:
+``` yaml
+freeradius::v3::conf::users_conf_source: <file location>
+```
+or a blank users file is created a users can be added using
+freeradius::v3::users.  Examples are given in the module.  It is not
+necessary to add these users for LDAP to work.
+
+
+The trigger.conf file can be added by specifying the following in hiera:
+``` yaml
+freeradius::v3::conf::trigger_conf_source: <file source>
+freeradius::v3::conf::include_trigger
+```
+
+#### Add sites and modules
+Other sites and modules you write can be added  indivdualy using  freeradius::v3::site or
+freeradius::v3::module.
+
+A source file is specified and copied over.  See the sites-available and
+ mods-available directories for examples and information on how to build
+the content of these files.
+
+``` ruby
+freeradius::v3::site { 'mysite':
+  source => puppet::///modules/mymodule/freeradius/mysite,
+  enable => true
+}
+```
+### Configure the Radius Server with Rsync
+
+Free radius will use the /var/simp/environments/<os>/Global/freeradius share
+on the rsync server by default.
+Files in this directory will be rsynced to /etc/raddb. Make sure permissions are correct.
+
+In hiera:
+``` yaml
+
+freeradius::use_rsync: true
+
+classes:
+  - 'freeradius'
+```
+Rsync will copy over all the files and over write anything that exists.
+It will not purge any files.
+
+## Limitations
+
+Currently this has only been tested with Centos 7 amd freeradius v3.
+
+## Development
+
+Please read our [Contribution Guide](http://simp-doc.readthedocs.io/en/stable/contributors_guide/index.html).
+
+### Acceptance tests
+
+
+This module includes [Beaker](https://github.com/puppetlabs/beaker) acceptance tests using the SIMP [Beaker Helpers](https://github.com/simp/rubygem-simp-beaker-helpers).  By default the tests use [Vagrant](https://www.vagrantup.com/) with [VirtualBox](https://www.virtualbox.org) as a back-end; Vagrant and VirtualBox must both be installed to run these tests without modification. To execute the tests run the following:
+
+```shell
+bundle install
+bundle exec rake beaker:suites
+```
+
+Please refer to the [SIMP Beaker Helpers documentation](https://github.com/simp/rubygem-simp-beaker-helpers/blob/master/README.md) for more information.
+

@@ -1,7 +1,10 @@
-dn: ou=Radiusclient,<%= base_dn %>
-objectClass: top
-ou: Radiusclient
-objectClass: organizationalUnit
+#i#dn: cn=radiusHost,ou=Hosts,DC=tasty,DC=bacon
+#objectClass: person
+#cn: radiusHost
+#sn: Internal
+#pwdPolicySubentry: cn=noExpire_noLockout,ou=pwpolicies,DC=tasty,DC=bacon
+##foobarbaz
+#userPassword: {SSHA}XS6xLr25Hbg1vdANPEdKcbH979nraiGa
 
 dn: cn=radius,ou=Group,<%= base_dn %>
 objectClass: posixGroup
@@ -17,7 +20,7 @@ cn: notRadius
 gidNumber: 10001
 description: 'Not Radius group'
 
-dn: uid=radius1,ou=Radiusclient,<%= base_dn %>
+dn: uid=radius1,ou=People,<%= base_dn %>
 uid: radius1
 cn: radius1
 givenName: Radius
@@ -37,10 +40,10 @@ loginShell: /bin/bash
 uidNumber: 10000
 gidNumber: 10000
 homeDirectory: /home/radius1
-#suP3rP@ssw0r!
-userPassword: {SSHA}r2GaizHFWY8pcHpIClU0ye7v
+#foobarbaz
+userPassword: {SSHA}XS6xLr25Hbg1vdANPEdKcbH979nraiGa
 
-dn: uid=radius2,ou=Radiusclient <%= base_dn %>
+dn: uid=radius2,ou=People,<%= base_dn %>
 uid: radius2
 cn: radius2
 givenName: Radius
@@ -60,8 +63,8 @@ loginShell: /bin/bash
 uidNumber: 10001
 gidNumber: 10000
 homeDirectory: /home/radius2
-#suP3rP@ssw0r!
-userPassword: {SSHA}r2GaizHFWY8pcHpIClU0ye7v
+#foobarbaz
+userPassword: {SSHA}XS6xLr25Hbg1vdANPEdKcbH979nraiGa
 
 dn: uid=notradius,ou=People,<%= base_dn %>
 uid: notradius
@@ -83,5 +86,5 @@ loginShell: /bin/bash
 uidNumber: 10002
 gidNumber: 10001
 homeDirectory: /home/notradius
-#suP3rP@ssw0r!
-userPassword: {SSHA}r2GaizHFWY8pcHpIClU0ye7v
+#foobarbaz
+userPassword: {SSHA}XS6xLr25Hbg1vdANPEdKcbH979nraiGa

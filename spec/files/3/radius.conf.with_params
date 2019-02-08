@@ -1,3 +1,4 @@
+# This file is managed by puppet
 prefix = /usr
 exec_prefix = /usr
 sysconfdir = /etc
@@ -22,17 +23,21 @@ max_requests = 2024
 hostname_lookups = yes
 checkrad = ${sbindir}/checkrad
 
-$INCLUDE conf.d/
+$INCLUDE ${confdir}/conf.d/
 
 proxy_requests  = yes
-$INCLUDE proxy.conf
+$INCLUDE ${confdir}/proxy.conf
 
-$INCLUDE trigger.conf
+$INCLUDE ${confdir}/trigger.conf
 
-$INCLUDE clients.conf
+$INCLUDE ${confdir}/clients.conf
 
-$INCLUDE sites-enabled/
+$INCLUDE ${confdir}/sites-enabled/
 
 policy {
-  $INCLUDE policy.d/
+  $INCLUDE ${confdir}/policy.d/
+}
+
+modules {
+  $INCLUDE ${confdir}/mods-enabled/
 }

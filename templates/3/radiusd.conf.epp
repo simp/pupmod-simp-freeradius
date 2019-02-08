@@ -1,0 +1,53 @@
+# This file is managed by puppet
+prefix = /usr
+exec_prefix = /usr
+sysconfdir = <%= $freeradius::sysconfdir %>
+localstatedir = <%= $freeradius::v3::conf::localstatedir %>
+sbindir = /usr/sbin
+logdir = <%= $freeradius::logdir %>
+raddbdir = <%= $freeradius::confdir %>
+radacctdir = ${logdir}/radacct
+name = radiusd
+confdir = ${raddbdir}
+modconfdir = ${raddbdir}/mods-config
+certdir = ${raddbdir}/certs
+cadir = ${raddbdir}/certs
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${localstatedir}/lib/${name}
+<% if $facts[hardwaremodel] == "x86_64"  { -%>
+libdir = /usr/lib64/freeradius
+<% } else { -%>
+libdir = /usr/lib/freeradius
+<% } -%>
+pidfile = ${run_dir}/${name}.pid
+correct_escapes = <%= $freeradius::v3::conf::correct_escapes %>
+max_request_time = <%= $freeradius::v3::conf::max_request_time %>
+cleanup_delay = <%= $freeradius::v3::conf::cleanup_delay %>
+max_requests = <%= $freeradius::v3::conf::max_requests %>
+hostname_lookups = <%= $freeradius::v3::conf::hostname_lookups %>
+checkrad = ${sbindir}/checkrad
+
+$INCLUDE ${confdir}/conf.d/
+
+<% if $freeradius::v3::conf::proxy_requests == true { -%>
+proxy_requests  = yes
+$INCLUDE ${confdir}/proxy.conf
+<% } else { -%>
+proxy_requests = no
+<% } -%>
+
+<% if $freeradius::v3::conf::include_trigger == true { -%>
+$INCLUDE ${confdir}/trigger.conf
+<% } -%>
+
+$INCLUDE ${confdir}/clients.conf
+
+$INCLUDE ${confdir}/sites-enabled/
+
+policy {
+  $INCLUDE ${confdir}/policy.d/
+}
+
+modules {
+  $INCLUDE ${confdir}/mods-enabled/
+}

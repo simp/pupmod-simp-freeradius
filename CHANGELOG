@@ -1,3 +1,8 @@
+* Wed Dec 19 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
+- update freeradius module to work with puppet 5.
+- removed support for freeradius version 2
+- add acceptance and spec tests
+
 * Wed Dec 19 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 7.1.0-0
 - remove simpcat as dependency, it is not used.
 

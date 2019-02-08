@@ -16,23 +16,79 @@ describe 'freeradius class' do
   let(:ldapserver_manifest) {
     <<-EOS
       include 'simp_openldap::server'
+
       EOS
   }
 
-  let(:manifest) {
-    <<-EOS
-      class { 'freeradius':
-         app_pki_external_source => '/etc/pki/simptest',
-         pki                     => 'simp'
-      }
-    EOS
+  let(:radiusserver_manifest) {
+    <<-EOR
+      include 'simp_openldap::client'
+
+      include 'freeradius'
+
+      Class['simp_openldap::client'] -> Class['freeradius']
+
+      #setup a test user, localclient and remote client"
+      $_testuser = @("EOTU"/L)
+        Cleartext-Password := "password"
+        Reply-Message := "Hello World"
+       | EOTU
+
+        freeradius::v3::user { 'testuser':
+          content => $_testuser
+        }
+
+        freeradius::v3::client { 'localhost':
+          ipaddr => '127.0.0.1',
+          secret => 'testing123',
+          require_message_authenticator => false,
+          nas_type => 'other',
+          }
+
+        freeradius::v3::client { 'mynetwork':
+          ipaddr => '10.0.71.0/24',
+          secret => 'testing123'
+          }
+    EOR
   }
 
+  let(:radiusserver_useldap_only_manifest) {
+    <<-EOR
+    # This class will set up the simp default site which allows only ldap
+    #  authentication.  Note:  the ldap module is set up because
+    #  freeradius::ldap = true. (see hieradata)
+      include 'freeradius'
+      include 'freeradius::v3::modules::ldap'
+      include 'freeradius::v3::sites::ldap'
+
+      Class['freeradius'] -> [Class['freeradius::v3::sites::ldap'],Class['freeradius::v3::modules::ldap']]
+
+      #setup a test user, localclient and remote client"
+      $_testuser = @("EOTU"/L)
+        Cleartext-Password := "password"
+        Reply-Message := "Hello World"
+       | EOTU
+
+        freeradius::v3::user { 'testuser':
+          content => $_testuser
+        }
+
+        freeradius::v3::client { 'localhost':
+          ipaddr => '127.0.0.1',
+          secret => 'testing123',
+          require_message_authenticator => false,
+          nas_type => 'other',
+          }
+    EOR
+  }
+
+
+  let(:the_hieradata)  { ERB.new(File.read(File.expand_path('templates/ldap_with_tls.hieradata.erb', File.dirname(__FILE__)))).result(binding) }
+
   context 'setup ldap server' do
-    let(:ldapserver_hieradata)  { ERB.new(File.read(File.expand_path('templates/ldap_with_tls.hieradata.erb', File.dirname(__FILE__)))).result(binding) }
 
     it 'should configure ldapserver' do
-      set_hieradata_on(ldapserver, ldapserver_hieradata)
+      set_hieradata_on(ldapserver, the_hieradata)
       apply_manifest_on(ldapserver, ldapserver_manifest, :catch_failures => true)
     end
 
@@ -47,7 +103,7 @@ describe 'freeradius class' do
       result = on(ldapserver, "ldapsearch -LLL -Z -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldapserver_fqdn} -w suP3rP@ssw0r! -x cn=radius")
       expect(result.stdout).to include("dn: cn=radius,ou=Group,#{results_base_dn}")
       result2 = on(ldapserver, "ldapsearch -LLL -Z -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldapserver_fqdn} -w suP3rP@ssw0r! -x cn=radius1")
-      expect(result2.stdout).to include("dn: uid=radius1,ou=Radiusclient,#{results_base_dn}")
+      expect(result2.stdout).to include("dn: uid=radius1,ou=People,#{results_base_dn}")
     end
 
   end
@@ -55,93 +111,37 @@ describe 'freeradius class' do
   context 'set up radius server' do
 
     servers.each do |server|
+      it 'should configure the radius server' do
+        set_hieradata_on(server, the_hieradata)
+        apply_manifest_on(server, radiusserver_manifest)
+        # it takes two runs because it needs to know the version.
+        apply_manifest_on(server, radiusserver_manifest, :catch_failures => true)
+      end
+
+      it 'should authenticate testuser' do
+        result = on(server, "radtest testuser password localhost 0 testing123")
+        expect(result.stdout).to include("Hello World")
+      end
     end
   end
 
-#  clients.each do |client|
-#  end
-end
+  context 'set up radius server to use ldap only' do
 
-#  hosts.each do |host|
-#    context 'with defaults' do
-#      let(:hieradata) {{
-#        'simp_options::auditd'    => false,
-#        'simp_options::syslog'    => false,
-#        'simp_options::logrotate' => false,
-#        'auditd::enable'          => false,
-#      }}
-#
-#      it 'should work with no errors' do
-#        set_hieradata_on(host, hieradata)
-#        # It needs to apply twice because it needs to know what version is
-#        # installed in order to configure it.
-#        apply_manifest_on(host, manifest, :catch_failures => true)
-#        apply_manifest_on(host, manifest, :catch_failures => true)
-#      end
-#
-#      it 'should be idempotent' do
-#        apply_manifest_on(host, manifest, :catch_changes => true)
-#      end
-#
-##      it "'aide' package should be installed" do
-##        check_for_package(host, 'aide')
-##      end
-##
-##      it 'should generate the database' do
-##        on(host, 'ls /var/lib/aide/aide.db.gz')
-##      end
-##
-##      it 'should retain the output database for SCAP xccdf_org.ssgproject.content_rule_aide_build_database' do
-##        on(host, 'ls /var/lib/aide/aide.db.new.gz')
-##      end
-#
-##      it 'should generate an empty report when no problems are found' do
-##        on(host, '/usr/local/sbin/update_aide')
-##        on(host, '/usr/sbin/aide --check')
-##        report = on(host, 'cat /var/log/aide/aide.report').stdout
-##        expect(report).to eq ''
-##      end
-#
-##      it 'should generate a valid report when problems are found' do
-##        on(host, 'touch /etc/yum.conf')
-##        on(host, '/usr/sbin/aide --check', :acceptable_exit_codes => changes_detected)
-##        on(host, "grep 'found differences between database and filesystem' /var/log/aide/aide.report")
-##        on(host, "grep 'changed: /etc/yum.conf' /var/log/aide/aide.report")
-##      end
-#
-##      it 'should not generate /var/log/aide/aide.log' do
-##        on(host, 'ls /var/log/aide/aide.log', :acceptable_exit_codes => 2)
-##      end
-##    end
-#
-##    context 'with syslog and logrotate enabled' do
-##      let(:hieradata) {{
-##        'simp_options::auditd'    => false ,
-##        'simp_options::syslog'    => true ,
-##        'simp_options::logrotate' => true,
-##        'aide::syslog_format'     => true,
-##        'auditd::enable'          => false,
-##       }}
-#
-##      it 'should work with no errors' do
-##        set_hieradata_on(host, hieradata)
-##        apply_manifest_on(host, manifest, :catch_failures => true)
-##        # rsyslog changes require a second run
-##        apply_manifest_on(host, manifest, :catch_failures => true)
-##      end
-#
-##      it 'should be idempotent' do
-##        apply_manifest_on(host, manifest, :catch_changes => true)
-##      end
-#
-##      it 'should generate an empty report and log nothing when no problems are found' do
-##        on(host, '/usr/local/sbin/update_aide')
-##        on(host, 'logrotate --force /etc/logrotate.simp.d/aide')
-##        on(host, '/usr/sbin/aide --check')
-##        report = on(host, 'cat /var/log/aide/aide.report').stdout
-##        expect(report).to eq ''
-##        log = on(host, 'cat /var/log/aide/aide.log').stdout
-##        expect(log).to eq ''
-##      end
-#
-#    end
+    servers.each do |server|
+      it 'should configure the radius server' do
+        apply_manifest_on(server,radiusserver_useldap_only_manifest)
+      end
+
+      it 'should not authenticate testuser' do
+        result = on(server, "radtest testuser password localhost 0 testing123", :accept_all_exit_codes => true )
+        expect(result.stdout).to include("Received Access-Reject")
+      end
+
+      it 'should authenticate ldap user' do
+        resultldap = on(server,"radtest radius1 foobarbaz localhost 0 testing123")
+        expect(resultldap.stdout).to include("Received Access-Accept")
+      end
+    end
+  end
+
+end

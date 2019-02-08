@@ -41,7 +41,20 @@
 # @param freeradius_name
 #   name of the package
 #
-# @param logdir  logging directory
+# @param user
+# @param uid
+# @param group
+# @param gid
+#   The user and group information for the local system that is used to run
+#   freeradius.
+#
+# @param sysconfdir
+#   Top level configuration directory.
+#
+# @param confdir
+#   The configuration directories where the radius files are kept.
+#
+# @param logdir  freeradius log directory
 #
 # @param testcerts
 #   Whether or not freeradius should generate test certs at installation time.
@@ -50,16 +63,23 @@
 #   If true rsync will be used to copy configuration files into place.
 #   The other configuration manifests only work with freeradius version 3 or later,
 #   if you are using an earlier version you will need to copy files this way.
+#   rsync will not remove any files so you can use a combination of rsync and manifests.
 #
 # @param package_ensure
 #   String to pass to the freeradius package ensure attribute
 #
+# @param manage_sites_enabled
+#   if true then only sites managed by puppet will be allowed in the sites-enabled
+#   directory.  Files that are rsync'd are not "managed" by puppet.
+#   Use the freeradius::v3::site define or a file resource to create sites.
+#
+#
 # @author https://github.com/simp/pupmod-simp-simp/graphs/contributors
 #
 class freeradius (
-  Variant[Boolean,Enum['simp']]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value' => false }),
-  Boolean                        $ldap                     = simplib::lookup('simp_options::ldap', { 'default_value' => false }),
-  Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value' => false}),
+  Variant[Boolean,Enum['simp']]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'         => false }),
+  Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'    => false}),
+  Boolean                        $fips                    = simplib::lookup('simp_options::fips', {'default_value' => false }),
   String                         $freeradius_name         = 'freeradius',
   String                         $user                    = 'radiusd',
   Integer                        $uid                     = 95,
@@ -77,14 +97,17 @@ class freeradius (
   Stdlib::Absolutepath           $sysconfdir              = '/etc',
   Stdlib::Absolutepath           $confdir                 = "${sysconfdir}/raddb",
   Stdlib::Absolutepath           $logdir                  = '/var/log/freeradius',
+  Boolean                        $manage_sites_enabled    = false,
   String                         $package_ensure          = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
 
 ) {
 
-  include '::freeradius::install'
-  include '::freeradius::config'
-  include '::freeradius::service'
-
-  Class['freeradius::install'] -> Class['freeradius::config'] ~> Class['freeradius::service']
-
+  if $fips or $facts['fips_enabled'] {
+    warning('RADIUS, by design, must have MD5 support. FreeRADIUS (and RADIUS period) cannot be supported in FIPS mode.')
+  } else {
+    include '::freeradius::install'
+    include '::freeradius::config'
+    include '::freeradius::service'
+    Class['freeradius::install'] -> Class['freeradius::config'] ~> Class['freeradius::service']
+  }
 }
