@@ -58,9 +58,8 @@
 #   Generally, you will want default entries at the end of the file, but this
 #   is not strictly enforced. You have been warned!
 #
-# == Authors
 #
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
 define freeradius::v3::user (
   String                $content,

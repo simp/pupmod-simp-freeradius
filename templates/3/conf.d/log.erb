@@ -12,13 +12,13 @@ log {
   auth = <%= bool2str[@auth] %>
   auth_badpass = <%= bool2str[@auth_badpass] %>
   auth_goodpass = <%= bool2str[@auth_goodpass] %>
-<% if @msg_goodpass then -%>
+<% if @msg_goodpass -%>
   msg_goodpass = "<%= @msg_goodpass %>"
 <% end -%>
-<% if @msg_badpass then -%>
+<% if @msg_badpass -%>
   msg_badpass = "<%= @msg_badpass %>"
 <% end -%>
-<% if @msg_denied then -%>
+<% if @msg_denied -%>
   msg_denied = "<%= @msg_denied %>"
 <% else -%>
   msg_denied = "You are already logged in - access denied"

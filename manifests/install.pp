@@ -1,9 +1,6 @@
 # Class freeradius::install
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-# * Nick Markowski <nmarkowski@keywcorp.com>
+# @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
 class freeradius::install {
   assert_private()

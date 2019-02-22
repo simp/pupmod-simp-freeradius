@@ -1,4 +1,3 @@
-
 [![License](https://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/73/badge)](https://bestpractices.coreinfrastructure.org/projects/73)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/simp/libreswan.svg)](https://forge.puppetlabs.com/simp/freeradius)
@@ -22,11 +21,11 @@
 ## Overview
 
 This module installs freeradius. The v3 manifests can be used to configure version 3 of freeradius.
-If an older version of freeradius is being used, rsync can be used to copy over configuration files.
-Rsync can also be used to copy over version 3 files.
+If an older version of freeradius is being used, rsync can be used to copy over configuration files
+created outside of Puppet.  Rsync can also be used to copy over version 3 files.
 
 This modules includes a radiusd site and module that can be used to configure freeradius to
-work with and  openldap server.
+work with an openldap server.
 
 ## This is a SIMP module
 
@@ -38,24 +37,27 @@ If you find any issues, they can be submitted to our [JIRA](https://simp-project
 Please read our [Contribution Guide](http://simp-doc.readthedocs.io/en/stable/contributors_guide/index.html).
 
 This module is optimally designed for use within a larger SIMP ecosystem, but it can be used independently:
+
 * When included within the SIMP ecosystem, security compliance settings will be managed from the Puppet server.
 
 ## Module Description
 
 This module installs and configures freeradius. Its main purpose is to integrate freeradius
 with an existing LDAP server. It includes manifests that configure the ldap module and create
-vitual server (site) that configure freeradius to listen on all available interfaces and authenticate
-via LDAP.
+a virtual server (site) that configures freeradius to listen on all available interfaces and
+authenticate via LDAP.
 
 ## Beginning with freeradius
 
 Before installing pupmod-simp-freeradius make sure to read the [freeradius documentation](http://freeradius.org/documentation)
 
 ## Setup
+
 * Ensure the freeradius, freeradius-ldap and freeradius-utils packages are available.
 
 
 ### Defaults
+
 * Configuration directory: /etc/raddb
 * Log Directory: /var/log/freeradius
 * Ldap Bind user: bind_dn
@@ -68,7 +70,8 @@ using LDAP.
 
 #### Install freeradius and the LDAP module and site configuration.
 
-Add the following to hiera for the radius server:
+Add the following to hiera for the Radius server:
+
 ```yaml
 ---
 
@@ -79,17 +82,17 @@ classes:
 ```
 
 The default setting for radiusd.conf can be found in freeradius::v3::conf
-and can be changed using heira.
+and can be changed using hiera.
 
 #### Add radius clients:
 
 Client configurations will need to be created to allow clients to talk to the server.
-See the default client.conf file installed by radius for information on how to
+See the default client.conf file installed by freeradius for information on how to
 configure clients.
 
-This module lets clients be created individually with freeradius::v3::conf::client or
-a complete clients.conf file can be copied in by specifying the source in hiera with
-variable freeradius::v3::conf::clients_conf_source.
+This module lets clients be created individually with freeradius::v3::conf::client.
+Alternatively, a complete clients.conf file can be copied in by specifying the file
+source in hiera with the variable freeradius::v3::conf::clients_conf_source.
 
 Example clients:
 
@@ -106,7 +109,8 @@ Example clients:
     secret => 'testing123'
   }
 ```
-or to copy over a file with clients defined set the hiera variable:
+
+or to copy over a file with clients defined, set the hiera variable:
 
 ``` yaml
 ---
@@ -115,33 +119,35 @@ or to copy over a file with clients defined set the hiera variable:
 # For example if using a puppet source:
 freeradius::v3::conf::clients_conf_source: puppet:///modules/myconfigmod/freeradius/client.conf
 ```
+
 ### Other configuration
 
 #### Add local radius users and trigger.
 
 Note: You do not need to add any local users to get LDAP to work.
-Users can be created by setting a source in hiera to copy a complete file:
+
+Users can be created by setting a source file containing the required users
+as follows:
+
 ``` yaml
 freeradius::v3::conf::users_conf_source: <file location>
 ```
-or a blank users file is created a users can be added using
-freeradius::v3::users. Examples are given in the module. It is not
-necessary to add these users for LDAP to work.
 
+If no source file is specified, a blank users file is created and users can be
+added using freeradius::v3::users. Examples are given in the module.
 
 The trigger.conf file can be added by specifying the following in hiera:
+
 ``` yaml
 freeradius::v3::conf::trigger_conf_source: <file source>
-freeradius::v3::conf::include_trigger
+freeradius::v3::conf::include_trigger: true
 ```
 
 #### Add sites and modules
-Other sites and modules you write can be added indivdualy using freeradius::v3::site or
-freeradius::v3::module.
 
-A source file is specified and copied over. See the sites-available and
-mods-available directories for examples and information on how to build
-the content of these files.
+Other sites and modules you write can be added individually using freeradius::v3::site
+or freeradius::v3::module.  In both cases, you specify the source file to be copied.
+For example, to specify a custom site:
 
 ``` ruby
 freeradius::v3::site { 'mysite':
@@ -149,26 +155,32 @@ freeradius::v3::site { 'mysite':
   enable => true
 }
 ```
+
+See the sites-available and mods-available directories for examples and information
+on how to build the content of these files.
+
 ### Configure the Radius Server with Rsync
 
 Free radius will use the /var/simp/environments/<os>/Global/freeradius share
 on the rsync server by default.
-Files in this directory will be rsynced to /etc/raddb. Make sure permissions are correct.
+Files in this directory will be rsynced to /etc/raddb. Make sure the permissions are correct,
+including the SELinux context.
 
 In hiera:
-``` yaml
 
+``` yaml
 freeradius::use_rsync: true
 
 classes:
   - 'freeradius'
 ```
-Rsync will copy over all the files and over write anything that exists.
+
+Rsync will copy over all the files and overwrite anything that already exists.
 It will not purge any files.
 
 ## Limitations
 
-Currently this has only been tested with Centos 7 amd freeradius v3.
+Currently this has only been tested with Centos 7 and freeradius v3.
 
 ## Development
 

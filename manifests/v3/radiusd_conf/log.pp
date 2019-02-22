@@ -14,9 +14,8 @@
 # @param msg_badpass
 # @param msg_denied
 #
-# == Authors
 #
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
 class freeradius::v3::radiusd_conf::log (
   Freeradius::Logdest        $destination     = 'syslog',

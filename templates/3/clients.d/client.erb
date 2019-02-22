@@ -5,37 +5,37 @@
   }
 -%>
 client <%= @client_name %> {
-<% if @ipaddr.include?(':') then -%>
+<% if @ipaddr.include?(':') -%>
   ipv6addr = <%= @ipaddr %>
 <% else -%>
   ipaddr = <%= @ipaddr %>
 <% end -%>
   secret = <%= @secret %>
-<% if @shortname then -%>
+<% if @shortname -%>
   shortname = <%= @shortname %>
 <% end -%>
   require_message_authenticator = <%= bool2str[@require_message_authenticator] %>
-<% if @nas_type then -%>
+<% if @nas_type -%>
   nas_type = <%= @nas_type %>
 <% end -%>
-<% if @login then -%>
+<% if @login -%>
   login = <%= @login %>
 <% end -%>
-<% if @password then -%>
+<% if @password -%>
   password = <%= @password %>
 <% end -%>
-<% if @virtual_server then -%>
+<% if @virtual_server -%>
   virtual_server = <%= @virtual_server %>
 <% end -%>
-<% if @coa_server then -%>
+<% if @coa_server -%>
   coa-server = <%= @coa_server %>
 <% end -%>
-<% if @repsonse_window then -%>
+<% if @response_window -%>
   reponse_window = <% @response_window %>
 <% end -%>
-<% if @proto then %>
+<% if @proto %>
   proto = <%= @proto %>
-  <% if @proto != 'udp' then  %>
+  <% if @proto != 'udp' %>
   limit {
     max_connections = <% @max_connections %>
     lifetime = <% @lifetime %>

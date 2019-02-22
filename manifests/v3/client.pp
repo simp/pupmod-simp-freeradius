@@ -25,7 +25,7 @@
 # @param shortname
 # @param virtual_server
 #
-# @author SIMP Team <https://simp-project.com>
+# @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
 define freeradius::v3::client (
   Variant[Simplib::IP,

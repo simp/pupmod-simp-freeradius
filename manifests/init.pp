@@ -74,7 +74,7 @@
 #   Use the freeradius::v3::site define or a file resource to create sites.
 #
 #
-# @author https://github.com/simp/pupmod-simp-simp/graphs/contributors
+# @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
 class freeradius (
   Variant[Boolean,Enum['simp']]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'         => false }),

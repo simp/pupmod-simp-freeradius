@@ -9,7 +9,7 @@ security {
   reject_delay = <%= @reject_delay %>
   allow_core_dumps = <%= bool2str[@allow_core_dumps] %>
   status_server = <%= bool2str[@status_server] %>
-<% if @chroot then -%>
+<% if @chroot -%>
   chroot = <%= @chroot_path %>
   user = <%= @chroot_user %>
 <% if @chroot_group -%>
