@@ -25,7 +25,7 @@ This module installs freeradius. The v3 manifests can be used to configure versi
 If an older version of freeradius is being used, rsync can be used to copy over configuration files.
 Rsync can also be used to copy over version 3 files.
 
-This modules includes a  radiusd site and module that can be used to configure freeradius to
+This modules includes a radiusd site and module that can be used to configure freeradius to
 work with and  openldap server.
 
 ## This is a SIMP module
@@ -42,9 +42,9 @@ This module is optimally designed for use within a larger SIMP ecosystem, but it
 
 ## Module Description
 
-This module installs and configures freeradius.  Its main purpose is to integrate freeradius
+This module installs and configures freeradius. Its main purpose is to integrate freeradius
 with an existing LDAP server. It includes manifests that configure the ldap module and create
-vitual server (site)  that configure freeradius to listen on all available interfaces and authenticate
+vitual server (site) that configure freeradius to listen on all available interfaces and authenticate
 via LDAP.
 
 ## Beginning with freeradius
@@ -52,14 +52,14 @@ via LDAP.
 Before installing pupmod-simp-freeradius make sure to read the [freeradius documentation](http://freeradius.org/documentation)
 
 ## Setup
-* Ensure the freeradius, freeradius-ldap and freeradius-utils  packages are available.
+* Ensure the freeradius, freeradius-ldap and freeradius-utils packages are available.
 
 
 ### Defaults
 * Configuration directory: /etc/raddb
 * Log Directory: /var/log/freeradius
-* Ldap Bind user:  bind_dn
-* Rsync:  false
+* Ldap Bind user: bind_dn
+* Rsync: false
 
 ### Set up Radius Server to use LDAP
 
@@ -106,7 +106,7 @@ Example clients:
     secret => 'testing123'
   }
 ```
-or to  copy over a file with clients defined set the hiera variable:
+or to copy over a file with clients defined set the hiera variable:
 
 ``` yaml
 ---
@@ -117,15 +117,15 @@ freeradius::v3::conf::clients_conf_source: puppet:///modules/myconfigmod/freerad
 ```
 ### Other configuration
 
-#### Add local radius users and  trigger.
+#### Add local radius users and trigger.
 
-Note:  you do not need to add any local users to get LDAP to work.
+Note: You do not need to add any local users to get LDAP to work.
 Users can be created by setting a source in hiera to copy a complete file:
 ``` yaml
 freeradius::v3::conf::users_conf_source: <file location>
 ```
 or a blank users file is created a users can be added using
-freeradius::v3::users.  Examples are given in the module.  It is not
+freeradius::v3::users. Examples are given in the module. It is not
 necessary to add these users for LDAP to work.
 
 
@@ -136,11 +136,11 @@ freeradius::v3::conf::include_trigger
 ```
 
 #### Add sites and modules
-Other sites and modules you write can be added  indivdualy using  freeradius::v3::site or
+Other sites and modules you write can be added indivdualy using freeradius::v3::site or
 freeradius::v3::module.
 
-A source file is specified and copied over.  See the sites-available and
- mods-available directories for examples and information on how to build
+A source file is specified and copied over. See the sites-available and
+mods-available directories for examples and information on how to build
 the content of these files.
 
 ``` ruby
@@ -176,7 +176,6 @@ Please read our [Contribution Guide](http://simp-doc.readthedocs.io/en/stable/co
 
 ### Acceptance tests
 
-
 This module includes [Beaker](https://github.com/puppetlabs/beaker) acceptance tests using the SIMP [Beaker Helpers](https://github.com/simp/rubygem-simp-beaker-helpers).  By default the tests use [Vagrant](https://www.vagrantup.com/) with [VirtualBox](https://www.virtualbox.org) as a back-end; Vagrant and VirtualBox must both be installed to run these tests without modification. To execute the tests run the following:
 
 ```shell
@@ -185,4 +184,3 @@ bundle exec rake beaker:suites
 ```
 
 Please refer to the [SIMP Beaker Helpers documentation](https://github.com/simp/rubygem-simp-beaker-helpers/blob/master/README.md) for more information.
-
