@@ -188,10 +188,9 @@ describe 'freeradius' do
           end
           context 'v2 with rsync ' do
             let(:hieradata) { "rsync_conf" }
-              it_should_behave_like "use_rsync and testcerts"
-              it { is_expected.to_not contain_class('freeradius::v3::conf')}
-              it_should_behave_like 'config with pki = false and firewall = false'
-            end
+            it_should_behave_like "use_rsync and testcerts"
+            it { is_expected.to_not contain_class('freeradius::v3::conf')}
+            it_should_behave_like 'config with pki = false and firewall = false'
           end
         end
       end
