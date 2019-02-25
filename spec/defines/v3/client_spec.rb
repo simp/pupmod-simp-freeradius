@@ -47,7 +47,7 @@ client test2_client {
   login = RainbowDash
   password = FlutterShy
   virtual_server = PinkiePie
-  coa-server = TwilightSparkle
+  coa_server = TwilightSparkle
 }
   EOM
         }

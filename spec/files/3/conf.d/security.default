@@ -2,5 +2,5 @@ security {
   max_attributes = 200
   reject_delay = 1
   allow_core_dumps = no
-  status_server = no
+  status_server = yes
 }

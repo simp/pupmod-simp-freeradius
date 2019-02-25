@@ -1,3 +1,4 @@
 ---
 freeradius::use_rsync: true
+freeradius::config::rsync::radius_rsync_password: 'password'
 freeradius::testcerts: true

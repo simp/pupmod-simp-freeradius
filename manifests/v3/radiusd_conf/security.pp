@@ -22,7 +22,7 @@
 class freeradius::v3::radiusd_conf::security (
   Integer                        $max_attributes    = 200,
   Integer[1,5]                   $reject_delay      = 1,
-  Boolean                        $status_server     = false,
+  Boolean                        $status_server     = true,
   Boolean                        $allow_core_dumps  = false,
   Boolean                        $chroot            = false,
   Optional[Stdlib::Absolutepath] $chroot_path       = undef,
@@ -31,6 +31,13 @@ class freeradius::v3::radiusd_conf::security (
 ) {
 
   include 'freeradius'
+
+  if $chroot {
+    if ! $chroot_user {
+      fail('Radiusd requires the chroot_user be set if you are using a chroot. See
+      radiusd.conf help.')
+    }
+  }
 
   ensure_resource ('file',  "${freeradius::confdir}/conf.d",
     {

@@ -17,11 +17,11 @@
 # @param radius_rsync_user
 #   Since radius holds sensitive information, the rsync space should be accordingly protected.
 #   This has been designed with the assuption that you will utilize
-#   the internal passgen mechanism to set the password. You can optionally specify
+#   the internal simplib::passgen mechanism to set the password. You can optionally specify
 #   $radius_rsync_password
 #
 # @param radius_rsync_password
-#   If no password is specified, passgen will be used
+#   If no password is specified, simplib::passgen will be used
 #
 # @param rsync_timeout
 #   Default: '2'
@@ -34,7 +34,7 @@ class freeradius::config::rsync (
   String                  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
   Simplib::Host           $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'}),
   String                  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
-  Optional[String]        $radius_rsync_password  = undef,
+  String                  $radius_rsync_password  = simplib::passgen($radius_rsync_user),
   Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2}),
   Optional[Integer]       $rsync_bwlimit          = undef,
 ) {
@@ -46,11 +46,6 @@ class freeradius::config::rsync (
   Class['freeradius::config']
   -> Class['freeradius::config::rsync']
 
-  $_password = defined('$radius_rsync_password') ? {
-    false   => passgen($radius_rsync_user),
-    default => $radius_rsync_password
-  }
-
   rsync { 'freeradius':
     source   => $rsync_source,
     target   => $::freeradius::confdir,
@@ -59,7 +54,7 @@ class freeradius::config::rsync (
     notify   => Service['radiusd'],
     bwlimit  => $rsync_bwlimit,
     user     => $radius_rsync_user,
-    password => $_password
+    password => $radius_rsync_password
   }
 
   file { "${freeradius::confdir}/radiusd.conf":

@@ -22,7 +22,7 @@ EOF
           'content' => 'test_add_user test user stuff'
         }) }
       end
-      context 'aadd a default user fragment' do
+      context 'add a default user fragment' do
         let(:title) {'user999'}
         let(:params) {{
           :content    =>  default_content,

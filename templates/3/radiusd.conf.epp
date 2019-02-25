@@ -14,7 +14,7 @@ certdir = ${raddbdir}/certs
 cadir = ${raddbdir}/certs
 run_dir = ${localstatedir}/run/${name}
 db_dir = ${localstatedir}/lib/${name}
-<% if $facts[hardwaremodel] == "x86_64"  { -%>
+<% if $facts['hardwaremodel'] == "x86_64"  { -%>
 libdir = /usr/lib64/freeradius
 <% } else { -%>
 libdir = /usr/lib/freeradius
@@ -36,7 +36,7 @@ $INCLUDE ${confdir}/proxy.conf
 proxy_requests = no
 <% } -%>
 
-<% if $freeradius::v3::conf::include_trigger == true { -%>
+<% if $freeradius::v3::conf::trigger_conf_source { -%>
 $INCLUDE ${confdir}/trigger.conf
 <% } -%>
 

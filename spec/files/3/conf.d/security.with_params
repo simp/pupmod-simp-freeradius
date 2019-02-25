@@ -2,7 +2,7 @@ security {
   max_attributes = 201
   reject_delay = 2
   allow_core_dumps = yes
-  status_server = yes
+  status_server = no
   chroot = /var/here
   user = joe
   group = smith

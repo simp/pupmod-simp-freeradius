@@ -8,7 +8,7 @@ freeradius::v3::conf::localstatedir:      '/var/local'
 freeradius::v3::conf::max_request_time:   120
 freeradius::v3::conf::proxy_requests:     true
 freeradius::v3::conf::max_requests:       2024
-freeradius::v3::conf::include_trigger:    true
+freeradius::v3::conf::trigger_conf_source: '/tmp/mytriggersource'
 freeradius::v3::conf::users_conf_source:  '/tmp/myusersource'
 freeradius::v3::conf::clients_conf_source:  '/tmp/myclientsource'
 ### log section params  ###
@@ -25,7 +25,7 @@ freeradius::v3::radiusd_conf::log::msg_denied:    "What immortal hand or eye"
 ### security section params ###
 freeradius::v3::radiusd_conf::security::max_attributes: 201
 freeradius::v3::radiusd_conf::security::reject_delay: 2
-freeradius::v3::radiusd_conf::security::status_server: true
+freeradius::v3::radiusd_conf::security::status_server: false
 freeradius::v3::radiusd_conf::security::allow_core_dumps: true
 freeradius::v3::radiusd_conf::security::chroot: true
 freeradius::v3::radiusd_conf::security::chroot_path: /var/here

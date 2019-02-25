@@ -146,7 +146,7 @@ class freeradius::v3::conf (
   #  it just sets the permissions and the
   #  if include trigger is true it will ensure
   #  the radiusd.conf file includes the file.
-  if $include_trigger {
+  if $trigger_conf_source {
     file { "${freeradius::confdir}/trigger.conf":
       ensure => 'file',
       source => $trigger_conf_source,

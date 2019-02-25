@@ -2,7 +2,7 @@
 :backends:
 - yaml
 :yaml:
-  :datadir: "/var/jmg/SIMP-5436/freeradius/spec/fixtures/hieradata"
+  :datadir: "/var/jmg/SIMP-5436/pupmod-simp-freeradius/spec/fixtures/hieradata"
 :hierarchy:
 - "%{custom_hiera}"
 - "%{module_name}"
