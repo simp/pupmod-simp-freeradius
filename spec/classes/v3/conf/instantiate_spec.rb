@@ -20,7 +20,7 @@ instantiate {
   test_content
 }
 EOF
-)}
+        )}
       end
 
       context 'keep_defaults_true' do
@@ -38,8 +38,7 @@ instantiate {
   logintime
 }
 EOF
-)}
-
+        )}
       end
     end
   end
