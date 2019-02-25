@@ -85,7 +85,7 @@ describe 'freeradius' do
         let(:facts){ facts }
 
         # Version 3
-				context 'version 3 (v3)' do
+        context 'version 3 (v3)' do
           let(:facts) do
             facts.merge({
               :radius_version => '3',
@@ -94,10 +94,10 @@ describe 'freeradius' do
           end
 
           context 'with default parameters' do
-				    it_should_behave_like 'install'
-						it_should_behave_like 'config with pki = false and firewall = false'
+            it_should_behave_like 'install'
+            it_should_behave_like 'config with pki = false and firewall = false'
             it_should_behave_like 'config v3'
-						it_should_behave_like 'service'
+            it_should_behave_like 'service'
           end
 
           context 'with manage sites enabled on ' do
@@ -121,11 +121,11 @@ describe 'freeradius' do
           end
 
           context 'with use_rsync_radiusd_conf = true' do
-						let(:hieradata) { "rsync_conf" }
+            let(:hieradata) { "rsync_conf" }
             it_should_behave_like "use_rsync and testcerts"
           end
 
-        #  Test v3 manifests
+          #  Test v3 manifests
           context 'v3::conf with default parameters' do
             expected_content_radius_conf = File.read(File.join(File.dirname(__FILE__),
                '../files/3/','radius.conf.default'))
@@ -172,7 +172,7 @@ describe 'freeradius' do
           end
         end
 
-				context 'version 2 (v2)' do
+        context 'version 2 (v2)' do
           let(:facts) do
             facts.merge({
               :radius_version => '2',
@@ -187,13 +187,13 @@ describe 'freeradius' do
             end
           end
           context 'v2 with rsync ' do
-						let(:hieradata) { "rsync_conf" }
-            it_should_behave_like "use_rsync and testcerts"
-            it { is_expected.to_not contain_class('freeradius::v3::conf')}
-						it_should_behave_like 'config with pki = false and firewall = false'
+            let(:hieradata) { "rsync_conf" }
+              it_should_behave_like "use_rsync and testcerts"
+              it { is_expected.to_not contain_class('freeradius::v3::conf')}
+              it_should_behave_like 'config with pki = false and firewall = false'
+            end
           end
         end
-
       end
     end
   end
