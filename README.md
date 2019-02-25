@@ -140,7 +140,6 @@ The trigger.conf file can be added by specifying the following in hiera:
 
 ``` yaml
 freeradius::v3::conf::trigger_conf_source: <file source>
-freeradius::v3::conf::include_trigger: true
 ```
 
 #### Add sites and modules

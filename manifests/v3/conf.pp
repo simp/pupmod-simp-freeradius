@@ -24,11 +24,8 @@
 # @param proxy_conf_source
 #   If proxy_request is true it will use this source for the proxy.conf file
 #
-# @param include_trigger
-#   Whether or not to include trigger.conf file in the radiusd.conf
-#
 # @param trigger_conf_source
-#   If include_trigger is true  it will use this source for the trigger.conf file
+#   This source for the trigger.conf file, when set
 #
 # The following parameters are settings in the radius.conf file.
 # @see radiusd.conf(5) and /etc/raddb/radiusd.conf.sample for additional information.
@@ -58,7 +55,6 @@ class freeradius::v3::conf (
   Optional[String]        $proxy_conf_source      = undef,
   Array[Simplib::Port]    $radius_ports           = [1812, 1813],
   Enum['udp','tcp','ALL'] $protocol               = 'ALL',
-  Boolean                 $include_trigger        = false,
   Optional[String]        $clients_conf_source    = undef,
   Optional[String]        $trigger_conf_source    = undef,
   Optional[String]        $users_conf_source      = undef,
