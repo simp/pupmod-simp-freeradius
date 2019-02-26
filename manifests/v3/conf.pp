@@ -36,7 +36,6 @@
 # @param correct_escapes
 # @param max_requests
 # @param hostname_lookups
-# @param proxy_requests
 # @param radius_ports
 #   Type: Array
 #   Default: ['1812','1813']
@@ -47,15 +46,14 @@ class freeradius::v3::conf (
   Integer[2,10]           $cleanup_delay          = 5,
   Boolean                 $correct_escapes        = true,
   Boolean                 $default_acct_listener  = true,
-  Enum['yes','no']        $hostname_lookups       = 'no',
+  Boolean                 $hostname_lookups       = false,
   Stdlib::AbsolutePath    $localstatedir          = '/var',
   Integer[2,120]          $max_request_time       = 30,
   Integer[256]            $max_requests           = 1024,
-  Boolean                 $proxy_requests         = false,
-  Optional[String]        $proxy_conf_source      = undef,
   Array[Simplib::Port]    $radius_ports           = [1812, 1813],
   Enum['udp','tcp','ALL'] $protocol               = 'ALL',
   Optional[String]        $clients_conf_source    = undef,
+  Optional[String]        $proxy_conf_source      = undef,
   Optional[String]        $trigger_conf_source    = undef,
   Optional[String]        $users_conf_source      = undef,
 ) {
@@ -65,11 +63,13 @@ class freeradius::v3::conf (
   include 'freeradius::v3::radiusd_conf::log'
   include 'freeradius::v3::radiusd_conf::security'
   include 'freeradius::v3::radiusd_conf::thread_pool'
+  include 'freeradius::v3::radiusd_conf::instantiate'
 
   Class[freeradius::config]
   -> Class[freeradius::v3::conf]
   -> [Class[freeradius::v3::radiusd_conf::thread_pool],
       Class[freeradius::v3::radiusd_conf::log],
+      Class[freeradius::v3::radiusd_conf::instantiate],
       Class[freeradius::v3::radiusd_conf::security]]
 
   ############################
@@ -150,7 +150,7 @@ class freeradius::v3::conf (
     }
   }
 
-  if $proxy_requests {
+  if $proxy_conf_source {
     file { "${freeradius::confdir}/proxy.conf":
       ensure => 'file',
       source => $proxy_conf_source,

@@ -48,6 +48,7 @@ shared_examples_for 'config v3' do
   it { is_expected.to contain_class('freeradius::v3::radiusd_conf::log' )}
   it { is_expected.to contain_class('freeradius::v3::radiusd_conf::security' )}
   it { is_expected.to contain_class('freeradius::v3::radiusd_conf::thread_pool' )}
+  it { is_expected.to contain_class('freeradius::v3::radiusd_conf::instantiate' )}
   it { is_expected.to contain_class('freeradius::v3::conf::users' )}
   it {is_expected.to contain_file('/etc/raddb/conf.d')}
   it {is_expected.to contain_file('/etc/raddb/clients.d')}
@@ -141,6 +142,11 @@ describe 'freeradius' do
             it {is_expected.to contain_file('/etc/raddb/conf.d/log.inc').with_content(expected_content_log)}
             it {is_expected.to contain_file('/etc/raddb/conf.d/security.inc').with_content(expected_content_security)}
             it {is_expected.to contain_file('/etc/raddb/conf.d/thread_pool.inc').with_content(expected_content_thread_pool)}
+            it {is_expected.to contain_file('/etc/raddb/conf.d/instantiate.inc').with_content(<<-EOM)
+instantiate {
+}
+EOM
+            }
           end
 
           context 'v3::conf with changed parameters' do

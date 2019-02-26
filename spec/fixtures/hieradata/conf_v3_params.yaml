@@ -3,10 +3,10 @@ simp_options::firewall:  true
 #  Hiera file to test templates in configuration of radiusd.conf file
 freeradius::firewall:                     true
 freeradius::v3::conf::cleanup_delay:      10
-freeradius::v3::conf::hostname_lookups:   'yes'
+freeradius::v3::conf::hostname_lookups:   true
 freeradius::v3::conf::localstatedir:      '/var/local'
 freeradius::v3::conf::max_request_time:   120
-freeradius::v3::conf::proxy_requests:     true
+freeradius::v3::conf::proxy_conf_source:  '/tmp/myproxysource'
 freeradius::v3::conf::max_requests:       2024
 freeradius::v3::conf::trigger_conf_source: '/tmp/mytriggersource'
 freeradius::v3::conf::users_conf_source:  '/tmp/myusersource'
@@ -39,3 +39,6 @@ freeradius::v3::radiusd_conf::thread_pool::max_spare_servers: 11
 freeradius::v3::radiusd_conf::thread_pool::max_requests_per_server: 1
 freeradius::v3::radiusd_conf::thread_pool::max_queue_size: 100
 freeradius::v3::radiusd_conf::thread_pool::auto_limit_acct: true
+freeradius::v3::radiusd_conf::instantiatei::content:
+  - 'stuff'
+  - 'more_stuff'

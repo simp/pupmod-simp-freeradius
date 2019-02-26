@@ -1,17 +1,16 @@
-# == Define: freeradius::user
+# This define uses concat to add content to the `users` file that is created
+# by 'freeradisu::v3::conf::users` module.
 #
-# This define sets up the files that dicatates how to authorize and authenticate
-# each user request.
+# This module should not be used if `freeradius::v3::conf::user_conf_source` is set
+# in hiera. That setting will copy (what is expected to be) a complete users file
+# into place that you have defined.
 #
-# All files will be placed in /etc/raddb/users.inc/ with the prefix of either
-# 'user' or 'default' as appropriate.
-#
-# See users(5) for additional details.
+# See users(5) for additional details on user entries.
 #
 # Examples
 #
 # Adding the normal defaults for PPP
-#  freeradius::v3::user { 'default_ppp':
+#  freeradius::v3::conf::user { 'default_ppp':
 #    is_default => true,
 #    order => '500',
 #    content => '
@@ -21,7 +20,7 @@
 #  }
 #
 # Adding a disabled user
-#  freeradius::v3::user { 'lameuser':
+#  freeradius::v3::conf::user { 'lameuser':
 #   order => '0',
 #   content => '
 #    Auth-Type := Reject
@@ -61,18 +60,16 @@
 #
 # @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
-define freeradius::v3::user (
+define freeradius::v3::conf::user (
   String                $content,
   Boolean               $is_default = false,
   Integer[1]            $order      = 100,
   Stdlib::Absolutepath  $confdir    = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )
 ) {
 
-  include 'freeradius::v3::conf::users'
-
   concat::fragment { "radius_user_${order}.${name}":
     target  => "${confdir}/mods-config/files/authorize",
-    content => template('freeradius/users.erb'),
+    content => template('freeradius/user.erb'),
     order   =>  $order
   }
 

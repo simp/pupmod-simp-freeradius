@@ -124,7 +124,7 @@ freeradius::v3::conf::clients_conf_source: puppet:///modules/myconfigmod/freerad
 
 #### Add local radius users and trigger.
 
-Note: You do not need to add any local users to get LDAP to work.
+Note: You do not need to add any local users or set up SNMP triggers to get LDAP to work.
 
 Users can be created by setting a source file containing the required users
 as follows:
@@ -154,6 +154,15 @@ freeradius::v3::site { 'mysite':
   enable => true
 }
 ```
+Existing sites that are in the sites-available directory can be added using
+``` ruby
+freeradius::v3::site { 'inner-triggers':
+  enable =>
+}
+```
+
+This will create the link and ensure if manage_sites_enabled is set to true it
+will not be removed.
 
 See the sites-available and mods-available directories for examples and information
 on how to build the content of these files.

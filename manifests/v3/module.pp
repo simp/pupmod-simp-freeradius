@@ -12,7 +12,7 @@
 #   If true a link will be created in mods-enabled to enable the site.
 #
 # @param content
-#   The actual content of the entry per.  Only one of content or source can be
+#   The actual content of the module.  Only one of content or source can be
 #   used.
 #
 # @param source
