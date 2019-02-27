@@ -173,8 +173,8 @@ EOM
             it { is_expected.to contain_iptables__listen__udp('radius_iptables_udp') }
             it { is_expected.to contain_iptables__listen__tcp_stateful('radius_iptables_tcp') }
             it { is_expected.to_not contain_class('freeradius::v3::conf::users') }
-            it { is_expected.to contain_file('/etc/raddb/clients.conf').with_source('/tmp/myclientsource') }
-            it { is_expected.to contain_file('/etc/raddb/mods-config/files/authorize').with_source('/tmp/myusersource') }
+            it { is_expected.to contain_file('/etc/raddb/clients.conf').with_content('/tmp/myclientcontent') }
+            it { is_expected.to contain_file('/etc/raddb/mods-config/files/authorize').with_content('/tmp/myusercontent') }
           end
         end
 

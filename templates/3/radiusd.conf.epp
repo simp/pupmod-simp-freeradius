@@ -35,14 +35,14 @@ checkrad = ${sbindir}/checkrad
 
 $INCLUDE ${confdir}/conf.d/
 
-<% if $freeradius::v3::conf::proxy_conf_source  { -%>
+<% if $freeradius::v3::conf::proxy_conf_content  { -%>
 proxy_requests  = yes
 $INCLUDE ${confdir}/proxy.conf
 <% } else { -%>
 proxy_requests = no
 <% } -%>
 
-<% if $freeradius::v3::conf::trigger_conf_source { -%>
+<% if $freeradius::v3::conf::trigger_conf_content { -%>
 $INCLUDE ${confdir}/trigger.conf
 <% } -%>
 
