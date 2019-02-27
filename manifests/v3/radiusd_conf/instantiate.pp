@@ -1,15 +1,15 @@
-# Manage the 'instantiate' section of radiusd.conf.
-# This will create a file in the conf.d directory.
-# The directove $INCLUDE conf.d must be included in
-# the radiusd.conf file to pick up this configuration.
+# Creates the 'instantiate' section of radiusd.conf
+# in file under conf.d.  This section is included by the directive
+# $INCLUDE conf.d/
+# in the radiusd.conf file.
 #
-# See /etc/raddb/radiusd.conf.sample for additional information.
+# See /etc/raddb/radiusd.conf for additional information.
 #
 # == Parameters
 #
 # @param content
 #   The literal content of the section that you would like to add. Leading
-#   and trailing spaces wil be removed.
+#   and trailing spaces will be removed.
 #
 # @param keep_defaults
 #   If set to true, this will ensure that the standard entries are retained
@@ -23,30 +23,27 @@
 #   The configuration directory for radiusd
 #
 class freeradius::v3::radiusd_conf::instantiate (
-  Optional[String]     $content       = undef,
-  Boolean              $keep_defaults = true,
-  Stdlib::Absolutepath $confdir       = simp_options::lookup('freeradius::config'),
-  String               $group         = simp_options::lookup('freeradius::group'),
+  Optional[String]  $content       = undef,
 ) {
 
   include 'freeradius'
 
-  ensure_resource ('file',  "${confdir}/conf.d",
+  ensure_resource ('file',  "${freeradius::confdir}/conf.d",
     {
       ensure => 'directory',
       owner  => 'root',
-      group  => $group,
+      group  => $freeradius::group,
       mode   => '0640',
       purge  => true,
       before => Service['radiusd'],
     })
 
-  file { "${confdir}/conf.d/instantiate.inc":
+  file { "${freeradius::confdir}/conf.d/instantiate.inc":
     ensure  => 'file',
     owner   => 'root',
-    group   => $group,
+    group   => $freeradius::group,
     mode    => '0640',
-    require => File["${confdir}/conf.d"],
+    require => File["${freeradius::confdir}/conf.d"],
     content => template('freeradius/3/conf.d/instantiate.erb'),
     notify  => Service['radiusd']
   }

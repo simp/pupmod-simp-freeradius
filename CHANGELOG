@@ -2,6 +2,9 @@
 - Refactored API
 - Updated to work with puppet 5.
 - Removed support for freeradius version 2
+- Inner-tunnel site is not added by default any more.
+- SQL sites are not added by default.
+- Added check for FIPS mode and fail if server is in fips mode.
 - Added acceptance and spec tests
 
 * Thu Jul 06 2017 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.1-0

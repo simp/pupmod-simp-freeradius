@@ -34,7 +34,7 @@ describe 'freeradius class' do
         Reply-Message := "Hello World"
        | EOTU
 
-        freeradius::v3::user { 'testuser':
+        freeradius::v3::conf::user { 'testuser':
           content => $_testuser
         }
 
@@ -69,7 +69,7 @@ describe 'freeradius class' do
         Reply-Message := "Hello World"
        | EOTU
 
-        freeradius::v3::user { 'testuser':
+        freeradius::v3::conf::user { 'testuser':
           content => $_testuser
         }
 

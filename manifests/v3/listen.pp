@@ -13,7 +13,7 @@
 #
 # @param idle_timeout
 # @param ipaddr
-#  be carefull not to use the same ip address in more than on listener
+#  be carefull not to use the same ip address in more than one listener
 # @param interface
 # @param lifetime
 # @param listen_type
@@ -30,7 +30,7 @@ define freeradius::v3::listen (
   Optional[Simplib::Port] $port               = undef,
   Optional[String]        $interface          = undef,
   Optional[String]        $per_socket_clients = undef,
-  Optional[Integer]       $max_epps           = undef,
+  Optional[Integer]       $max_pps            = undef,
   Optional[Integer]       $lifetime           = undef,
   Optional[Integer]       $max_connections    = undef,
   Optional[Integer]       $idle_timeout       = undef,

@@ -80,6 +80,7 @@ class freeradius::v3::modules::ldap (
   Array[Simplib::Uri]          $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{lookup('simp_options::puppet::server')}"]}),
   Stdlib::AbsolutePath         $app_pki_ca_dir                                 = simplib::lookup('freeradius::app_pki_ca_dir'),
   Stdlib::AbsolutePath         $app_pki_cert                                   = simplib::lookup('freeradius::app_pki_cert'),
+  Boolean                        $fips                    = simplib::lookup('simp_options::fips', {'default_value' => false }),
   Stdlib::AbsolutePath         $app_pki_key                                    = simplib::lookup('freeradius::app_pki_key'),
   Stdlib::Absolutepath         $confdir                                        = simplib::lookup('freeradius::confdir', { 'default_value' => '/etc/raddb' }),
   String                       $group                                          = simplib::lookup('freeradius::group', { 'default_value'   => 'radiusd' }),
@@ -131,13 +132,16 @@ class freeradius::v3::modules::ldap (
 
   include 'freeradius'
 
-  file { "${confdir}/mods-enabled/ldap":
-    owner   => 'root',
-    group   => $group,
-    mode    => '0640',
-    content => template('freeradius/3/modules/ldap.erb'),
-    require => File["${confdir}/mods-enabled"],
-    notify  => Service['radiusd']
+  if $fips or $facts['fips_enabled'] {
+    warning('RADIUS, by design, must have MD5 support. FreeRADIUS (and RADIUS period) cannot be supported in FIPS mode.')
+  } else {
+    file { "${confdir}/mods-enabled/ldap":
+      owner   => 'root',
+      group   => $group,
+      mode    => '0640',
+      content => template('freeradius/3/modules/ldap.erb'),
+      require => File["${confdir}/mods-enabled"],
+      notify  => Service['radiusd']
+    }
   }
-
 }

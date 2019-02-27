@@ -1,10 +1,10 @@
-# This define copies a site definition file to the sites-available directy and
+# This define copies a site definition file to the sites-available directory and
 # if it is enabled, links it to the sites-enabled directory.
 # Note:  If freeradius::manage_sites is enabled any site not defined in puppet
 # will be purged.
 #
-# If neither content or source is defined and it it enabled then it will
-#  it will just create a link.
+# If neither content or source is defined and it is enabled then it will
+# just create a link.
 #
 # @see site definitions in sites-available for further documentation on sites.
 #

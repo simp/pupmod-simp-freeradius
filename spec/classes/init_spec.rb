@@ -48,6 +48,7 @@ shared_examples_for 'config v3' do
   it { is_expected.to contain_class('freeradius::v3::radiusd_conf::log' )}
   it { is_expected.to contain_class('freeradius::v3::radiusd_conf::security' )}
   it { is_expected.to contain_class('freeradius::v3::radiusd_conf::thread_pool' )}
+  it { is_expected.to contain_class('freeradius::v3::radiusd_conf::instantiate' )}
   it { is_expected.to contain_class('freeradius::v3::conf::users' )}
   it {is_expected.to contain_file('/etc/raddb/conf.d')}
   it {is_expected.to contain_file('/etc/raddb/clients.d')}
@@ -141,6 +142,11 @@ describe 'freeradius' do
             it {is_expected.to contain_file('/etc/raddb/conf.d/log.inc').with_content(expected_content_log)}
             it {is_expected.to contain_file('/etc/raddb/conf.d/security.inc').with_content(expected_content_security)}
             it {is_expected.to contain_file('/etc/raddb/conf.d/thread_pool.inc').with_content(expected_content_thread_pool)}
+            it {is_expected.to contain_file('/etc/raddb/conf.d/instantiate.inc').with_content(<<-EOM)
+instantiate {
+}
+EOM
+            }
           end
 
           context 'v3::conf with changed parameters' do
@@ -167,8 +173,8 @@ describe 'freeradius' do
             it { is_expected.to contain_iptables__listen__udp('radius_iptables_udp') }
             it { is_expected.to contain_iptables__listen__tcp_stateful('radius_iptables_tcp') }
             it { is_expected.to_not contain_class('freeradius::v3::conf::users') }
-            it { is_expected.to contain_file('/etc/raddb/clients.conf').with_source('/tmp/myclientsource') }
-            it { is_expected.to contain_file('/etc/raddb/mods-config/files/authorize').with_source('/tmp/myusersource') }
+            it { is_expected.to contain_file('/etc/raddb/clients.conf').with_content('/tmp/myclientcontent') }
+            it { is_expected.to contain_file('/etc/raddb/mods-config/files/authorize').with_content('/tmp/myusercontent') }
           end
         end
 

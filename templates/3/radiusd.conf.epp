@@ -1,3 +1,9 @@
+<%
+  $bool2str = {
+    true => 'yes',
+    false => 'no'
+  }
+-%>
 # This file is managed by puppet
 prefix = /usr
 exec_prefix = /usr
@@ -24,19 +30,19 @@ correct_escapes = <%= $freeradius::v3::conf::correct_escapes %>
 max_request_time = <%= $freeradius::v3::conf::max_request_time %>
 cleanup_delay = <%= $freeradius::v3::conf::cleanup_delay %>
 max_requests = <%= $freeradius::v3::conf::max_requests %>
-hostname_lookups = <%= $freeradius::v3::conf::hostname_lookups %>
+hostname_lookups = <%= $bool2str[$freeradius::v3::conf::hostname_lookups] %>
 checkrad = ${sbindir}/checkrad
 
 $INCLUDE ${confdir}/conf.d/
 
-<% if $freeradius::v3::conf::proxy_requests == true { -%>
+<% if $freeradius::v3::conf::proxy_conf_content  { -%>
 proxy_requests  = yes
 $INCLUDE ${confdir}/proxy.conf
 <% } else { -%>
 proxy_requests = no
 <% } -%>
 
-<% if $freeradius::v3::conf::trigger_conf_source { -%>
+<% if $freeradius::v3::conf::trigger_conf_content { -%>
 $INCLUDE ${confdir}/trigger.conf
 <% } -%>
 

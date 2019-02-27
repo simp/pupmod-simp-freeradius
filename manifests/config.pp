@@ -24,7 +24,9 @@ class freeradius::config(
 
   file { $freeradius::confdir:
     ensure => 'directory',
-    *      => $config_file_settings
+    owner  => 'root',
+    group  => $freeradius::group,
+    mode   => '0644',
   }
 
   if $freeradius::testcerts {
@@ -38,7 +40,9 @@ class freeradius::config(
       ensure       => 'directory',
       recurse      => true,
       recurselimit => 1,
-      *            => $config_file_settings
+      owner        => 'root',
+      group        => $freeradius::group,
+      mode         => '0660',
     }
   }
 
