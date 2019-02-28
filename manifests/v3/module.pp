@@ -1,8 +1,8 @@
-# This define copies a moduledefinition file to the imodules-available directy and
-# if it is enabled, links it to the mods-enabled directory.
+# This define copies a module definition file to the modules-available directory
+# and if it is enabled, links it to the mods-enabled directory.
 #
-# If neither content or source is defined and it it enabled then it will
-#  it will just create a link.
+# If neither content or source is defined and ft it enabled then it will
+#  just create a link.
 #
 # @see mods-available for further documentation on modules.
 #
