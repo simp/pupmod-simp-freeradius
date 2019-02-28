@@ -28,7 +28,7 @@
 #   This source for the trigger.conf file, when set
 #
 # The following parameters are settings in the radius.conf file.
-# @see radiusd.conf(5) and /etc/raddb/radiusd.conf.sample for additional information.
+# @see radiusd.conf(5) for additional information.
 #
 # @param localstatedir
 # @param max_request_time
