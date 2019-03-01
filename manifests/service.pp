@@ -1,9 +1,6 @@
 # Class freeradius::service
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-# * Nick Markowski <nmarkowski@keywcorp.com>
+# configure the radiusd service
 #
 class freeradius::service {
   service { 'radiusd':

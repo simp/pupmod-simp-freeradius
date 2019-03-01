@@ -1,32 +1,30 @@
 # Class freeradius::install
 #
-# == Authors
+# @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-# * Nick Markowski <nmarkowski@keywcorp.com>
-#
-class freeradius::install inherits freeradius {
+class freeradius::install {
   assert_private()
 
-  group { 'radiusd':
+  group { $freeradius::group :
     ensure => 'present',
-    gid    => '95'
+    gid    => $freeradius::gid
   }
 
-  user { 'radiusd':
+  user { $freeradius::user:
     ensure    => 'present',
-    uid       => '95',
-    gid       => 'radiusd',
+    uid       => $freeradius::uid,
+    gid       => $freeradius::group,
     allowdupe => false,
     shell     => '/sbin/nologin',
     home      => '/var/run/radiusd',
-    require   => Group['radiusd']
+    require   => Group[$freeradius::group]
   }
 
-  package { [$::freeradius::freeradius_ver,
-            "${::freeradius::freeradius_name}-ldap.${::hardwaremodel}",
-            "${::freeradius::freeradius_name}-utils.${::hardwaremodel}"]:
-    ensure  => 'latest',
+  package { [$::freeradius::freeradius_name,
+            "${::freeradius::freeradius_name}-ldap",
+            "${::freeradius::freeradius_name}-utils"]:
+    ensure  => $::freeradius::package_ensure,
     require => User['radiusd']
   }
+
 }

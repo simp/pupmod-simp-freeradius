@@ -1,0 +1,4 @@
+# This file is managed by Puppet.  Changes will be overwritten
+# at the next puppet run.
+#
+server <%= $freeradius::v3::sites::ldap::site_name %> {

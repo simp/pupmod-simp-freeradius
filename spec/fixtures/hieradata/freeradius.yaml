@@ -1,3 +1,10 @@
 ---
 trusted_nets: '1.2.3.4/19'
 freeradius::3::modules::ldap::server: 'testserver'
+freeradius::pki: false
+freeradius::firewall: false
+freeradius::group: 'radiusd'
+freeradius::sysconfdir: '/etc'
+freeradius::confdir:  '/etc/raddb'
+freeradius::logdir:  '/var/log/freeradius'
+freeradius::package_ensure: 'installed'

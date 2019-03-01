@@ -1,0 +1,41 @@
+# This file is managed by puppet
+prefix = /usr
+exec_prefix = /usr
+sysconfdir = /etc
+localstatedir = /var
+sbindir = /usr/sbin
+logdir = /var/log/freeradius
+raddbdir = /etc/raddb
+radacctdir = ${logdir}/radacct
+name = radiusd
+confdir = ${raddbdir}
+modconfdir = ${raddbdir}/mods-config
+certdir = ${raddbdir}/certs
+cadir = ${raddbdir}/certs
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${localstatedir}/lib/${name}
+libdir = /usr/lib64/freeradius
+pidfile = ${run_dir}/${name}.pid
+correct_escapes = true
+max_request_time = 30
+cleanup_delay = 5
+max_requests = 1024
+hostname_lookups = no
+checkrad = ${sbindir}/checkrad
+
+$INCLUDE ${confdir}/conf.d/
+
+proxy_requests = no
+
+
+$INCLUDE ${confdir}/clients.conf
+
+$INCLUDE ${confdir}/sites-enabled/
+
+policy {
+  $INCLUDE ${confdir}/policy.d/
+}
+
+modules {
+  $INCLUDE ${confdir}/mods-enabled/
+}

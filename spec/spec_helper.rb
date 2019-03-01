@@ -16,7 +16,6 @@ if Puppet.version < "4.0.0"
   end
 end
 
-
 if !ENV.key?( 'TRUSTED_NODE_DATA' )
   warn '== WARNING: TRUSTED_NODE_DATA is unset, using TRUSTED_NODE_DATA=yes'
   ENV['TRUSTED_NODE_DATA']='yes'
@@ -24,14 +23,19 @@ end
 
 default_hiera_config =<<-EOM
 ---
-:backends:
-  - "yaml"
-:yaml:
-  :datadir: "stub"
-:hierarchy:
-  - "%{custom_hiera}"
-  - "%{module_name}"
-  - "default"
+version: 5
+hierarchy:
+  - name: SIMP Compliance Engine
+    lookup_key: compliance_markup::enforcement
+  - name: Custom Test Hiera
+    path: "%{custom_hiera}.yaml"
+  - name: "%{module_name}"
+    path: "%{module_name}.yaml"
+  - name: Common
+    path: default.yaml
+defaults:
+  data_hash: yaml_data
+  datadir: "stub"
 EOM
 
 # This can be used from inside your spec tests to set the testable environment.
@@ -110,7 +114,15 @@ RSpec.configure do |c|
 
   c.before(:all) do
     data = YAML.load(default_hiera_config)
-    data[:yaml][:datadir] = File.join(fixture_path, 'hieradata')
+    data.keys.each do |key|
+      next unless data[key].is_a?(Hash)
+
+      if data[key][:datadir] == 'stub'
+        data[key][:datadir] = File.join(fixture_path, 'hieradata')
+      elsif data[key]['datadir'] == 'stub'
+        data[key]['datadir'] = File.join(fixture_path, 'hieradata')
+      end
+    end
 
     File.open(c.hiera_config, 'w') do |f|
       f.write data.to_yaml

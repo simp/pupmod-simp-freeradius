@@ -15,8 +15,15 @@
 # @param app_pki_ca_dir
 #   Path to the CA.
 #
+# @param confdir
+#  Freeradius configuration directory
+#
+# @param group
+#  Group radiusd is running under.
+#
 # @param base_filter
 # @param client_scope
+# @param client_filter
 # @param client_attribute_identifier
 # @param client_attribute_secret
 # @param client_attribute_shortname
@@ -24,7 +31,6 @@
 # @param client_attribute_virtual_server
 # @param client_attribute_require_message_authenticator
 # @param default_profile
-# @param filter
 # @param group_scope
 # @param group_name_attribute
 # @param group_membership_filter
@@ -41,6 +47,7 @@
 # @param ldap_timeout
 # @param ldap_timelimit
 # @param options_chase_referrals
+# @param options_dereference
 # @param options_idle
 # @param options_interval
 # @param options_net_timeout
@@ -58,105 +65,83 @@
 # @param profile_attribute
 # @param random_file
 # @param require_cert
+# @param retry_delay
 # @param start_tls
+# @param user_filter
 # @param user_access_attribute
 # @param user_access_positive
 # @param user_scope
 # @param server
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-#
 class freeradius::v3::modules::ldap (
-  $ldap_base_dn                                   = simplib::lookup('simp_options::ldap::base_dn', { 'value_type'    => String }),
-  $app_pki_ca_dir                                 = $::freeradius::config::app_pki_ca_dir,
-  $app_pki_cert                                   = $::freeradius::config::app_pki_cert,
-  $app_pki_key                                    = $::freeradius::config::app_pki_key,
-  $base_filter                                    = '(objectclass=radiusprofile)',
-  $client_scope                                   = 'nil',
-  $client_attribute_identifier                    = 'radiusClientIdentifier',
-  $client_attribute_secret                        = 'radiusClientSecret',
-  $client_attribute_shortname                     = 'nil',
-  $client_attribute_nas_type                      = 'nil',
-  $client_attribute_virtual_server                = 'nil',
-  $client_attribute_require_message_authenticator = 'nil',
-  $default_profile                                = 'nil',
-  $filter                                         = '(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
-  $group_scope                                    = 'nil',
-  $group_name_attribute                           = 'cn',
-  $group_membership_filter                        = '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))',
-  $group_membership_attribute                     = 'radiusGroupName',
-  $group_cacheable_name                           = false,
-  $group_cacheable_dn                             = false,
-  $identity                                       = simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{hiera('simp_options::ldap::base_dn')}", 'value_type' => String }),
-  $ldap_connections_number                        = '5',
-  $ldap_debug                                     = 'nil',
-  $ldap_timeout                                   = '4',
-  $ldap_timelimit                                 = '3',
-  $options_chase_referrals                        = false,
-  $options_idle                                   = '60',
-  $options_interval                               = '3',
-  $options_net_timeout                            = '1',
-  $options_probes                                 = '3',
-  $options_rebind                                 = false,
-  $password                                       = simplib::lookup('simp_options::ldap::bind_pw', { 'value_type'    => String }),
-  $pool_start                                     = '5',
-  $pool_min                                       = '4',
-  $pool_max                                       = '10',
-  $pool_spare                                     = '3',
-  $pool_uses                                      = '0',
-  $pool_lifetime                                  = '0',
-  $pool_idle_timeout                              = '60',
-  $port                                           = '389',
-  $profile_attribute                              = 'nil',
-  $random_file                                    = '/dev/urandom',
-  $require_cert                                   = 'demand',
-  $start_tls                                      = true,
-  $user_access_attribute                          = 'nil',
-  $user_access_positive                           = 'nil',
-  $user_scope                                     = 'nil',
-  $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{hiera('simp_options::puppet::server')}"], 'value_type' => Array[String] })
+  String                       $base_dn                                        = simplib::lookup('simp_options::ldap::base_dn'),
+  String                       $password                                       = simplib::lookup('simp_options::ldap::bind_pw'),
+  String                       $identity                                       = simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{lookup('simp_options::ldap::base_dn')}", 'value_type' => String }),
+  Array[Simplib::Uri]          $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{lookup('simp_options::puppet::server')}"]}),
+  Stdlib::AbsolutePath         $app_pki_ca_dir                                 = simplib::lookup('freeradius::app_pki_ca_dir'),
+  Stdlib::AbsolutePath         $app_pki_cert                                   = simplib::lookup('freeradius::app_pki_cert'),
+  Boolean                        $fips                    = simplib::lookup('simp_options::fips', {'default_value' => false }),
+  Stdlib::AbsolutePath         $app_pki_key                                    = simplib::lookup('freeradius::app_pki_key'),
+  Stdlib::Absolutepath         $confdir                                        = simplib::lookup('freeradius::confdir', { 'default_value' => '/etc/raddb' }),
+  String                       $group                                          = simplib::lookup('freeradius::group', { 'default_value'   => 'radiusd' }),
+  String                       $base_filter                                    = '(objectclass=radiusprofile)',
+  Optional[Freeradius::Scope]  $client_scope                                   = undef,
+  String                       $client_attribute_identifier                    = 'radiusClientIdentifier',
+  String                       $client_attribute_secret                        = 'radiusClientSecret',
+  Optional[String]             $client_attribute_shortname                     = undef,
+  Optional[String]             $client_attribute_nas_type                      = undef,
+  Optional[String]             $client_attribute_virtual_server                = undef,
+  Optional[String]             $client_attribute_require_message_authenticator = undef,
+  String                       $client_filter                                  = '(objectClass=frClient)',
+  Optional[String]             $default_profile                                = undef,
+  Optional[Freeradius::Scope]  $group_scope                                    = undef,
+  String                       $group_name_attribute                           = 'cn',
+  String                       $group_membership_filter                        = '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))',
+  String                       $group_membership_attribute                     = 'memberOf',
+  Boolean                      $group_cacheable_name                           = false,
+  Boolean                      $group_cacheable_dn                             = false,
+  Integer[1]                   $ldap_connections_number                        = 5,
+  Optional[String]             $ldap_debug                                     = undef,
+  Integer                      $ldap_timeout                                   = 4,
+  Integer                      $ldap_timelimit                                 = 3,
+  Boolean                      $options_chase_referrals                        = false,
+  Freeradius::Deref            $options_dereference                            = 'never',
+  Integer                      $options_idle                                   = 60,
+  Integer                      $options_interval                               = 3,
+  Integer                      $options_net_timeout                            = 1,
+  Integer                      $options_probes                                 = 3,
+  Boolean                      $options_rebind                                 = false,
+  Integer[1]                   $pool_start                                     = 5,
+  Integer[1]                   $pool_min                                       = 4,
+  Integer[1]                   $pool_max                                       = 10,
+  Integer[1]                   $pool_spare                                     = 3,
+  Integer[0]                   $pool_uses                                      = 0,
+  Integer[0]                   $pool_lifetime                                  = 0,
+  Integer[1]                   $pool_idle_timeout                              = 60,
+  Simplib::Port                $port                                           = 389,
+  Optional[String]             $profile_attribute                              = undef,
+  Stdlib::AbsolutePath         $random_file                                    = '/dev/urandom',
+  String                       $require_cert                                   = 'demand',
+  Integer[1]                   $retry_delay                                    = 30,
+  Boolean                      $start_tls                                      = true,
+  String                       $user_filter                                    = '(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
+  Optional[String]             $user_access_attribute                          = undef,
+  Optional[String]             $user_access_positive                           = undef,
+  Optional[Freeradius::Scope]  $user_scope                                     = undef,
 ) {
 
-  file { '/etc/raddb/mods-enabled/ldap':
-    owner   => 'root',
-    group   => 'radiusd',
-    mode    => '0640',
-    content => template('freeradius/3/modules/ldap.erb'),
-    notify  => Service['radiusd']
-  }
+  include 'freeradius'
 
-  #validate_absolute_path($app_pki_ca)
-  #validate_absolute_path($app_pki_key)
-  #validate_absolute_path($random_file)
-  if $user_scope != 'nil' {
-    validate_array_member($user_scope, ['base','one','sub','children'])
+  if $fips or $facts['fips_enabled'] {
+    warning('RADIUS, by design, must have MD5 support. FreeRADIUS (and RADIUS period) cannot be supported in FIPS mode.')
+  } else {
+    file { "${confdir}/mods-enabled/ldap":
+      owner   => 'root',
+      group   => $group,
+      mode    => '0640',
+      content => template('freeradius/3/modules/ldap.erb'),
+      require => File["${confdir}/mods-enabled"],
+      notify  => Service['radiusd']
+    }
   }
-  if $group_scope != 'nil' {
-    validate_array_member($group_scope, ['base','one','sub','children'])
-  }
-  if $client_scope != 'nil' {
-    validate_array_member($client_scope, ['base','one','sub','children'])
-  }
-  #validate_bool($group_cacheable_name)
-  #validate_bool($group_cacheable_dn)
-  #validate_bool($options_chase_referrals)
-  #validate_bool($options_rebind)
-  #validate_bool($start_tls)
-  #validate_integer($ldap_connections_number)
-  #validate_integer($ldap_timeout)
-  #validate_integer($ldap_timelimit)
-  #validate_integer($options_idle)
-  #validate_integer($options_interval)
-  #validate_integer($options_net_timeout)
-  #validate_integer($options_probes)
-  #validate_integer($pool_start)
-  #validate_integer($pool_min)
-  #validate_integer($pool_max)
-  #validate_integer($pool_spare)
-  #validate_integer($pool_uses)
-  #validate_integer($pool_lifetime)
-  #validate_integer($pool_idle_timeout)
-  #validate_port($port)
 }

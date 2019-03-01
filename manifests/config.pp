@@ -1,82 +1,82 @@
 # == Class: freeradius::config
 #
-# Configure a freeradius server.
-#
-# This can only be defined *once* in a namespace.
-#
-# @param app_pki_external_source
-#   * If pki = 'simp' or true, this is the directory from which certs will be
-#     copied, via pki::copy.  Defaults to /etc/pki/simp/x509.
-#
-#   * If pki = false, this variable has no effect.
-#
-# @param app_pki_dir
-#   This variable controls the basepath of $app_pki_key, $app_pki_cert,
-#   $app_pki_ca, $app_pki_ca_dir, and $app_pki_crl.
-#   It defaults to /etc/pki/simp_apps/freeradius/x509.
-#
-# @param app_pki_key
-#   Path and name of the private SSL key file
-#
-# @param app_pki_cert
-#   Path and name of the public SSL certificate
-#
-# @param app_pki_ca_dir
-#   Path to the CA.
-#
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-# * Nick Markowski <nmarkowski@keywcorp.com>
+# Manage the permissions on directories and files
+# and then either rsync content or create content.
 #
 class freeradius::config(
-  $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
-  $app_pki_dir             = '/etc/pki/simp_apps/freeradius/x509',
-  $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
-  $app_pki_key             = "${app_pki_dir}/private/${facts['fqdn']}.pem",
-  $app_pki_ca_dir          = "${app_pki_dir}/cacerts",
-  $logdir                  = '/var/log/freeradius'
-) inherits freeradius {
+) {
 
-  if $::freeradius::pki {
+  assert_private()
+
+  if $freeradius::pki {
     ::pki::copy { 'freeradius':
-      source => $app_pki_external_source,
-      pki    => $::freeradius::pki,
-      group  => 'radiusd',
+      source => $freeradius::app_pki_external_source,
+      pki    => $freeradius::pki,
+      group  => $freeradius::group,
     }
   }
 
-  # Version agnostic configuration
-  include '::freeradius::modules'
-  exec { '/etc/raddb/certs/bootstrap':
-    path      => '/usr/bin:/usr/sbin:/bin:/etc/raddb/certs',
-    unless    => 'test -f /etc/raddb/certs/server.pem',
-    logoutput => true,
-  }
-  exec { '/bin/chgrp -R radiusd /etc/raddb/certs': }
-  file { '/etc/raddb':
-    owner => 'root',
-    group => 'radiusd',
-    mode  => '0750',
+  $config_file_settings = {
+    owner  => 'root',
+    group  => $freeradius::group,
+    mode   => '0640',
   }
 
-  # Version specific configuration
-  if $::operatingsystem in ['RedHat', 'CentOS'] {
-    if defined('$::radius_version') and ($::radius_version != 'unknown') {
-      if (versioncmp($::radius_version, '3') >= 0) {
-        $ver = '3'
-      }
-      else {
-        $ver = '2'
-      }
+  file { $freeradius::confdir:
+    ensure => 'directory',
+    owner  => 'root',
+    group  => $freeradius::group,
+    mode   => '0644',
+  }
 
-      include "::freeradius::v${ver}::conf"
+  if $freeradius::testcerts {
+    exec { "${freeradius::confdir}/certs/bootstrap":
+      path      => "/usr/bin:/usr/sbin:/bin:${freeradius::confdir}/certs",
+      unless    => "test -f ${freeradius::confdir}/certs/server.pem",
+      logoutput => true,
+      require   => Package[$freeradius::freeradius_name]
     }
-    else {
-      warning('FreeRADIUS does not yet appear to be installed. Please install FreeRADIUS and then continue.')
+    file { "${freeradius::confdir}/certs":
+      ensure       => 'directory',
+      recurse      => true,
+      recurselimit => 1,
+      owner        => 'root',
+      group        => $freeradius::group,
+      mode         => '0660',
     }
+  }
+
+  file { ["${freeradius::confdir}/mods-config",
+          "${freeradius::confdir}/mods-available",
+          "${freeradius::confdir}/mods-enabled",
+          "${freeradius::confdir}/sites-available"]:
+    ensure  => 'directory',
+    require => File[$freeradius::confdir],
+    *       => $config_file_settings
+  }
+
+  file { "${freeradius::confdir}/sites-enabled":
+    ensure  => 'directory',
+    recurse => true,
+    require => File[$freeradius::confdir],
+    purge   => $freeradius::manage_sites_enabled,
+    *       => $config_file_settings
+  }
+
+  if $freeradius::use_rsync {
+    include 'freeradius::config::rsync'
   }
   else {
-    warning("${::operatingsystem} not yet supported. Current options are RedHat and CentOS")
+    if $facts['radius_version'] and $facts['radius_version'] != 'unknown' {
+      if versioncmp($facts['radius_version'], '3') < 0 {
+        warning("${module_name} : This module is designed to work with freeradius version 3.X. The current version installed is ${facts['radius_version']}")
+      }
+      else {
+        include 'freeradius::v3::conf'
+      }
+    }
+    else {
+      warning("${module_name} : The version freeradius installed is unknown.")
+    }
   }
 }

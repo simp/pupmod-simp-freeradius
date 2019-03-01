@@ -1,0 +1,46 @@
+<%
+  bool2str = {
+    true => 'yes',
+    false => 'no'
+  }
+-%>
+client <%= @client_name %> {
+<% if @ipaddr.include?(':') -%>
+  ipv6addr = <%= @ipaddr %>
+<% else -%>
+  ipaddr = <%= @ipaddr %>
+<% end -%>
+  secret = <%= @secret %>
+<% if @shortname -%>
+  shortname = <%= @shortname %>
+<% end -%>
+  require_message_authenticator = <%= bool2str[@require_message_authenticator] %>
+<% if @nas_type -%>
+  nas_type = <%= @nas_type %>
+<% end -%>
+<% if @login -%>
+  login = <%= @login %>
+<% end -%>
+<% if @password -%>
+  password = <%= @password %>
+<% end -%>
+<% if @virtual_server -%>
+  virtual_server = <%= @virtual_server %>
+<% end -%>
+<% if @coa_server -%>
+  coa_server = <%= @coa_server %>
+<% end -%>
+<% if @response_window -%>
+  response_window = <% @response_window %>
+<% end -%>
+<% if @proto %>
+  proto = <%= @proto %>
+  <% if @proto != 'udp' %>
+  limit {
+    max_connections = <% @max_connections %>
+    lifetime = <% @lifetime %>
+    idle_timeout = <% @idle_timeout %>
+  }
+  <% end %>
+<% end -%>
+}

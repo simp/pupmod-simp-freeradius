@@ -1,0 +1,10 @@
+<%
+  if @is_default
+    t_str = 'DEFAULT'
+  else
+    t_str = @name
+  end
+
+  t_str += " #{@content.strip.split("\n").map{ |x| x.strip }.join("\n\t")}"
+-%>
+<%= t_str -%>

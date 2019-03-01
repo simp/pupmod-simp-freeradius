@@ -1,0 +1,9 @@
+thread pool {
+  start_servers = 6
+  max_servers = 33
+  min_spare_servers = 4
+  max_spare_servers = 11
+  max_requests_per_server = 1
+  max_queue_size = 100
+  auto_limit_acct = yes
+}

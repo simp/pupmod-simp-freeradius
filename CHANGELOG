@@ -1,5 +1,11 @@
-* Fri Sep 07 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.2-0
-- Drop Hiera 4 support
+* Wed Dec 19 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
+- Refactored API
+- Updated to work with puppet 5.
+- Removed support for freeradius version 2
+- Inner-tunnel site is not added by default any more.
+- SQL sites are not added by default.
+- Added check for FIPS mode and fail if server is in FIPS mode.
+- Added acceptance and spec tests
 
 * Thu Jul 06 2017 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.1-0
 - Confine puppet version in metadata.json

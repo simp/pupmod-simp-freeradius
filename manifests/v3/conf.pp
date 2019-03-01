@@ -1,202 +1,219 @@
 # == Class: freeradius::v3::conf
 #
-# Configure a freeradius server.
+#  This class will configure the radiusd.conf file.
 #
-# This can only be defined *once* in a namespace.
+#  If clients_conf_source is set, it will copy the file
+#  from the source to the clients.conf file and include it
+#  in the source. Otherwise it includes clients.d/* and clients
+#  will have to be set up using the v3/client manifest.
 #
-# See radiusd.conf(5) and /etc/raddb/radiusd.conf.sample for additional information.
-#
-# If you use this class and do not set 'use_rsync_radiusd_conf = true' then
-# you *must* also declare the follwing classes within the node scope:
-# * freeradius::conf::client
-# * freeradius::conf::instantiate
-# * freeradius::conf::listen::add
-# * freeradius::conf::log
-# * freeradius::conf::modules
-# * freeradius::conf::security
-# * freeradius::conf::thread_pool
+#  If trigger_conf_source is set it will copy the file indicated in
+#  source to trigger.conf and include this file in the radius.conf.
 #
 # == Parameters
 #
-# @param use_rsync_radiusd_conf
-#   If set to true, then the variables here will not be used, instead the
-#   system will use a radiusd.conf that is pulled from rsync. To make this
-#   work, you will need to create your own radiusd.conf in the freeradius
-#   rsync directory on the puppet server.
-#
-# @param rsync_server
-#   Default: 127.0.0.1
-#   If $use_rsync_radiusd_conf is true, specify the rsync server from
-#   which to pull here.
-#
-# @param rsync_timeout
-#   Default: '2'
-#   If $use_rsync_radiusd_conf is true, specify the rsync connection
-#   timeout here.
+# @param protocol
+#   What protocols will be used to make sure the firewall is opened correctly
 #
 # @param trusted_nets
 #   An array of networks that are allowed to access the radius server.
 #
-# @param localstatedir
-# @param logdir
+# @param clients_conf_source
+#   Source for the clients.conf file if not creating clients individualy
 #
+# @param proxy_conf_source
+#   If proxy_request is true it will use this source for the proxy.conf file
+#
+# @param trigger_conf_source
+#   This source for the trigger.conf file, when set
+#
+# The following parameters are settings in the radius.conf file.
+# @see radiusd.conf(5) for additional information.
+#
+# @param localstatedir
+# @param max_request_time
+# @param cleanup_delay
+# @param correct_escapes
+# @param max_requests
+# @param hostname_lookups
 # @param radius_ports
 #   Type: Array
 #   Default: ['1812','1813']
 #   The ports where radius will listen.
 #
-# @param radius_rsync_user
-#   Since radius holds sensitive information, the rsync space should be accordingly protected.
-#   This define has been designed with the assuption that you will utilize
-#   the internal passgen mechanism to set the password. You can optionally specify
-#   $radius_rsync_password
-#
-# @param radius_rsync_password
-#   If no password is specified, passgen will be used
-#
-# @param max_request_time
-# @param cleanup_delay
-# @param max_requests
-# @param default_acct_listener
-#   Whether or not to set up the default acct listener.
-#
-# @param hostname_lookups
-# @param allow_core_dumps
-# @param regular_expressions
-# @param extended_expressions
-# @param proxy_requests
-#
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
-#
 class freeradius::v3::conf (
-  $cleanup_delay          = '5',
-  $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'], 'value_type' => Array[String] }),
-  $default_acct_listener  = true,
-  $extended_expressions   = true,
-  $hostname_lookups       = false,
-  $localstatedir          = '/var',
-  $logdir                 = $::freeradius::config::logdir,
-  $max_request_time       = '30',
-  $max_requests           = '1024',
-  $proxy_requests         = false,
-  $rsync_source           = "freeradius_${::environment}_${facts['os']['name']}/",
-  $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1', 'value_type' => String }),
-  $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2, 'value_type' => Integer }),
-  $rsync_bwlimit          = '',
-  $radius_ports           = [1812, 1813],
-  $radius_rsync_user      = "freeradius_systems_${::environment}_${facts['os']['name'].downcase}",
-  $radius_rsync_password  = 'nil',
-  $regular_expressions    = true,
-  $use_rsync_radiusd_conf = false,
-  $firewall               = $::freeradius::firewall
-) inherits ::freeradius::config {
+  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
+  Integer[2,10]           $cleanup_delay          = 5,
+  Boolean                 $correct_escapes        = true,
+  Boolean                 $default_acct_listener  = true,
+  Boolean                 $hostname_lookups       = false,
+  Stdlib::AbsolutePath    $localstatedir          = '/var',
+  Integer[2,120]          $max_request_time       = 30,
+  Integer[256]            $max_requests           = 1024,
+  Array[Simplib::Port]    $radius_ports           = [1812, 1813],
+  Enum['udp','tcp','ALL'] $protocol               = 'ALL',
+  Optional[String]        $clients_conf_content   = undef,
+  Optional[String]        $proxy_conf_content     = undef,
+  Optional[String]        $trigger_conf_content   = undef,
+  Optional[String]        $users_conf_content     = undef,
+) {
 
-  validate_between(to_integer($cleanup_delay), 2, 10)
-  validate_between(to_integer($max_request_time), 5, 120)
-  if to_integer($max_requests) <= 256 {
-    fail('max_requests must be greater than 256')
+  assert_private()
+
+  include 'freeradius::v3::radiusd_conf::log'
+  include 'freeradius::v3::radiusd_conf::security'
+  include 'freeradius::v3::radiusd_conf::thread_pool'
+  include 'freeradius::v3::radiusd_conf::instantiate'
+
+  Class[freeradius::config]
+  -> Class[freeradius::v3::conf]
+  -> [Class[freeradius::v3::radiusd_conf::thread_pool],
+      Class[freeradius::v3::radiusd_conf::log],
+      Class[freeradius::v3::radiusd_conf::instantiate],
+      Class[freeradius::v3::radiusd_conf::security]]
+
+  ############################
+  #  Manage permissions on log files
+
+  $log_file_settings = {
+    owner => $freeradius::user,
+    group => $freeradius::group,
+    mode  => '0640',
   }
-  #validate_bool($use_rsync_radiusd_conf)
-  #validate_bool($default_acct_listener)
-  #validate_bool($hostname_lookups)
-  #validate_bool($regular_expressions)
-  #validate_bool($extended_expressions)
-  #validate_bool($proxy_requests)
-  #validate_integer($max_requests)
-  validate_net_list($trusted_nets)
-  validate_port($radius_ports)
-
-  include '::freeradius'
-  include '::freeradius::conf::listen'
-  include '::freeradius::v3::conf::sites'
-  include '::freeradius::v3::conf::policy'
-
-  file { $logdir:
+  file { $freeradius::logdir:
     ensure => 'directory',
-    owner  => 'radiusd',
-    group  => 'radiusd',
-    mode   => '0640',
+    *      => $log_file_settings,
+  }
+
+  file { "${freeradius::logdir}/radacct":
+    ensure => 'directory',
+    *      => $log_file_settings,
   }
 
   file { [
-    "${logdir}/linelog",
-    "${logdir}/radutmp",
-    "${logdir}/radwtmp",
-    "${logdir}/sradutmp"
+    "${freeradius::logdir}/linelog",
+    "${freeradius::logdir}/radutmp",
+    "${freeradius::logdir}/radwtmp",
+    "${freeradius::logdir}/sradutmp"
   ]:
-    ensure => 'file',
-    owner  => 'radiusd',
-    group  => 'radiusd',
-    mode   => '0640',
-    before => Service['radiusd'],
+    ensure  => 'file',
+    *       => $log_file_settings,
+    require => File[$freeradius::logdir],
+    before  => Service['radiusd'],
+  }
+  #
+  ############################
+
+  ############################
+  #  Create radiusd.conf
+  #  and  its included sections
+  #  in conf.d
+  #
+  $file_settings = {
+    owner => 'root',
+    group => $freeradius::group,
+    mode  => '0640',
   }
 
-  file { '/etc/raddb/conf':
+  file { "${freeradius::confdir}/radiusd.conf":
+    ensure  => 'file',
+    content => epp('freeradius/3/radiusd.conf.epp'),
+    notify  => Service['radiusd'],
+    *       => $file_settings,
+  }
+
+  ensure_resource ('file',  "${freeradius::confdir}/conf.d",
+    {
+      ensure   => 'directory',
+      before   => Service['radiusd'],
+      owner    => 'root',
+      group    => $freeradius::group,
+      recurse  => true,
+      purge    => true,
+      mode     => '0640',
+    })
+
+  file { "${freeradius::confdir}/policy.d":
     ensure => 'directory',
-    owner  => 'root',
-    group  => 'radiusd',
-    mode   => '0640',
-    before => Service['radiusd'],
+    *      => $file_settings,
   }
 
-  if ! $use_rsync_radiusd_conf {
-    file { '/etc/raddb/radiusd.conf':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'radiusd',
-      mode    => '0640',
-      content => template('freeradius/3/radiusd.conf.erb'),
-      notify  => Service['radiusd'],
-    }
-  }
-  else {
-    include '::rsync'
-
-    validate_net_list($rsync_server)
-    #validate_integer($rsync_timeout)
-
-    file { '/etc/raddb/radiusd.conf':
+  #  This does not create the trigger file
+  #  it just sets the permissions and the
+  #  if include trigger is true it will ensure
+  #  the radiusd.conf file includes the file.
+  if $trigger_conf_content {
+    file { "${freeradius::confdir}/trigger.conf":
       ensure => 'file',
+      content=> $trigger_conf_content,
+      *      => $file_settings,
+    }
+  }
+
+  if $proxy_conf_content{
+    file { "${freeradius::confdir}/proxy.conf":
+      ensure  => 'file',
+      content => $proxy_conf_content,
+      *       => $file_settings,
+    }
+  }
+
+  #
+  ##########################
+
+  #########################
+  # Create clients.conf file
+  #
+  if $clients_conf_content {
+    # If you have a specific client file to copy
+    file { "${freeradius::confdir}/clients.conf":
+      ensure  => file,
+      content => $clients_conf_content,
+      *       => $file_settings,
+    }
+  } else {
+    # create individual files in the clients directory
+    ensure_resource('file', "${freeradius::confdir}/clients.d",
+    {
+      ensure => 'directory',
       owner  => 'root',
-      group  => 'radiusd',
+      group  => $freeradius::group,
       mode   => '0640',
-      notify => Service['radiusd'],
-    }
-
-    $_password = $radius_rsync_password ? {
-      'nil'   => passgen($radius_rsync_user),
-      default => $radius_rsync_password
-    }
-
-    rsync { 'freeradius':
-      source   => $rsync_source,
-      target   => '/etc/raddb',
-      server   => $rsync_server,
-      timeout  => $rsync_timeout,
-      notify   => [
-        File['/etc/raddb'],
-        Service['radiusd']
-      ],
-      bwlimit  => $rsync_bwlimit,
-      user     => $radius_rsync_user,
-      password => $_password
+    })
+    file { "${freeradius::confdir}/clients.conf":
+      ensure  => file,
+      content => epp("${module_name}/3/clients.conf.epp"),
+      *       => $file_settings,
     }
   }
 
-  if $default_acct_listener {
-    freeradius::conf::listen::add { 'default_acct':
-      ipaddr      => '*',
-      port        => '0',
-      listen_type => 'acct'
+  #
+  #  If managing users create the users file.
+  if $users_conf_content {
+    file { "${freeradius::confdir}/mods-config/files/authorize":
+      ensure  => file,
+      content => $users_conf_content,
+      *       => $file_settings,
+    }
+  } else {
+    Class[freeradius::v3::conf] -> Class[freeradius::v3::conf::users]
+    include 'freeradius::v3::conf::users'
+  }
+  #
+  #  If using firewall open the radius ports to listen on.
+  if $freeradius::firewall {
+    if $protocol == 'udp' or $protocol == 'ALL' {
+      iptables::listen::udp { 'radius_iptables_udp':
+        trusted_nets => $trusted_nets,
+        dports       => $radius_ports
+      }
+    }
+    if $protocol == 'tcp' or $protocol == 'ALL' {
+      iptables::listen::tcp_stateful  {'radius_iptables_tcp':
+        trusted_nets => $trusted_nets,
+        dports       => $radius_ports
+      }
     }
   }
 
-  if $firewall {
-    iptables::listen::udp { 'radius_iptables':
-      trusted_nets => $trusted_nets,
-      dports       => $radius_ports
-    }
-  }
 }

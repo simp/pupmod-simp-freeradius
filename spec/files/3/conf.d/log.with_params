@@ -1,0 +1,12 @@
+log {
+  destination = files
+  file = /var/log/freeradius.log
+  syslog_facility = local4
+  stripped_names = yes
+  auth = no
+  auth_badpass = yes
+  auth_goodpass = yes
+  msg_goodpass = "Tiger Tiger burning bright"
+  msg_badpass = "In the forests of the night"
+  msg_denied = "What immortal hand or eye"
+}

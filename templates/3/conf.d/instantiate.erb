@@ -1,0 +1,7 @@
+instantiate {
+<% if @content
+   @content.each_line do |t_content_ln| -%>
+  <%= t_content_ln.strip %>
+<% end -%>
+<% end -%>
+}
