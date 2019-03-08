@@ -34,7 +34,7 @@ a compliance-management framework built on Puppet.
 
 If you find any issues, they can be submitted to our [JIRA](https://simp-project.atlassian.net/).
 
-Please read our [Contribution Guide](http://simp.readthedocs.io/en/stable/contributors_guide/index.html).
+Please read our [Contribution Guide](https://simp.readthedocs.io/en/stable/contributors_guide/index.html).
 
 This module is optimally designed for use within a larger SIMP ecosystem, but it can be used independently:
 
@@ -192,7 +192,7 @@ Currently this has only been tested with Centos 7 and freeradius v3.
 
 ## Development
 
-Please read our [Contribution Guide](http://simp.readthedocs.io/en/stable/contributors_guide/index.html).
+Please read our [Contribution Guide](https://simp.readthedocs.io/en/stable/contributors_guide/index.html).
 
 ### Acceptance tests
 
