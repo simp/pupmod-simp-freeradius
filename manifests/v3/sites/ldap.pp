@@ -14,8 +14,8 @@
 #   Configuration directory for freeradius
 #
 # @param include_listen
-#  if set to true then 'listen' sections will be set up for the site.
-#  If changed the listen_ip will be ignored and the user will be required
+#  If set to true then 'listen' sections will be set up for the site.
+#  Otherwise the listen_ip will be ignored and the user will be required
 #  to set up listener using the listener.pp module.
 #
 # @param group
