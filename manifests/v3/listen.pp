@@ -1,6 +1,5 @@
 #
-# Add a 'listen' section to a freeradius site or other configuration file
-# that uses concat to create the file.
+# Add a 'listen' section to a freeradius configuration file.
 #
 # @param target
 #  The concat target to add this section to

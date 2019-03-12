@@ -22,7 +22,7 @@
 # @param confdir
 #   The configuration directory for radiusd
 #
-class freeradius::v3::radiusd_conf::instantiate (
+class freeradius::v3::conf::instantiate (
   Optional[String]  $content       = undef,
 ) {
 

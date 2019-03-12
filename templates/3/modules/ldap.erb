@@ -12,32 +12,30 @@
 # look in /etc/raddb/mods-available/ldap
 #
 ldap {
-  server = "<%= Array(@server).first %>"
+  server = '<%= Array(@server).first %>'
   port = <%= @port %>
-  identity = "<%= @identity %>"
-  password = "<%= @password %>"
-  base_dn = "<%= @base_dn %>"
+  identity = '<%= @identity %>'
+  password = '<%= @password %>'
+  base_dn = '<%= @base_dn %>'
 
   update {
     control:Password-With-Header += 'userPassword'
   }
 
   user {
-    base_dn = "<%= @base_dn %>"
+    base_dn = '<%= @base_dn %>'
     filter = "<%= @user_filter %>"
 <% if @user_scope -%>
     scope = '<%= @user_scope %>'
 <% end -%>
-<% if  @user_access_attribute -%>
-    access_attribute = "<%= @user_access_attribute %>"
-<% end -%>
-<% if @user_access_positive -%>
-    access_positive = "<%= @user_access_positive %>"
+<% if @user_access_attribute -%>
+    access_positive = <%= bool2str[@user_access_positive] %>
+    access_attribute = '<%= @user_access_attribute %>'
 <% end -%>
   }
 
   group {
-    base_dn = "<%= @base_dn %>"
+    base_dn = '<%= @base_dn %>'
     filter = "<%= @base_filter %>"
 <% if @group_scope -%>
     scope = '<%= @group_scope %>'
@@ -49,25 +47,25 @@ ldap {
     membership_filter = "<%= @group_membership_filter %>"
 <% end -%>
 <% if @group_membership_attribute -%>
-    membership_attribute = "<%= @group_membership_attribute %>"
+    membership_attribute = '<%= @group_membership_attribute %>'
 <% end -%>
-    cacheable_name = "<%= bool2str[@group_cacheable_name] %>"
-    cacheable_dn = "<%= bool2str[@group_cacheable_dn] %>"
+    cacheable_name = '<%= bool2str[@group_cacheable_name] %>'
+    cacheable_dn = '<%= bool2str[@group_cacheable_dn] %>'
   }
 
   profile {
     filter = "<%= @base_filter %>"
 <% if @default_profile -%>
-    default = "<%= @default_profile %>"
+    default = '<%= @default_profile %>'
 <% end -%>
 <% if @profile_attribute -%>
-    attribute = "<%= @profile_attribute %>"
+    attribute = '<%= @profile_attribute %>'
 <% end -%>
   }
 
   client {
-    base_dn = "<%= @base_dn %>"
-    filter = '<%= @client_filter %>'
+    base_dn = '<%= @base_dn %>'
+    filter = "<%= @client_filter %>"
 <% if @client_scope -%>
     scope = '<%= @client_scope %>'
 <% end -%>
@@ -131,7 +129,7 @@ ldap {
     probes = <%= @options_probes %>
     interval = <%= @options_interval %>
 <% if @ldap_debug -%>
-    ldap_debug = "<%= @ldap_debug %>"
+    ldap_debug = <%= @ldap_debug %>
 <% end -%>
   }
 
@@ -145,7 +143,7 @@ ldap {
     certificate_file = <%= @app_pki_cert %>
     private_key_file = <%= @app_pki_key %>
     random_file = <%= @random_file %>
-    require_cert = "<%= @require_cert %>"
+    require_cert = '<%= @require_cert %>'
   }
 
   pool {

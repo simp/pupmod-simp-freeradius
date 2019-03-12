@@ -100,7 +100,7 @@ describe 'freeradius::v3::sites::ldap' do
       let(:facts) { facts }
       let(:pre_condition) {'include "freeradius"'}
 
-      context 'base v3' do
+      context 'base v3 with defaults' do
         let(:facts) { facts.merge({:radius_version => '3'})}
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::sites::ldap') }
@@ -111,6 +111,16 @@ describe 'freeradius::v3::sites::ldap' do
         it { is_expected.to create_concat__fragment('listen.site_ldap_acct.acct').with_content(default_listen_acct)}
         it { is_expected.to create_file('/etc/raddb/sites-enabled/default').with_target('/etc/raddb/sites-available/simp-ldap-default')}
       end
+
+      context 'with no listener' do
+        let(:facts) { facts.merge({:radius_version => '3'})}
+        let (:params) {{
+          'include_listener' => false
+        }}
+        it { is_expected.to_not create_concat__fragment('listen.site_ldap_auth.auth')}
+        it { is_expected.to_not create_concat__fragment('listen.site_ldap_acct.acct')}
+      end
+
     end
   end
 end

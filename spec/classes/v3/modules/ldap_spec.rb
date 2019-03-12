@@ -9,29 +9,29 @@ default_module_content = <<-EOF
 # look in /etc/raddb/mods-available/ldap
 #
 ldap {
-  server = "ldap://foo.bar.baz"
+  server = 'ldap://foo.bar.baz'
   port = 389
-  identity = "dn=test,ou=foo,dc=bar,dc=baz"
-  password = "password"
-  base_dn = "ou=foo,dc=bar,dc=baz"
+  identity = 'dn=test,ou=foo,dc=bar,dc=baz'
+  password = 'password'
+  base_dn = 'ou=foo,dc=bar,dc=baz'
 
   update {
     control:Password-With-Header += 'userPassword'
   }
 
   user {
-    base_dn = "ou=foo,dc=bar,dc=baz"
+    base_dn = 'ou=foo,dc=bar,dc=baz'
     filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
   }
 
   group {
-    base_dn = "ou=foo,dc=bar,dc=baz"
+    base_dn = 'ou=foo,dc=bar,dc=baz'
     filter = "(objectclass=radiusprofile)"
     name_attribute = cn
     membership_filter = "(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))"
-    membership_attribute = "memberOf"
-    cacheable_name = "no"
-    cacheable_dn = "no"
+    membership_attribute = 'memberOf'
+    cacheable_name = 'no'
+    cacheable_dn = 'no'
   }
 
   profile {
@@ -39,8 +39,8 @@ ldap {
   }
 
   client {
-    base_dn = "ou=foo,dc=bar,dc=baz"
-    filter = '(objectClass=frClient)'
+    base_dn = 'ou=foo,dc=bar,dc=baz'
+    filter = "(objectClass=frClient)"
 
     attribute {
       identifier = 'radiusClientIdentifier'
@@ -96,7 +96,7 @@ ldap {
     certificate_file = /etc/pki/simp_apps/freeradius/x509/public/foo.example.com.pub
     private_key_file = /etc/pki/simp_apps/freeradius/x509/private/foo.example.com.pem
     random_file = /dev/urandom
-    require_cert = "demand"
+    require_cert = 'demand'
   }
 
   pool {
@@ -121,44 +121,44 @@ nondefault_module_content = <<-EOF
 # look in /etc/raddb/mods-available/ldap
 #
 ldap {
-  server = "ldap://foo.bar.baz"
+  server = 'ldap://foo.bar.baz'
   port = 1389
-  identity = "dn=test,ou=foo,dc=bar,dc=baz"
-  password = "password"
-  base_dn = "ou=foo,dc=bar,dc=baz"
+  identity = 'dn=test,ou=foo,dc=bar,dc=baz'
+  password = 'password'
+  base_dn = 'ou=foo,dc=bar,dc=baz'
 
   update {
     control:Password-With-Header += 'userPassword'
   }
 
   user {
-    base_dn = "ou=foo,dc=bar,dc=baz"
+    base_dn = 'ou=foo,dc=bar,dc=baz'
     filter = "test(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
     scope = 'sub'
-    access_attribute = "user_access_attribute"
-    access_positive = "user_access_positive"
+    access_positive = no
+    access_attribute = 'user_access_attribute'
   }
 
   group {
-    base_dn = "ou=foo,dc=bar,dc=baz"
+    base_dn = 'ou=foo,dc=bar,dc=baz'
     filter = "test(objectclass=radiusprofile)"
     scope = 'one'
     name_attribute = testcn
     membership_filter = "test_membership_filter"
-    membership_attribute = "testmemberOf"
-    cacheable_name = "yes"
-    cacheable_dn = "yes"
+    membership_attribute = 'testmemberOf'
+    cacheable_name = 'yes'
+    cacheable_dn = 'yes'
   }
 
   profile {
     filter = "test(objectclass=radiusprofile)"
-    default = "default_profile"
-    attribute = "profile_attribute"
+    default = 'default_profile'
+    attribute = 'profile_attribute'
   }
 
   client {
-    base_dn = "ou=foo,dc=bar,dc=baz"
-    filter = 'test(objectClass=frClient)'
+    base_dn = 'ou=foo,dc=bar,dc=baz'
+    filter = "test(objectClass=frClient)"
     scope = 'base'
 
     attribute {
@@ -210,7 +210,7 @@ ldap {
     idle = 160
     probes = 13
     interval = 13
-    ldap_debug = "ldap_debug"
+    ldap_debug = ldap_debug
   }
 
   tls {
@@ -219,7 +219,7 @@ ldap {
     certificate_file = /etc/pki/simp_apps/freeradius/x509/public/foo.example.com.pub
     private_key_file = /etc/pki/simp_apps/freeradius/x509/private/foo.example.com.pem
     random_file = /dev/test
-    require_cert = "nocert"
+    require_cert = 'nocert'
   }
 
   pool {
@@ -291,7 +291,7 @@ describe 'freeradius::v3::modules::ldap' do
           :retry_delay                       =>  130,
           :start_tls                         =>  false,
           :user_access_attribute             =>  'user_access_attribute',
-          :user_access_positive              =>  'user_access_positive',
+          :user_access_positive              =>  false,
           :user_filter                       =>  'test(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
           :user_scope                        =>  'sub',
         }}

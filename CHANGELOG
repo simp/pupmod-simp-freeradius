@@ -1,3 +1,11 @@
+* Tue Mar 12 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
+- Moved v3/radiusd_conf under v3/conf because they are really the same type
+  of configuration.
+- Made LDAP module template more consistent and fixed some errors in it.
+- Added ability to create global listener.
+- Added ability to remove local listener from LDAP site so global
+  listeners could be used.
+
 * Wed Dec 19 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
 - Refactored API
 - Updated to work with puppet 5.

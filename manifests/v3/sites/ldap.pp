@@ -12,6 +12,12 @@
 #   Whether to enable the site or not.
 # @param confdir
 #   Configuration directory for freeradius
+#
+# @param include_listen
+#  if set to true then 'listen' sections will be set up for the site.
+#  If changed the listen_ip will be ignored and the user will be required
+#  to set up listener using the listener.pp module.
+#
 # @param group
 #   Group radiusd runs under.
 # @param listen_ip
@@ -22,15 +28,16 @@
 # @param idle_timeout
 #
 class freeradius::v3::sites::ldap (
-  String                $site_name        = 'default',
-  Boolean               $enable           = true,
-  Simplib::Host         $listen_ip        = 'ALL',
-  Stdlib::Absolutepath  $confdir          = simplib::lookup( 'freeradius::confdir', {'default_value'               => '/etc/raddb'} ),
-  String                $group            = simplib::lookup( 'freeradius::group', {'default_value'                 => 'radiusd'} ),
-  Boolean               $fips             = simplib::lookup('simp_options::fips', {'default_value' => false }),
-  Integer               $max_connections  = 16,
-  Integer               $lifetime         = 0,
-  Integer               $idle_timeout     = 30
+  String                $site_name           = 'default',
+  Boolean               $enable              = true,
+  Boolean               $include_listener    = true,
+  Simplib::Host         $listen_ip           = 'ALL',
+  Stdlib::Absolutepath  $confdir             = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} ),
+  String                $group               = simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} ),
+  Boolean               $fips                = simplib::lookup('simp_options::fips', {'default_value' => false }),
+  Integer               $max_connections     = 16,
+  Integer               $lifetime            = 0,
+  Integer               $idle_timeout        = 30
 ){
 
   include 'freeradius'
@@ -57,29 +64,31 @@ class freeradius::v3::sites::ldap (
       order   => 0
     }
 
-    freeradius::v3::listen { "site_ldap_auth":
-      target          => $_target,
-      order           => 10,
-      listen_type     => 'auth',
-      ipaddr          => $listen_ip,
-      port            => 0,
-      max_connections => $max_connections,
-      idle_timeout    => $idle_timeout,
-      lifetime        => $lifetime
-    }
+    if $include_listener {
+      freeradius::v3::listen { "site_ldap_auth":
+        target          => $_target,
+        order           => 10,
+        listen_type     => 'auth',
+        ipaddr          => $listen_ip,
+        port            => 0,
+        max_connections => $max_connections,
+        idle_timeout    => $idle_timeout,
+        lifetime        => $lifetime
+      }
 
-    freeradius::v3::listen { "site_ldap_acct":
-      target      => $_target,
-      order       => 11,
-      listen_type => 'acct',
-      ipaddr      => $listen_ip,
-      port        => 0
-    }
+      freeradius::v3::listen { "site_ldap_acct":
+        target      => $_target,
+        order       => 11,
+        listen_type => 'acct',
+        ipaddr      => $listen_ip,
+        port        => 0
+      }
 
-    concat::fragment { 'site_ldap_footer':
-      target  => $_target,
-      order   => 100,
-      content => epp('freeradius/3/sites/ldap_footer.epp')
+      concat::fragment { 'site_ldap_footer':
+        target  => $_target,
+        order   => 100,
+        content => epp('freeradius/3/sites/ldap_footer.epp')
+      }
     }
 
     if $enable {

@@ -13,7 +13,7 @@
 # @param max_queue_size
 # @param auto_limit_acct
 #
-class freeradius::v3::radiusd_conf::thread_pool (
+class freeradius::v3::conf::thread_pool (
   Integer           $start_servers           = 5,
   Integer           $max_servers             = 32,
   Integer           $min_spare_servers       = 3,
