@@ -9,7 +9,7 @@
 #
 # @param idle_timeout
 # @param ipaddr
-#  be carefull not to use the same ip address in more than one listener
+#  Be careful not to use the same ip address in more than one listener
 # @param interface
 # @param lifetime
 # @param listen_type
