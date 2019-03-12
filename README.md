@@ -131,7 +131,7 @@ freeradius::v3::conf::clients_conf_source: puppet:///modules/myconfigmod/freerad
 
 ### Other configuration
 
-The following configurations are not needed for the LDAP configuration.  It a few
+The following configurations are not needed for the LDAP configuration.  These are a few
 examples of further configuration or alternate configuration that can be done.
 
 #### Add local radius users and trigger.
