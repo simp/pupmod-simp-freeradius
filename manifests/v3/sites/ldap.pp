@@ -83,12 +83,12 @@ class freeradius::v3::sites::ldap (
         ipaddr      => $listen_ip,
         port        => 0
       }
+    }
 
-      concat::fragment { 'site_ldap_footer':
-        target  => $_target,
-        order   => 100,
-        content => epp('freeradius/3/sites/ldap_footer.epp')
-      }
+    concat::fragment { 'site_ldap_footer':
+      target  => $_target,
+      order   => 100,
+      content => epp('freeradius/3/sites/ldap_footer.epp')
     }
 
     if $enable {

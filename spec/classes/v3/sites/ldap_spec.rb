@@ -117,6 +117,8 @@ describe 'freeradius::v3::sites::ldap' do
         let (:params) {{
           'include_listener' => false
         }}
+        it { is_expected.to create_concat__fragment('site_ldap_header').with_content(default_header)}
+        it { is_expected.to create_concat__fragment('site_ldap_footer').with_content(default_footer)}
         it { is_expected.to_not create_concat__fragment('listen.site_ldap_auth.auth')}
         it { is_expected.to_not create_concat__fragment('listen.site_ldap_acct.acct')}
       end
