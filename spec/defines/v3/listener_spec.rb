@@ -15,18 +15,18 @@ describe 'freeradius::v3::listener', :type => :define do
 
         it { is_expected.to contain_concat('listener.test1') }
         it { is_expected.to contain_freeradius__v3__listen('/etc/raddb/conf.d/listener.test1-fragment')
-#             .with({
-#          :target             => '/etc/raddb/conf.d/listener.test1',
-#          :order              => 100,
-#          :listen_type        => 'auth',
-#          :ipaddr             => 'ALL',
-#          :port               => :undef,
-#          :interface          => :undef,
-#          :per_socket_clients => :undef,
-#          :max_pps            => :undef,
-#          :max_connections    => :undef,
-#          :idle_timeout       => :undef
-#        })
+             .with({
+          :target             => '/etc/raddb/conf.d/listener.test1',
+          :order              => 100,
+          :listen_type        => 'auth',
+          :ipaddr             => 'ALL',
+          :port               => nil,
+          :interface          => nil,
+          :per_socket_clients => nil,
+          :max_pps            => nil,
+          :max_connections    => nil,
+          :idle_timeout       => nil
+        })
         }
 
       end
