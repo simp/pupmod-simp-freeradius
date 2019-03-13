@@ -30,6 +30,10 @@
 # The following parameters are settings in the radius.conf file.
 # @see radiusd.conf(5) for additional information.
 #
+# @see Extract the original /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv for detailed information
+#      on the parameters.
+#
 # @param localstatedir
 # @param max_request_time
 # @param cleanup_delay

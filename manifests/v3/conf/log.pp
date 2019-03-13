@@ -1,7 +1,9 @@
 #
 # Add a 'log' section to freeradius.
 #
-# @see /etc/raddb/radiusd.conf.sample for additional information.
+# @see For detailed information on the parameters, extract the original
+#      /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # @param destination
 # @param log_file

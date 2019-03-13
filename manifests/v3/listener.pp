@@ -5,7 +5,10 @@
 #  Indicates the order for this element amoung the concat fragments.
 #
 # The following parameters are all configuration parameters.
-# @see See /etc/raddb/radiusd.conf.sample for additional information.
+#
+# @see For detailed information on the parameters, extract the original
+#      /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # @param idle_timeout
 # @param ipaddr

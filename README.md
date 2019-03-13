@@ -51,6 +51,11 @@ authenticate via LDAP.
 
 Before installing pupmod-simp-freeradius make sure to read the [freeradius documentation](http://freeradius.org/documentation)
 
+Much of the freeradius documentation is in the default configuration files, some of which get overwritten by this module.  It could be helpful to extract and store these files
+in a seperate location using the command:
+
+rpm2cpio <free radius rpm> | cpio -idmv
+
 ## Setup
 
 * Ensure the freeradius, freeradius-ldap and freeradius-utils packages are available.
