@@ -30,6 +30,10 @@
 # The following parameters are settings in the radius.conf file.
 # @see radiusd.conf(5) for additional information.
 #
+# @see Extract the original /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv for detailed information
+#      on the parameters.
+#
 # @param localstatedir
 # @param max_request_time
 # @param cleanup_delay
@@ -60,17 +64,17 @@ class freeradius::v3::conf (
 
   assert_private()
 
-  include 'freeradius::v3::radiusd_conf::log'
-  include 'freeradius::v3::radiusd_conf::security'
-  include 'freeradius::v3::radiusd_conf::thread_pool'
-  include 'freeradius::v3::radiusd_conf::instantiate'
+  include 'freeradius::v3::conf::log'
+  include 'freeradius::v3::conf::security'
+  include 'freeradius::v3::conf::thread_pool'
+  include 'freeradius::v3::conf::instantiate'
 
   Class[freeradius::config]
   -> Class[freeradius::v3::conf]
-  -> [Class[freeradius::v3::radiusd_conf::thread_pool],
-      Class[freeradius::v3::radiusd_conf::log],
-      Class[freeradius::v3::radiusd_conf::instantiate],
-      Class[freeradius::v3::radiusd_conf::security]]
+  -> [Class[freeradius::v3::conf::thread_pool],
+      Class[freeradius::v3::conf::log],
+      Class[freeradius::v3::conf::instantiate],
+      Class[freeradius::v3::conf::security]]
 
   ############################
   #  Manage permissions on log files

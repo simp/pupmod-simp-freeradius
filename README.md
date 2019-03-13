@@ -51,6 +51,11 @@ authenticate via LDAP.
 
 Before installing pupmod-simp-freeradius make sure to read the [freeradius documentation](http://freeradius.org/documentation)
 
+Much of the freeradius documentation is in the default configuration files, some of which get overwritten by this module.  It could be helpful to extract and store these files
+in a seperate location using the command:
+
+rpm2cpio <free radius rpm> | cpio -idmv
+
 ## Setup
 
 * Ensure the freeradius, freeradius-ldap and freeradius-utils packages are available.
@@ -81,8 +86,16 @@ classes:
   - 'freeradius::v3::modules::ldap'
 ```
 
-The default setting for radiusd.conf can be found in freeradius::v3::conf
+The default settings for radiusd.conf can be found in
+- freeradius::v3::conf
+- freeradius::v3::conf::log
+- freeradius::v3::conf::security
+- freeradius::v3::conf::thread_pool
 and can be changed using hiera.
+
+The listener is setup in the freeradius::v3::sites::ldap.  Review that module if
+there is a need to change the listener or to use a global listener instead of one linked
+to a site.
 
 #### Add radius clients:
 
@@ -90,7 +103,7 @@ Client configurations will need to be created to allow clients to talk to the se
 See the default client.conf file installed by freeradius for information on how to
 configure clients.
 
-This module lets clients be created individually with freeradius::v3::conf::client.
+The freeradius::v3::conf::client module lets clients be created individually.
 Alternatively, a complete clients.conf file can be copied in by specifying the file
 source in hiera with the variable freeradius::v3::conf::clients_conf_source.
 
@@ -120,11 +133,14 @@ or to copy over a file with clients defined, set the hiera variable:
 freeradius::v3::conf::clients_conf_source: puppet:///modules/myconfigmod/freeradius/client.conf
 ```
 
+
 ### Other configuration
+
+The following configurations are not needed for the LDAP configuration.  These are a few
+examples of further configuration or alternate configuration that can be done.
 
 #### Add local radius users and trigger.
 
-Note: You do not need to add any local users or set up SNMP triggers to get LDAP to work.
 
 Users can be created by setting a source file containing the required users
 as follows:

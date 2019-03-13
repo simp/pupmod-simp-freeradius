@@ -1,14 +1,13 @@
-* Fri Mar 08 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 8.0.0-0
-- Update the upper bound of stdlib to < 6.0.0
-- Update a URL in the README.md
-
-* Wed Dec 19 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
+* Tue Mar 12 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
 - Refactored API
-- Updated to work with puppet 5.
-- Removed support for freeradius version 2
+- Strong typed all variables and updated functions for puppet 5 compatability.
+- Removed support for freeradius version 2 and CentOS 6.
 - Inner-tunnel site is not added by default any more.
-- SQL sites are not added by default.
 - Added check for FIPS mode and fail if server is in FIPS mode.
+- Created ldap site and module to be used to integrate freeradius
+  with ldap server.  Instructions for use are in the README.
+- SQL sites are not added by default.
+- Update the upper bound of stdlib to < 6.0.0
 - Added acceptance and spec tests
 
 * Thu Jul 06 2017 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.1-0

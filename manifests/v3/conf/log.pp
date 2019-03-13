@@ -1,7 +1,9 @@
 #
 # Add a 'log' section to freeradius.
 #
-# @see /etc/raddb/radiusd.conf.sample for additional information.
+# @see For detailed information on the parameters, extract the original
+#      /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # @param destination
 # @param log_file
@@ -17,7 +19,7 @@
 #
 # @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #
-class freeradius::v3::radiusd_conf::log (
+class freeradius::v3::conf::log (
   Freeradius::Logdest        $destination     = 'syslog',
   Stdlib::AbsolutePath       $log_file        = "${::freeradius::logdir}/radius.log",
   Simplib::Syslog::Facility  $syslog_facility = 'local6',

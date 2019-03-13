@@ -126,7 +126,7 @@ class freeradius::v3::modules::ldap (
   Boolean                      $start_tls                                      = true,
   String                       $user_filter                                    = '(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
   Optional[String]             $user_access_attribute                          = undef,
-  Optional[String]             $user_access_positive                           = undef,
+  Boolean                      $user_access_positive                           = true,
   Optional[Freeradius::Scope]  $user_scope                                     = undef,
 ) {
 

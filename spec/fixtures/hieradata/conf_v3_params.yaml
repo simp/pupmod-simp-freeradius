@@ -12,33 +12,31 @@ freeradius::v3::conf::trigger_conf_content: '/tmp/mytriggercontent'
 freeradius::v3::conf::users_conf_content:  '/tmp/myusercontent'
 freeradius::v3::conf::clients_conf_content:  '/tmp/myclientcontent'
 ### log section params  ###
-freeradius::v3::radiusd_conf::log::destination: files
-freeradius::v3::radiusd_conf::log::log_file: '/var/log/freeradius.log'
-freeradius::v3::radiusd_conf::log::syslog_facility: 'local4'
-freeradius::v3::radiusd_conf::log::stripped_names:  true
-freeradius::v3::radiusd_conf::log::auth: false
-freeradius::v3::radiusd_conf::log::auth_badpass: true
-freeradius::v3::radiusd_conf::log::auth_goodpass: true
-freeradius::v3::radiusd_conf::log::msg_goodpass:  "Tiger Tiger burning bright"
-freeradius::v3::radiusd_conf::log::msg_badpass:   "In the forests of the night"
-freeradius::v3::radiusd_conf::log::msg_denied:    "What immortal hand or eye"
+freeradius::v3::conf::log::destination: files
+freeradius::v3::conf::log::log_file: '/var/log/freeradius.log'
+freeradius::v3::conf::log::syslog_facility: 'local4'
+freeradius::v3::conf::log::stripped_names:  true
+freeradius::v3::conf::log::auth: false
+freeradius::v3::conf::log::auth_badpass: true
+freeradius::v3::conf::log::auth_goodpass: true
+freeradius::v3::conf::log::msg_goodpass:  "Tiger Tiger burning bright"
+freeradius::v3::conf::log::msg_badpass:   "In the forests of the night"
+freeradius::v3::conf::log::msg_denied:    "What immortal hand or eye"
 ### security section params ###
-freeradius::v3::radiusd_conf::security::max_attributes: 201
-freeradius::v3::radiusd_conf::security::reject_delay: 2
-freeradius::v3::radiusd_conf::security::status_server: false
-freeradius::v3::radiusd_conf::security::allow_core_dumps: true
-freeradius::v3::radiusd_conf::security::chroot: true
-freeradius::v3::radiusd_conf::security::chroot_path: /var/here
-freeradius::v3::radiusd_conf::security::chroot_user: joe
-freeradius::v3::radiusd_conf::security::chroot_group: smith
+freeradius::v3::conf::security::max_attributes: 201
+freeradius::v3::conf::security::reject_delay: 2
+freeradius::v3::conf::security::status_server: false
+freeradius::v3::conf::security::allow_core_dumps: true
+freeradius::v3::conf::security::chroot: true
+freeradius::v3::conf::security::chroot_path: /var/here
+freeradius::v3::conf::security::chroot_user: joe
+freeradius::v3::conf::security::chroot_group: smith
 ###  thread pool params ###
-freeradius::v3::radiusd_conf::thread_pool::start_servers: 6
-freeradius::v3::radiusd_conf::thread_pool::max_servers: 33
-freeradius::v3::radiusd_conf::thread_pool::min_spare_servers: 4
-freeradius::v3::radiusd_conf::thread_pool::max_spare_servers: 11
-freeradius::v3::radiusd_conf::thread_pool::max_requests_per_server: 1
-freeradius::v3::radiusd_conf::thread_pool::max_queue_size: 100
-freeradius::v3::radiusd_conf::thread_pool::auto_limit_acct: true
-freeradius::v3::radiusd_conf::instantiatei::content:
-  - 'stuff'
-  - 'more_stuff'
+freeradius::v3::conf::thread_pool::start_servers: 6
+freeradius::v3::conf::thread_pool::max_servers: 33
+freeradius::v3::conf::thread_pool::min_spare_servers: 4
+freeradius::v3::conf::thread_pool::max_spare_servers: 11
+freeradius::v3::conf::thread_pool::max_requests_per_server: 1
+freeradius::v3::conf::thread_pool::max_queue_size: 100
+freeradius::v3::conf::thread_pool::auto_limit_acct: true
+freeradius::v3::conf::instantiate::content: 'content for instantiate'

@@ -2,7 +2,9 @@
 #
 # Add a 'security' section to freeradius.
 #
-# @see /etc/raddb/radiusd.conf.sample for additional information.
+# @see For detailed information on the parameters, extract the original
+#      /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # == Parameters
 #
@@ -19,7 +21,7 @@
 # @param chroot_group
 #    Group to run daemon as.
 #
-class freeradius::v3::radiusd_conf::security (
+class freeradius::v3::conf::security (
   Integer                        $max_attributes    = 200,
   Integer[1,5]                   $reject_delay      = 1,
   Boolean                        $status_server     = true,

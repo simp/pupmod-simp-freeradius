@@ -45,10 +45,10 @@ end
 shared_examples_for 'config v3' do
   it_should_behave_like 'common config'
   it_should_behave_like 'v3 conf users default'
-  it { is_expected.to contain_class('freeradius::v3::radiusd_conf::log' )}
-  it { is_expected.to contain_class('freeradius::v3::radiusd_conf::security' )}
-  it { is_expected.to contain_class('freeradius::v3::radiusd_conf::thread_pool' )}
-  it { is_expected.to contain_class('freeradius::v3::radiusd_conf::instantiate' )}
+  it { is_expected.to contain_class('freeradius::v3::conf::log' )}
+  it { is_expected.to contain_class('freeradius::v3::conf::security' )}
+  it { is_expected.to contain_class('freeradius::v3::conf::thread_pool' )}
+  it { is_expected.to contain_class('freeradius::v3::conf::instantiate' )}
   it { is_expected.to contain_class('freeradius::v3::conf::users' )}
   it {is_expected.to contain_file('/etc/raddb/conf.d')}
   it {is_expected.to contain_file('/etc/raddb/clients.d')}
