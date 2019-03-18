@@ -117,4 +117,4 @@ jobs:
             secure: "NBQyKngAwork9batxmqTb5fgpeZXXYSPG6hWoStS6qM6RIrtQY0DfyOP/VmCPGePttE08MmPCznFwGeUKu9eTnYOci1P8Ebu/Jz/7NA8y8cO+0oa7q7C0RaG3EBhFxkrEq/5qNi9GhTia5fg9ZBdgUHmjOitldplIriIj2MxXgco/B/bL2B64AxtFdxHj7I/EVPUvmDgT0c2P9xEMnLBjyGryjT28DxlsGABPwi+RHtavwJbrTuwE4GPxX/Fi4PhcHAtO3w56jWnNvVlGHaQT9ifAJ4rCWXpNlwvyKd+0vzvT5eJ87ztuAEaD+VUu2CjCtQSbXAhlBZfEwK8nsn9z5pdoC9RWv3m5eoKKz0u7x62oppdPXjrEDS/GrZL8+3j4hnGfhBUcOQ28jiJLUVSYXUGjkH4Pw5boxmNsbJlxT9OggPLv1lbyhjcImV46vJhKfNQ9KzTxwhrR3DBQXUJEdKUjg73p6hl8RMeSd8Uq5XbLyV3S7l8Q+t9gwrW79cQsLirz3Ouk7ajpsp8NVx2X9PHRlIlcjW/QKUSfWCaeIN48yZ4MLH8lwOICMWM5SVInbNwkAhKyxQdzJMqG2rXc9M9okUOrUvVdYfP7MOuzALYCt8Mul30e7rIwT3CGcxsA6jfbqOWVMuRjU+514CfZHB8C9XiegtXJd3SyOkecgY="
           on:
             tags: true
-            condition: '($SKIP_FORGE_PUBLISH != true
+            condition: '($SKIP_FORGE_PUBLISH != true)'
