@@ -1,3 +1,6 @@
+* Tue Apr 23 2019 Joseph Sharkey <shark.bruhaha@gmail.com> - 8.0.1-0
+- Updated .travis.yml, .gitlab-ci.yml, .ruby-version
+
 * Tue Mar 12 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
 - Refactored API
 - Strong typed all variables and updated functions for puppet 5 compatability.
