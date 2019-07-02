@@ -1,6 +1,4 @@
-# == Class: freeradius
-#
-# Configure a Freeradius server.
+# @summary Configure a Freeradius server
 #
 # @param pki
 #   * If 'simp', include SIMP's pki module and use pki::copy to manage

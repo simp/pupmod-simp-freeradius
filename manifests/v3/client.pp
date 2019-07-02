@@ -1,13 +1,11 @@
+# @summary Add a client to `/etc/raddb/clients.d/`
 #
-# Add a client to /etc/raddb/clients.d/
-#
-# See clients.conf(5) for additional information.
-#
-# == Parameters
+# @see clients.conf(5) for additional information.
 #
 # @param secret
-#   If you do not specify a secret, then one will be created for you using $name
-#   as the id.
+#   If you do not specify a secret, then one will be created for you using
+#   `$name` as the id.
+#
 # @param ipaddr
 #   If set to something with a ':' in it, will be treated as ipv6addr instead.
 #

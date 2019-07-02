@@ -1,12 +1,8 @@
-# == Class: freeradius::conf::security
-#
-# Add a 'security' section to freeradius.
+# @summary Add a 'security' section to freeradius.
 #
 # @see For detailed information on the parameters, extract the original
 #      /etc/raddb/radiusd.conf from the freeradius rpm using
 #      rpm2cpio < free radius rpm> | cpio -idmv
-#
-# == Parameters
 #
 # @param max_attributes
 # @param reject_delay
@@ -14,10 +10,13 @@
 # @param allow_core_dumps
 # @param chroot
 #   whether or not to run radiusd in a chroot
+#
 # @param chroot_path
 #    directory where the server does "chroot"
+#
 # @param  chroot_user
 #    User to run daemon as,must be defined if using a chroot
+#
 # @param chroot_group
 #    Group to run daemon as.
 #

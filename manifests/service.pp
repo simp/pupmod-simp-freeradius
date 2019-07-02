@@ -1,6 +1,4 @@
-# Class freeradius::service
-#
-# configure the radiusd service
+# @summary Configure the radiusd service
 #
 class freeradius::service {
   service { 'radiusd':

@@ -1,7 +1,4 @@
-#
-# == Class: freeradius::v3::users
-#
-# Set up the freeradius users entries.
+# @summary Set up the freeradius users entries
 #
 class freeradius::v3::conf::users {
 

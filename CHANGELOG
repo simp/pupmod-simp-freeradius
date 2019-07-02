@@ -1,3 +1,11 @@
+* Tue Jul 02 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 8.0.1-0
+- Updated documentation
+  - Cleaned up for `puppet strings`
+  - Added REFERENCE.md
+  - Updated README.md
+- Switched FIPS check to system-only
+- Add Puppet 6 support
+
 * Tue Mar 12 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
 - Refactored API
 - Strong typed all variables and updated functions for puppet 5 compatability.

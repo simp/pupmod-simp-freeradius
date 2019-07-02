@@ -1,8 +1,8 @@
-# This module will rsync the configurations files to $freeradius::confdir
-# It does not remove any other files that exist in that directory
+# @summary Rsync the configurations files to $freeradius::confdir It does not
+# remove any other files that exist in that directory
 #
-# The defaults in this module use the freeradius share set up
-# by the simp module in the simp::server::rsync_shares manifest.
+# The defaults in this module use the freeradius share set up by the
+# `simp-simp` module in the `simp::server::rsync_shares` manifest
 #
 # == Parameters
 #

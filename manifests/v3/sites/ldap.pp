@@ -1,25 +1,27 @@
-# This will create a site that will authenticate using ldap and
-# listen on the interface defined by listen_ip.  Default is to listen on
-# all interfaces.
+# @summary This will create a site that will authenticate using LDAP and listen
+# on the interface defined by `listen_ip`
 #
-# See /etc/raddb/sites-available/default for more information on sites.
+# The Default is to listen on all interfaces.
 #
-# == Parameters
+# @see `/etc/raddb/sites-available/default` for more information on sites
 #
 # @param site_name
 #   The name of the site
+#
 # @param enable
-#   Whether to enable the site or not.
+#   Whether to enable the site or not
+#
 # @param confdir
 #   Configuration directory for freeradius
 #
-# @param include_listen
+# @param include_listener
 #  If set to true then 'listen' sections will be set up for the site.
 #  Otherwise the listen_ip will be ignored and the user will be required
 #  to set up a listener using the listener.pp module.
 #
 # @param group
 #   Group radiusd runs under.
+#
 # @param listen_ip
 #  The ip addresses to listen on.  See setting ipaddr  in sites-enabled/default.
 #
@@ -28,21 +30,20 @@
 # @param idle_timeout
 #
 class freeradius::v3::sites::ldap (
-  String                $site_name           = 'default',
-  Boolean               $enable              = true,
-  Boolean               $include_listener    = true,
-  Simplib::Host         $listen_ip           = 'ALL',
-  Stdlib::Absolutepath  $confdir             = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} ),
-  String                $group               = simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} ),
-  Boolean               $fips                = simplib::lookup('simp_options::fips', {'default_value' => false }),
-  Integer               $max_connections     = 16,
-  Integer               $lifetime            = 0,
-  Integer               $idle_timeout        = 30
+  String               $site_name        = 'default',
+  Boolean              $enable           = true,
+  Boolean              $include_listener = true,
+  Simplib::Host        $listen_ip        = 'ALL',
+  Stdlib::Absolutepath $confdir          = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} ),
+  String               $group            = simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} ),
+  Integer              $max_connections  = 16,
+  Integer              $lifetime         = 0,
+  Integer              $idle_timeout     = 30
 ){
 
   include 'freeradius'
 
-  if $fips or $facts['fips_enabled'] {
+  if $facts['fips_enabled'] {
     warning('RADIUS, by design, must have MD5 support. FreeRADIUS (and RADIUS period) cannot be supported in FIPS mode.')
   } else {
 

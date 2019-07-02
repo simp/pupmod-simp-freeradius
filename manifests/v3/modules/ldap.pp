@@ -1,8 +1,4 @@
-# == Class: freeradius::v3::modules::ldap
-#
-# Set up the LDAP module configuration.
-#
-# == Parameters
+# @summary Set up the LDAP module configuration.
 #
 # @param base_dn
 #

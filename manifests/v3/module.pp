@@ -1,12 +1,10 @@
-# This define copies a module definition file to the modules-available directory
-# and if it is enabled, links it to the mods-enabled directory.
+# @summary Copies a module definition file to the `modules-available` directory
+# and if it is enabled, links it to the `mods-enabled` directory.
 #
-# If neither content or source is defined and ft it enabled then it will
-#  just create a link.
+# If neither content or source is defined and ft it enabled then it will just
+# create a link.
 #
 # @see mods-available for further documentation on modules.
-#
-# == Parameters
 #
 # @param enabled
 #   If true a link will be created in mods-enabled to enable the site.

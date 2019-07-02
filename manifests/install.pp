@@ -1,4 +1,4 @@
-# Class freeradius::install
+# @summary Install the freeradius server
 #
 # @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #

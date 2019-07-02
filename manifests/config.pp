@@ -1,7 +1,5 @@
-# == Class: freeradius::config
-#
-# Manage the permissions on directories and files
-# and then either rsync content or create content.
+# @summary Manage the permissions on directories and files and then either
+# rsync content or create content
 #
 class freeradius::config(
 ) {
