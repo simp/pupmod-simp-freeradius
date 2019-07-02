@@ -1,5 +1,5 @@
 # @summary Use concat to add content to the `users` file that is created by
-# 'freeradisu::v3::conf::users` module.
+# 'freeradius::v3::conf::users` module.
 #
 # This module should not be used if `freeradius::v3::conf::user_conf_source` is
 # set in hiera. That setting will copy (what is expected to be) a complete

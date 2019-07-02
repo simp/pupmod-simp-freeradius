@@ -32,7 +32,7 @@ version 3 of freeradius.  If an older version of freeradius is being used,
 rsync can be used to copy over configuration files created outside of Puppet.
 Rsync can also be used to copy over version 3 files.
 
-This modules includes a radiusd site and module that can be used to configure
+This module includes a radiusd site and module that can be used to configure
 freeradius to work with a LDAP server.
 
 ## This is a SIMP module

@@ -50,7 +50,7 @@ Default value: simplib::lookup('simp_options::firewall', { 'default_value'    =>
 
 Data type: `String`
 
-name of the package
+Name of the package
 
 Default value: 'freeradius'
 
@@ -142,7 +142,7 @@ Default value: simplib::lookup('simp_options::package_ensure', { 'default_value'
 
 Data type: `Boolean`
 
-if true then only sites managed by puppet will be allowed in the sites-enabled
+If true then only sites managed by puppet will be allowed in the sites-enabled
 directory.  Files that are rsync'd are not "managed" by puppet.
 Use the freeradius::v3::site define or a file resource to create sites.
 
@@ -410,7 +410,7 @@ Default value: 'ALL'
 
 Data type: `Optional[String]`
 
-Content for the `clients.conf` file if not creating clients individualy
+Content for the `clients.conf` file if not creating clients individually
 
 Default value: `undef`
 
@@ -1373,7 +1373,7 @@ Default value: `undef`
 
 ### freeradius::v3::conf::user
 
-'freeradisu::v3::conf::users` module.
+'freeradius::v3::conf::users` module.
 
 This module should not be used if `freeradius::v3::conf::user_conf_source` is
 set in hiera. That setting will copy (what is expected to be) a complete

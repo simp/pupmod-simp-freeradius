@@ -43,7 +43,7 @@
 # These parameters add custom content to various parts of the configuration.
 #
 # @param clients_conf_content
-#   Content for the `clients.conf` file if not creating clients individualy
+#   Content for the `clients.conf` file if not creating clients individually
 #
 # @param proxy_conf_content
 #   If `$proxy_request` is `true`, use this content for the `proxy.conf` file
