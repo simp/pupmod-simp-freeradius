@@ -1,4 +1,4 @@
-# @summary Rsync the configurations files to $freeradius::confdir It does not
+# @summary Rsync the configurations files to `$freeradius::confdir`. It does not
 # remove any other files that exist in that directory
 #
 # The defaults in this module use the freeradius share set up by the
