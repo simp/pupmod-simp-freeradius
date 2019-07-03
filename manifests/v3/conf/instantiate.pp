@@ -4,7 +4,9 @@
 # This section is included by the directive `$INCLUDE conf.d/` in the
 # radiusd.conf file.
 #
-# @see /etc/raddb/radiusd.conf for additional information.
+# @see For detailed information on the parameters, extract the original
+#      /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # @param content
 #   The literal content of the section that you would like to add. Leading
