@@ -93,23 +93,32 @@ authenticate using LDAP.
 
 #### Install freeradius and the LDAP module and site configuration.
 
-Add the following to Hiera for the Radius server:
+Include the following in your Puppet code:
+
+```puppet
+include 'freeradius'
+include 'freeradius::v3::sites::ldap'
+include 'freeradius::v3::modules::ldap'
+```
+
+If you are using a SIMP system, you can alternatively include the classes via
+Hiera:
 
 ```yaml
 ---
-
-classes:
+simp::classes:
   - 'freeradius'
   - 'freeradius::v3::sites::ldap'
   - 'freeradius::v3::modules::ldap'
 ```
 
 The default settings for `radiusd.conf` can be found in
-  - freeradius::v3::conf
-  - freeradius::v3::conf::log
-  - freeradius::v3::conf::security
-  - freeradius::v3::conf::thread_pool
-and can be changed using Hiera.
+  - `freeradius::v3::conf`
+  - `freeradius::v3::conf::log`
+  - `freeradius::v3::conf::security`
+  - `freeradius::v3::conf::thread_pool`
+and can be changed using Hiera. See [REFERENCE.md](REFERENCE.md) for more
+details.
 
 The listener is setup in the `freeradius::v3::sites::ldap` class.  Review that
 module if there is a need to change the listener or to use a global listener
