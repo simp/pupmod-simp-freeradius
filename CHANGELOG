@@ -3,7 +3,7 @@
   - Cleaned up for `puppet strings`
   - Added REFERENCE.md
   - Updated README.md
-- Switched FIPS check to system-only
+- Switched all FIPS checks to use top level inherited checks
 - Add Puppet 6 support
 
 * Tue Mar 12 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 8.0.0-0
