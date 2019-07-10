@@ -1,52 +1,61 @@
-# == Class: freeradius::v3::conf
+#  @summary configure the `radiusd.conf` file
 #
-#  This class will configure the radiusd.conf file.
+#  If `clients_conf_content` is set, it will add that content to the
+#  `clients.conf` file and include it in the source. Otherwise it includes
+#  `clients.d/*` and clients will have to be set up using the `v3/client`
+#  class.
 #
-#  If clients_conf_source is set, it will copy the file
-#  from the source to the clients.conf file and include it
-#  in the source. Otherwise it includes clients.d/* and clients
-#  will have to be set up using the v3/client manifest.
+#  If `trigger_conf_content` is set it will add that content to `trigger.conf`
+#  and include this file in the radius.conf.
 #
-#  If trigger_conf_source is set it will copy the file indicated in
-#  source to trigger.conf and include this file in the radius.conf.
+# ## Freeradius Parameters
 #
-# == Parameters
+# The following parameters are settings in the radius.conf file.
+#
+#   @see radiusd.conf(5) for additional information.
+#
+#   @see Extract the original /etc/raddb/radiusd.conf from the freeradius rpm using
+#        rpm2cpio < free radius rpm> | cpio -idmv for detailed information
+#        on the parameters.
+#
+# @param cleanup_delay
+# @param correct_escapes
+# @param default_acct_listener
+# @param hostname_lookups
+# @param localstatedir
+# @param max_request_time
+# @param max_requests
+# @param radius_ports
+#   The ports where freeradius will listen
+#
+# SIMP-Related Parameters
+#
+# These parameters are effective in a larger SIMP installation
+#
+# @param trusted_nets
+#   Networks and/or hosts that are allowed to access the RADIUS server
 #
 # @param protocol
 #   What protocols will be used to make sure the firewall is opened correctly
 #
-# @param trusted_nets
-#   An array of networks that are allowed to access the radius server.
+# Custom Content Parameters
 #
-# @param clients_conf_source
-#   Source for the clients.conf file if not creating clients individualy
+# These parameters add custom content to various parts of the configuration.
 #
-# @param proxy_conf_source
-#   If proxy_request is true it will use this source for the proxy.conf file
+# @param clients_conf_content
+#   Content for the `clients.conf` file if not creating clients individually
 #
-# @param trigger_conf_source
-#   This source for the trigger.conf file, when set
+# @param proxy_conf_content
+#   If `$proxy_request` is `true`, use this content for the `proxy.conf` file
 #
-# The following parameters are settings in the radius.conf file.
-# @see radiusd.conf(5) for additional information.
+# @param trigger_conf_content
+#   This content for the `trigger.conf` file
 #
-# @see Extract the original /etc/raddb/radiusd.conf from the freeradius rpm using
-#      rpm2cpio < free radius rpm> | cpio -idmv for detailed information
-#      on the parameters.
-#
-# @param localstatedir
-# @param max_request_time
-# @param cleanup_delay
-# @param correct_escapes
-# @param max_requests
-# @param hostname_lookups
-# @param radius_ports
-#   Type: Array
-#   Default: ['1812','1813']
-#   The ports where radius will listen.
+# @param users_conf_content
+#   The content for the `authorize` file
 #
 class freeradius::v3::conf (
-  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
+  # Freeradius Parameters
   Integer[2,10]           $cleanup_delay          = 5,
   Boolean                 $correct_escapes        = true,
   Boolean                 $default_acct_listener  = true,
@@ -55,7 +64,12 @@ class freeradius::v3::conf (
   Integer[2,120]          $max_request_time       = 30,
   Integer[256]            $max_requests           = 1024,
   Array[Simplib::Port]    $radius_ports           = [1812, 1813],
+
+  # SIMP-Related Parameters
+  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
   Enum['udp','tcp','ALL'] $protocol               = 'ALL',
+
+  # Configuration Override Parameters
   Optional[String]        $clients_conf_content   = undef,
   Optional[String]        $proxy_conf_content     = undef,
   Optional[String]        $trigger_conf_content   = undef,

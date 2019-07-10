@@ -1,5 +1,4 @@
-#
-# Add a 'log' section to freeradius.
+# @summary Add a 'log' section to freeradius
 #
 # @see For detailed information on the parameters, extract the original
 #      /etc/raddb/radiusd.conf from the freeradius rpm using
@@ -15,7 +14,6 @@
 # @param msg_goodpass
 # @param msg_badpass
 # @param msg_denied
-#
 #
 # @author https://github.com/simp/pupmod-simp-freeradius/graphs/contributors
 #

@@ -1,29 +1,19 @@
-# Creates the 'instantiate' section of radiusd.conf
-# in file under conf.d.  This section is included by the directive
-# $INCLUDE conf.d/
-# in the radiusd.conf file.
+# @summary Creates the 'instantiate' section of `radiusd.conf`
+# in a file under `conf.d`.
 #
-# See /etc/raddb/radiusd.conf for additional information.
+# This section is included by the directive `$INCLUDE conf.d/` in the
+# radiusd.conf file.
 #
-# == Parameters
+# @see For detailed information on the parameters, extract the original
+#      /etc/raddb/radiusd.conf from the freeradius rpm using
+#      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # @param content
 #   The literal content of the section that you would like to add. Leading
 #   and trailing spaces will be removed.
 #
-# @param keep_defaults
-#   If set to true, this will ensure that the standard entries are retained
-#   and that your content is added below them. Set to false if you would like
-#   to specify the content of the entire section.
-#
-# @param group
-#   The group radiusd is run under
-#
-# @param confdir
-#   The configuration directory for radiusd
-#
 class freeradius::v3::conf::instantiate (
-  Optional[String]  $content       = undef,
+  Optional[String]  $content = undef
 ) {
 
   include 'freeradius'

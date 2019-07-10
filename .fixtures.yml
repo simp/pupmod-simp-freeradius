@@ -7,6 +7,9 @@ fixtures:
     logrotate: https://github.com/simp/pupmod-simp-logrotate
     pki: https://github.com/simp/pupmod-simp-pki
     rsync: https://github.com/simp/pupmod-simp-rsync
+    selinux_core:
+      repo: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
+      puppet_version: ">= 6.0.0"
     simp_options: https://github.com/simp/pupmod-simp-simp_options
     simp_openldap: https://github.com/simp/pupmod-simp-simp_openldap
     simplib: https://github.com/simp/pupmod-simp-simplib
@@ -14,5 +17,3 @@ fixtures:
     systemd:
       repo: https://github.com/simp/puppet-systemd
       branch: simp-master
-  symlinks:
-    freeradius: "#{source_dir}"

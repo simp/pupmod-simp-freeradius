@@ -6,21 +6,27 @@
   end
 -%>
 HOSTS:
-  oel6:
+  el7-server:
     roles:
-      - server
-      - default
-      - master
-      - client
-    platform: el-6-x86_64
-    box: onyxpoint/oel-6-x86_64
+     - server
+     - default
+     - master
+     - client
+    platform: el-7-x86_64
+    box: onyxpoint/oel-7-x86_64
     hypervisor: <%= hypervisor %>
-  oel7:
+  el7-ldap:
     roles:
+      - ldap
       - client
     platform: el-7-x86_64
     box: onyxpoint/oel-7-x86_64
     hypervisor: <%= hypervisor %>
+    yum_repos:
+      simp:
+        baseurl: https://packagecloud.io/simp-project/6_X_Dependencies/el/7/$basearch
+        gpgkeys:
+          - https://raw.githubusercontent.com/NationalSecurityAgency/SIMP/master/GPGKEYS/RPM-GPG-KEY-SIMP
 
 CONFIG:
   log_level: verbose

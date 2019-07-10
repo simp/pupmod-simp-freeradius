@@ -1,12 +1,9 @@
-#
-# Add a 'thread pool' section to the freeradius configuration..
+# @summary Add a 'thread pool' section to the freeradius configuration
 #
 #
 # @see For detailed information on the parameters, extract the original
 #      /etc/raddb/radiusd.conf from the freeradius rpm using
 #      rpm2cpio < free radius rpm> | cpio -idmv
-#
-# == Parameters
 #
 # @param start_servers
 # @param max_servers

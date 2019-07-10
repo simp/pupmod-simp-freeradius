@@ -1,8 +1,9 @@
-#
-# Add a 'listen' section to a freeradius configuration file.
+# @summary Add a 'listen' section to a freeradius configuration file.
 #
 # @param target
 #  The concat target to add this section to
+#
+# @param listen_type
 #
 # @param order
 #  Indicates the order for this element amoung the concat fragments.
@@ -14,28 +15,27 @@
 #      rpm2cpio < free radius rpm> | cpio -idmv
 #
 # @param idle_timeout
-# @param ipaddr
-#  be carefull not to use the same ip address in more than one listener
 # @param interface
+# @param ipaddr
+#  Be careful not to use the same IP address on more than one listener
 # @param lifetime
-# @param listen_type
-# @param max_epps
 # @param max_connections
+# @param max_pps
 # @param per_socket_clients
 # @param port
 #
 define freeradius::v3::listen (
   Stdlib::Absolutepath    $target,
   Freeradius::Listen      $listen_type,
-  Integer[1]              $order              = 100,
-  Simplib::Host           $ipaddr             = 'ALL',
-  Optional[Simplib::Port] $port               = undef,
+  Optional[Integer]       $idle_timeout       = undef,
   Optional[String]        $interface          = undef,
-  Optional[String]        $per_socket_clients = undef,
-  Optional[Integer]       $max_pps            = undef,
+  Simplib::Host           $ipaddr             = 'ALL',
   Optional[Integer]       $lifetime           = undef,
   Optional[Integer]       $max_connections    = undef,
-  Optional[Integer]       $idle_timeout       = undef,
+  Optional[Integer]       $max_pps            = undef,
+  Integer[1]              $order              = 100,
+  Optional[String]        $per_socket_clients = undef,
+  Optional[Simplib::Port] $port               = undef
 ) {
 
   concat::fragment  { "listen.${name}.${listen_type}":
@@ -43,5 +43,4 @@ define freeradius::v3::listen (
     target  => $target,
     order   => $order
   }
-
 }

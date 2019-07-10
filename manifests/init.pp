@@ -1,6 +1,4 @@
-# == Class: freeradius
-#
-# Configure a Freeradius server.
+# @summary Configure a Freeradius server
 #
 # @param pki
 #   * If 'simp', include SIMP's pki module and use pki::copy to manage
@@ -39,7 +37,7 @@
 #   If true set rules to open ports on  firewall
 #
 # @param freeradius_name
-#   name of the package
+#   Name of the package
 #
 # @param user
 # @param uid
@@ -69,7 +67,7 @@
 #   String to pass to the freeradius package ensure attribute
 #
 # @param manage_sites_enabled
-#   if true then only sites managed by puppet will be allowed in the sites-enabled
+#   If true then only sites managed by puppet will be allowed in the sites-enabled
 #   directory.  Files that are rsync'd are not "managed" by puppet.
 #   Use the freeradius::v3::site define or a file resource to create sites.
 #
