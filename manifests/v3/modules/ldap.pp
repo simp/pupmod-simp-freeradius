@@ -73,7 +73,7 @@ class freeradius::v3::modules::ldap (
   String                      $base_dn                                        = simplib::lookup('simp_options::ldap::base_dn'),
   String                      $password                                       = simplib::lookup('simp_options::ldap::bind_pw'),
   String                      $identity                                       = simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{lookup('simp_options::ldap::base_dn')}", 'value_type' => String }),
-  Array[Simplib::Uri]         $server                                         = simplib::lookup('simp_options::ldap::uri', { 'default_value' => ["ldap://%{lookup('simp_options::puppet::server')}"]}),
+  Array[Simplib::Uri]         $server                                         = simplib::lookup('simp_options::ldap::uri'),
   Stdlib::AbsolutePath        $app_pki_ca_dir                                 = $freeradius::app_pki_ca_dir,
   Stdlib::AbsolutePath        $app_pki_cert                                   = $freeradius::app_pki_cert,
   Stdlib::AbsolutePath        $app_pki_key                                    = $freeradius::app_pki_key,

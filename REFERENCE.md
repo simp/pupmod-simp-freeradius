@@ -7,7 +7,7 @@
 
 * [`freeradius`](#freeradius): 
 * [`freeradius::config`](#freeradiusconfig): Manage the permissions on directories and files and then either
-* [`freeradius::config::rsync`](#freeradiusconfigrsync): Rsync the configurations files to $freeradius::confdir It does not
+* [`freeradius::config::rsync`](#freeradiusconfigrsync): Rsync the configurations files to `$freeradius::confdir`. It does not
 * [`freeradius::install`](#freeradiusinstall): Install the freeradius server
 * [`freeradius::service`](#freeradiusservice): Configure the radiusd service
 * [`freeradius::v3::conf`](#freeradiusv3conf): @summary configure the `radiusd.conf` file   If `clients_conf_content` is set, it will add that content to the  `clients.conf` file and inclu
@@ -27,6 +27,14 @@
 * [`freeradius::v3::listener`](#freeradiusv3listener): Create a global listener in the `conf.d` directory
 * [`freeradius::v3::module`](#freeradiusv3module): Copies a module definition file to the `modules-available` directory
 * [`freeradius::v3::site`](#freeradiusv3site): Copies a site definition file to the `sites-available` directory and
+
+**Data types**
+
+* [`Freeradius::Deref`](#freeradiusderef): Control under which situations aliases are followed
+* [`Freeradius::Listen`](#freeradiuslisten): Types of packets to listen for
+* [`Freeradius::Logdest`](#freeradiuslogdest): Destination for log messages
+* [`Freeradius::Nas`](#freeradiusnas): NAS-specific method to use when checking for simultaneous use
+* [`Freeradius::Scope`](#freeradiusscope): LDAP search scope
 
 ## Classes
 
@@ -446,8 +454,10 @@ This section is included by the directive `$INCLUDE conf.d/` in the
 radiusd.conf file.
 
 * **See also**
-/etc/raddb/radiusd.conf
-for additional information.
+For
+detailed information on the parameters, extract the original
+/etc/raddb/radiusd.conf from the freeradius rpm using
+rpm2cpio < free radius rpm> | cpio -idmv
 
 #### Parameters
 
@@ -730,7 +740,7 @@ Data type: `Stdlib::AbsolutePath`
 
 Path and name of the private SSL key file
 
-Default value: simplib::lookup('freeradius::app_pki_key')
+Default value: $freeradius::app_pki_key
 
 ##### `app_pki_cert`
 
@@ -738,7 +748,7 @@ Data type: `Stdlib::AbsolutePath`
 
 Path and name of the public SSL certificate
 
-Default value: simplib::lookup('freeradius::app_pki_cert')
+Default value: $freeradius::app_pki_cert
 
 ##### `app_pki_ca_dir`
 
@@ -746,7 +756,7 @@ Data type: `Stdlib::AbsolutePath`
 
 Path to the CA.
 
-Default value: simplib::lookup('freeradius::app_pki_ca_dir')
+Default value: $freeradius::app_pki_ca_dir
 
 ##### `confdir`
 
@@ -754,7 +764,7 @@ Data type: `Stdlib::Absolutepath`
 
 Freeradius configuration directory
 
-Default value: simplib::lookup('freeradius::confdir', { 'default_value' => '/etc/raddb' })
+Default value: $freeradius::confdir
 
 ##### `group`
 
@@ -762,7 +772,7 @@ Data type: `String`
 
 Group radiusd is running under.
 
-Default value: simplib::lookup('freeradius::group', { 'default_value'   => 'radiusd' })
+Default value: $freeradius::group
 
 ##### `base_filter`
 
@@ -1139,15 +1149,7 @@ Data type: `Array[Simplib::Uri]`
 
 
 
-Default value: simplib::lookup('simp_options::ldap::uri', { 'default_value'     => ["ldap://%{lookup('simp_options::puppet::server')}"]})
-
-##### `fips`
-
-Data type: `Boolean`
-
-
-
-Default value: simplib::lookup('simp_options::fips', {'default_value' => false })
+Default value: simplib::lookup('simp_options::ldap::uri', { 'default_value' => undef })
 
 ### freeradius::v3::sites::ldap
 
@@ -1185,7 +1187,7 @@ Data type: `Stdlib::Absolutepath`
 
 Configuration directory for freeradius
 
-Default value: simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )
+Default value: $freeradius::confdir
 
 ##### `include_listener`
 
@@ -1203,7 +1205,7 @@ Data type: `String`
 
 Group radiusd runs under.
 
-Default value: simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )
+Default value: $freeradius::group
 
 ##### `listen_ip`
 
@@ -1781,4 +1783,36 @@ Data type: `String`
 The group radiusd will run under
 
 Default value: simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )
+
+## Data types
+
+### Freeradius::Deref
+
+Control under which situations aliases are followed
+
+Alias of `Enum['never', 'searching', 'finding', 'always']`
+
+### Freeradius::Listen
+
+Types of packets to listen for
+
+Alias of `Enum['auth', 'acct', 'proxy', 'detail', 'status', 'coa']`
+
+### Freeradius::Logdest
+
+Destination for log messages
+
+Alias of `Enum['files', 'syslog', 'stdout', 'stderr']`
+
+### Freeradius::Nas
+
+NAS-specific method to use when checking for simultaneous use
+
+Alias of `Enum['cisco', 'computone', 'livingston', 'max40xx', 'multitech', 'netserver', 'pathras', 'patton', 'portslave', 'tc', 'usrhiper', 'other']`
+
+### Freeradius::Scope
+
+LDAP search scope
+
+Alias of `Enum['base', 'one', 'sub', 'children']`
 

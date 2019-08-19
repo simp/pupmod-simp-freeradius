@@ -1,3 +1,9 @@
+* Mon Aug 19 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 8.1.0-0
+- Remove `simp_options::puppet::server` from the default lookup logic
+  for `freeradius::v3::modules::ldap::server`. In systems that use Bolt
+  to compile and apply manifests, that setting will not be available.
+- Add types documentation
+
 * Tue Jul 02 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 8.0.1-0
 - Updated documentation
   - Cleaned up for `puppet strings`
