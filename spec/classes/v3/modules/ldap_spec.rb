@@ -242,6 +242,7 @@ describe 'freeradius::v3::modules::ldap' do
       let(:pre_condition) {'include "freeradius"'}
 
       context 'with default params' do
+        let(:hieradata) { 'simp_options_ldap' }
         let(:facts) { facts.merge({:radius_version => '3'})}
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::modules::ldap') }
@@ -249,6 +250,7 @@ describe 'freeradius::v3::modules::ldap' do
       end
 
       context 'with params' do
+        let(:hieradata) { 'simp_options_ldap' }
         let(:facts) { facts.merge({:radius_version => '3'})}
         let(:params){{
           :base_filter                       =>  'test(objectclass=radiusprofile)',
@@ -296,6 +298,12 @@ describe 'freeradius::v3::modules::ldap' do
           :user_scope                        =>  'sub',
         }}
         it { is_expected.to create_file('/etc/raddb/mods-enabled/ldap').with_content(nondefault_module_content)}
+      end
+
+      context 'when simp_options::ldap::uri not specified' do
+        let(:hieradata) { 'simp_options_ldap_without_uri' }
+        let(:facts) { facts.merge({:radius_version => '3'})}
+        it { is_expected.not_to compile.with_all_deps }
       end
 
     end
