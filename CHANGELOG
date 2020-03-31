@@ -1,3 +1,11 @@
+* Tue Mar 31 2020 Trevor Vaughan <tvaughan@onyxpoint.com> - 8.1.0-0
+  - Fix missing `group_filter` option in LDAP
+  - Add support for overriding post-auth in LDAP
+  - Add support for overriding accounting in LDAP
+  - Add support for specifying the entire file content
+  - Fix OEL tests
+  - Add support for simplib < 5
+
 * Mon Aug 19 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 8.1.0-0
 - Remove `simp_options::puppet::server` from the default lookup logic
   for `freeradius::v3::modules::ldap::server`. In systems that use Bolt

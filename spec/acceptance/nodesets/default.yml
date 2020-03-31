@@ -10,11 +10,11 @@ HOSTS:
     roles:
      - server
      - default
-     - master
      - client
     platform: el-7-x86_64
     box: centos/7
     hypervisor: <%= hypervisor %>
+
   el7-ldap:
     roles:
       - ldap
@@ -27,12 +27,13 @@ HOSTS:
         baseurl: https://packagecloud.io/simp-project/6_X_Dependencies/el/7/$basearch
         gpgkeys:
           - https://raw.githubusercontent.com/NationalSecurityAgency/SIMP/master/GPGKEYS/RPM-GPG-KEY-SIMP
-#  el7:
-#    roles:
-#      - client
-#    platform: el-7-x86_64
-#    box: centos/7
-#    hypervisor: <%= hypervisor %>
+  el8:
+    roles:
+      - server
+      - client
+    platform: el-8-x86_64
+    box: centos/8
+    hypervisor: <%= hypervisor %>
 
 CONFIG:
   log_level: verbose

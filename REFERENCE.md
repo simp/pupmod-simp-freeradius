@@ -862,6 +862,14 @@ Data type: `Optional[Freeradius::Scope]`
 
 Default value: `undef`
 
+##### `group_filter`
+
+Data type: `String`
+
+
+
+Default value: '(objectClass=posixGroup)'
+
 ##### `group_name_attribute`
 
 Data type: `String`
@@ -1149,7 +1157,37 @@ Data type: `Array[Simplib::Uri]`
 
 
 
-Default value: simplib::lookup('simp_options::ldap::uri', { 'default_value' => undef })
+Default value: simplib::lookup('simp_options::ldap::uri')
+
+##### `post_auth_content`
+
+Data type: `Optional[String]`
+
+Override the contents of the `post-auth` section of the configuration
+
+* Do NOT include the `post-auth` header or beginning or end curly brace
+
+Default value: `undef`
+
+##### `accounting_content`
+
+Data type: `Optional[String]`
+
+Override the contents of the `accounting` section of the configuration
+
+* Do NOT include the `accounting` header or beginning or end curly brace
+
+Default value: `undef`
+
+##### `content`
+
+Data type: `Optional[String]`
+
+Specify the entire contents of the configuration file
+
+* All other options will be ignored
+
+Default value: `undef`
 
 ### freeradius::v3::sites::ldap
 

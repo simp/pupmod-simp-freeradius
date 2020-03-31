@@ -36,7 +36,7 @@ ldap {
 
   group {
     base_dn = '<%= @base_dn %>'
-    filter = "<%= @base_filter %>"
+    filter = "<%= @group_filter %>"
 <% if @group_scope -%>
     scope = '<%= @group_scope %>'
 <% end -%>
@@ -89,6 +89,9 @@ ldap {
   }
 
   accounting {
+<% if @accounting_content -%>
+<%= @accounting_content %>
+<% else -%>
     reference = "%{tolower:type.%{Acct-Status-Type}}"
 
     type {
@@ -110,12 +113,17 @@ ldap {
         }
       }
     }
+<% end -%>
   }
 
   post-auth {
+<% if @post_auth_content -%>
+<%= @post_auth_content %>
+<% else -%>
     update {
       description := "Authenticated at %S"
     }
+<% end -%>
   }
 
   options {
