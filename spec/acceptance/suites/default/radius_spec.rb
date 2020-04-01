@@ -4,7 +4,6 @@ test_name 'freeradius class'
 
 describe 'freeradius class' do
 
-  clients = hosts_with_role(hosts, 'client')
   servers = hosts_with_role(hosts, 'server')
   ldapserver = find_at_most_one_host_with_role(hosts,'ldap')   # There can only be one.
 
@@ -15,8 +14,8 @@ describe 'freeradius class' do
 
   let(:ldapserver_manifest) {
     <<-EOS
+      service { 'firewalld': ensure => 'stopped', enable => false }
       include 'simp_openldap::server'
-
       EOS
   }
 
@@ -39,16 +38,16 @@ describe 'freeradius class' do
         }
 
         freeradius::v3::client { 'localhost':
-          ipaddr => '127.0.0.1',
-          secret => 'testing123',
+          ipaddr                        => '127.0.0.1',
+          secret                        => 'testing123',
           require_message_authenticator => false,
-          nas_type => 'other',
-          }
+          nas_type                      => 'other',
+        }
 
         freeradius::v3::client { 'mynetwork':
           ipaddr => '10.0.71.0/24',
           secret => 'testing123'
-          }
+        }
     EOR
   }
 
@@ -74,11 +73,11 @@ describe 'freeradius class' do
         }
 
         freeradius::v3::client { 'localhost':
-          ipaddr => '127.0.0.1',
-          secret => 'testing123',
+          ipaddr                        => '127.0.0.1',
+          secret                        => 'testing123',
           require_message_authenticator => false,
-          nas_type => 'other',
-          }
+          nas_type                      => 'other',
+        }
     EOR
   }
 
@@ -129,7 +128,7 @@ describe 'freeradius class' do
 
     servers.each do |server|
       it 'should configure the radius server' do
-        apply_manifest_on(server,radiusserver_useldap_only_manifest)
+        apply_manifest_on(server,radiusserver_useldap_only_manifest, :catch_failures => true)
       end
 
       it 'should not authenticate testuser' do

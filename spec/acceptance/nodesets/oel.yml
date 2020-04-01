@@ -10,23 +10,53 @@ HOSTS:
     roles:
      - server
      - default
-     - master
      - client
     platform: el-7-x86_64
-    box: onyxpoint/oel-7-x86_64
+    box: generic/oracle7
     hypervisor: <%= hypervisor %>
+    yum_repos:
+      ol7_optional:
+        baseurl: https://yum$ociregion.oracle.com/repo/OracleLinux/OL7/optional/latest/$basearch/
+        gpgkeys:
+          - file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+      epel:
+        mirrorlist: 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch'
+        gpgkeys:
+          - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
+
   el7-ldap:
     roles:
       - ldap
       - client
     platform: el-7-x86_64
-    box: onyxpoint/oel-7-x86_64
+    box: generic/oracle7
     hypervisor: <%= hypervisor %>
     yum_repos:
+      ol7_optional:
+        baseurl: https://yum$ociregion.oracle.com/repo/OracleLinux/OL7/optional/latest/$basearch/
+        gpgkeys:
+          - file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
       simp:
         baseurl: https://packagecloud.io/simp-project/6_X_Dependencies/el/7/$basearch
         gpgkeys:
           - https://raw.githubusercontent.com/NationalSecurityAgency/SIMP/master/GPGKEYS/RPM-GPG-KEY-SIMP
+      epel:
+        mirrorlist: 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch'
+        gpgkeys:
+          - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
+
+  el8:
+    roles:
+      - server
+      - client
+    platform: el-8-x86_64
+    box: generic/oracle8
+    hypervisor: <%= hypervisor %>
+    yum_repos:
+      epel:
+        mirrorlist: 'https://mirrors.fedoraproject.org/metalink?repo=epel-8&arch=$basearch'
+        gpgkeys:
+          - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
 
 CONFIG:
   log_level: verbose

@@ -28,6 +28,7 @@
 # @param client_attribute_require_message_authenticator
 # @param default_profile
 # @param group_scope
+# @param group_filter
 # @param group_name_attribute
 # @param group_membership_filter
 #
@@ -69,6 +70,21 @@
 # @param user_scope
 # @param server
 #
+# @param post_auth_content
+#   Override the contents of the `post-auth` section of the configuration
+#
+#   * Do NOT include the `post-auth` header or beginning or end curly brace
+#
+# @param accounting_content
+#   Override the contents of the `accounting` section of the configuration
+#
+#   * Do NOT include the `accounting` header or beginning or end curly brace
+#
+# @param content
+#   Specify the entire contents of the configuration file
+#
+#   * All other options will be ignored
+#
 class freeradius::v3::modules::ldap (
   String                      $base_dn                                        = simplib::lookup('simp_options::ldap::base_dn'),
   String                      $password                                       = simplib::lookup('simp_options::ldap::bind_pw'),
@@ -90,6 +106,7 @@ class freeradius::v3::modules::ldap (
   String                      $client_filter                                  = '(objectClass=frClient)',
   Optional[String]            $default_profile                                = undef,
   Optional[Freeradius::Scope] $group_scope                                    = undef,
+  String                      $group_filter                                   = '(objectClass=posixGroup)',
   String                      $group_name_attribute                           = 'cn',
   String                      $group_membership_filter                        = '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))',
   String                      $group_membership_attribute                     = 'memberOf',
@@ -122,14 +139,24 @@ class freeradius::v3::modules::ldap (
   String                      $user_filter                                    = '(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
   Optional[String]            $user_access_attribute                          = undef,
   Boolean                     $user_access_positive                           = true,
-  Optional[Freeradius::Scope] $user_scope                                     = undef
+  Optional[Freeradius::Scope] $user_scope                                     = undef,
+  Optional[String]            $post_auth_content                              = undef,
+  Optional[String]            $accounting_content                             = undef,
+  Optional[String]            $content                                        = undef
 ) inherits freeradius {
+
+  if $content {
+    $_content = $content
+  }
+  else {
+    $_content = template('freeradius/3/modules/ldap.erb')
+  }
 
   file { "${confdir}/mods-enabled/ldap":
     owner   => 'root',
     group   => $group,
     mode    => '0640',
-    content => template('freeradius/3/modules/ldap.erb'),
+    content => $_content,
     require => File["${confdir}/mods-enabled"],
     notify  => Service['radiusd']
   }

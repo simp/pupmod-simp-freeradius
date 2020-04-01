@@ -32,7 +32,7 @@ ldap {
 
   group {
     base_dn = "<%= @base_dn %>"
-    filter = "<%= @base_filter %>"
+    filter = "<%= @group_filter %>"
 <% if @group_scope then -%>
     scope = <%= @group_scope %>'
 <% end -%>
