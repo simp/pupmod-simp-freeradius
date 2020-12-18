@@ -1,5 +1,5 @@
 * Thu Dec 17 2020 Chris Tessmer <chris.tessmer@onyxpoint.com> - 8.1.2
-- Removed EL6 support
+- Maintenance update for module assets
 
 * Wed Sep 16 2020 Liz Nemsick <lnemsick.simp@gmail.com> - 8.1.1-0
 - Advertise OEL support in the metadata.json.
