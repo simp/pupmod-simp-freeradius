@@ -1,17 +1,22 @@
 ---
 fixtures:
   repositories:
-    concat: https://github.com/simp/puppetlabs-concat
-    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
-    iptables: https://github.com/simp/pupmod-simp-iptables
-    logrotate: https://github.com/simp/pupmod-simp-logrotate
-    pki: https://github.com/simp/pupmod-simp-pki
-    rsync: https://github.com/simp/pupmod-simp-rsync
-    selinux_core:
-      repo: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
-      puppet_version: ">= 6.0.0"
-    simp_options: https://github.com/simp/pupmod-simp-simp_options
-    simp_openldap: https://github.com/simp/pupmod-simp-simp_openldap
-    simplib: https://github.com/simp/pupmod-simp-simplib
-    stdlib: https://github.com/simp/puppetlabs-stdlib
-    systemd: https://github.com/simp/puppet-systemd
+    augeas_core: https://github.com/simp/pupmod-puppetlabs-augeas_core.git
+    concat: https://github.com/simp/puppetlabs-concat.git
+    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup.git
+    firewalld: https://github.com/simp/pupmod-voxpupuli-firewalld.git
+    iptables: https://github.com/simp/pupmod-simp-iptables.git
+    logrotate: https://github.com/simp/pupmod-simp-logrotate.git
+    pki: https://github.com/simp/pupmod-simp-pki.git
+    rsync: https://github.com/simp/pupmod-simp-rsync.git
+    selinux_core: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
+    simp_firewalld: https://github.com/simp/pupmod-simp-simp_firewalld.git
+    simp_options: https://github.com/simp/pupmod-simp-simp_options.git
+    simp_openldap: https://github.com/simp/pupmod-simp-simp_openldap.git
+    simplib: https://github.com/simp/pupmod-simp-simplib.git
+    stdlib: https://github.com/simp/puppetlabs-stdlib.git
+    systemd: https://github.com/simp/puppet-systemd.git
+
+  symlinks:
+    freeradius: "#{source_dir}"
+

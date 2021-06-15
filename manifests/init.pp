@@ -103,9 +103,9 @@ class freeradius (
   if $fips or $facts['fips_enabled'] {
     warning('RADIUS, by design, must have MD5 support. FreeRADIUS (and RADIUS period) cannot be supported in FIPS mode.')
   } else {
-    include '::freeradius::install'
-    include '::freeradius::config'
-    include '::freeradius::service'
+    include 'freeradius::install'
+    include 'freeradius::config'
+    include 'freeradius::service'
     Class['freeradius::install'] -> Class['freeradius::config'] ~> Class['freeradius::service']
   }
 }

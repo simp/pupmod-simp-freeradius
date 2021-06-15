@@ -48,7 +48,7 @@ class freeradius::config::rsync (
 
   rsync { 'freeradius':
     source   => $rsync_source,
-    target   => $::freeradius::confdir,
+    target   => $freeradius::confdir,
     server   => $rsync_server,
     timeout  => $rsync_timeout,
     notify   => Service['radiusd'],

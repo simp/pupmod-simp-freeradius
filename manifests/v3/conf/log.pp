@@ -19,7 +19,7 @@
 #
 class freeradius::v3::conf::log (
   Freeradius::Logdest        $destination     = 'syslog',
-  Stdlib::AbsolutePath       $log_file        = "${::freeradius::logdir}/radius.log",
+  Stdlib::AbsolutePath       $log_file        = "${freeradius::logdir}/radius.log",
   Simplib::Syslog::Facility  $syslog_facility = 'local6',
   Boolean                    $stripped_names  = false,
   Boolean                    $auth            = true,

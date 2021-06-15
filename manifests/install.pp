@@ -20,10 +20,10 @@ class freeradius::install {
     require   => Group[$freeradius::group]
   }
 
-  package { [$::freeradius::freeradius_name,
-            "${::freeradius::freeradius_name}-ldap",
-            "${::freeradius::freeradius_name}-utils"]:
-    ensure  => $::freeradius::package_ensure,
+  package { [$freeradius::freeradius_name,
+            "${freeradius::freeradius_name}-ldap",
+            "${freeradius::freeradius_name}-utils"]:
+    ensure  => $freeradius::package_ensure,
     require => User['radiusd']
   }
 
