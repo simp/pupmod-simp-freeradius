@@ -1,6 +1,6 @@
 {
   "name": "simp-freeradius",
-  "version": "8.1.2",
+  "version": "8.2.0",
   "author": "SIMP Team",
   "summary": "manages FreeRADIUS authentication servers",
   "license": "Apache-2.0",
@@ -30,7 +30,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 < 7.0.0"
+      "version_requirement": ">= 6.18.0 < 8.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -59,7 +59,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.7 < 7.0.0"
+      "version_requirement": ">= 6.22.1 < 8.0.0"
     }
   ]
 }
