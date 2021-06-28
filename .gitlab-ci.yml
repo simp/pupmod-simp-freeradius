@@ -336,16 +336,21 @@ pup6.x:
   <<: *pup_6_x
   <<: *acceptance_base
   script:
-    - 'bundle exec rake beaker:suites[default]'
+    - 'bundle exec rake beaker:suites[default,default]'
 
 pup6.pe:
   <<: *pup_6_pe
   <<: *acceptance_base
   script:
-    - 'bundle exec rake beaker:suites[default]'
+    - 'bundle exec rake beaker:suites[default,default]'
 
 pup6.pe-oel:
   <<: *pup_6_pe
   <<: *acceptance_base
   script:
     - 'bundle exec rake beaker:suites[default,oel]'
+
+pup7.x:
+  <<: *pup_7_x
+  <<: *acceptance_base
+  script:
