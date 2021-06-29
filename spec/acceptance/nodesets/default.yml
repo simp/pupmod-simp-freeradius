@@ -22,17 +22,30 @@ HOSTS:
     platform: el-7-x86_64
     box: centos/7
     hypervisor: <%= hypervisor %>
+    #need to get simp_ppolicy rpm.
     yum_repos:
       simp:
-        baseurl: https://packagecloud.io/simp-project/6_X_Dependencies/el/7/$basearch
+        baseurl: https://download.simp-project.com/simp/yum/rolling/6/el/$releasever/$basearch/simp
         gpgkeys:
-          - https://raw.githubusercontent.com/NationalSecurityAgency/SIMP/master/GPGKEYS/RPM-GPG-KEY-SIMP
-  el8:
+          - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP
+          - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP-6
+          - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP-UNSTABLE
+
+
+  el8-server:
     roles:
       - server
       - client
     platform: el-8-x86_64
-    box: centos/8
+    box: generic/centos8
+    hypervisor: <%= hypervisor %>
+
+  el8-ldap:
+    roles:
+      - 389ds
+      - client
+    platform: el-8-x86_64
+    box: generic/centos8
     hypervisor: <%= hypervisor %>
 
 CONFIG:

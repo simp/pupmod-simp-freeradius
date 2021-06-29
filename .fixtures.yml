@@ -4,6 +4,7 @@ fixtures:
     augeas_core: https://github.com/simp/pupmod-puppetlabs-augeas_core.git
     concat: https://github.com/simp/puppetlabs-concat.git
     compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup.git
+    ds389: https://github.com/simp/pupmod-simp-ds389.git
     firewalld: https://github.com/simp/pupmod-voxpupuli-firewalld.git
     iptables: https://github.com/simp/pupmod-simp-iptables.git
     logrotate: https://github.com/simp/pupmod-simp-logrotate.git
@@ -11,6 +12,7 @@ fixtures:
     rsync: https://github.com/simp/pupmod-simp-rsync.git
     selinux_core: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
     simp_firewalld: https://github.com/simp/pupmod-simp-simp_firewalld.git
+    simp_ds389: https://github.com/simp/pupmod-simp-simp_ds389.git
     simp_options: https://github.com/simp/pupmod-simp-simp_options.git
     simp_openldap: https://github.com/simp/pupmod-simp-simp_openldap.git
     simplib: https://github.com/simp/pupmod-simp-simplib.git
