@@ -32,7 +32,7 @@ HOSTS:
         baseurl: https://yum$ociregion.oracle.com/repo/OracleLinux/OL7/optional/latest/$basearch/
         gpgkeys:
           - file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
-     simp:
+      simp:
         baseurl: https://download.simp-project.com/simp/yum/rolling/6/el/$releasever/$basearch/simp
         gpgkeys:
           - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP
