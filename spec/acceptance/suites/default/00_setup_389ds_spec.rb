@@ -28,7 +28,6 @@ describe 'Setup 389ds server for freeradius' do
       server_manifest = <<-EOM
         include 'simp_options'
         include 'simp_ds389::instances::accounts'
-        include 'simp_openldap::client'
       EOM
 
       # Apply

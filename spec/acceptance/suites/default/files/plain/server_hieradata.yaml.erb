@@ -1,11 +1,6 @@
 # suP3rP@ssw0r!
 simp_options::ldap::root_dn: 'cn=LDAPAdmin,ou=People,<%= base_dn %>'
 simp_openldap::server::conf::rootpw: "{SSHA}ZcqPNbcqQhDNF5jYTLGl+KAGcrHNW9oo"
-#
 
 simp_openldap::server::conf::default_ldif::ppolicy_pwd_min_age: 0
 simp_openldap::server::conf::default_ldif::ppolicy_pwd_failure_count_interval: 4
-
-#simp_openldap::client::app_pki_ca_dir: "/etc/pki/simp-testing/pki/cacerts"
-#simp_openldap::client::app_pki_cert: "%{hiera('simp_options::pki::source')}/public/%{fqdn}.pub"
-#simp_openldap::client::app_pki_key: "%{hiera('simp_options::pki::source')}/private/%{fqdn}.pem"
