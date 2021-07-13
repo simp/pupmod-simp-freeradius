@@ -7,17 +7,10 @@ describe 'freeradius class' do
   servers = hosts_with_role(hosts, 'server')
   ldapserver = find_at_most_one_host_with_role(hosts,'ldap')   # There can only be one.
 
-  let(:ldapserver_fqdn) {fact_on(ldapserver, 'fqdn')}
+  let(:ldap_server_fqdn) {fact_on(ldapserver, 'fqdn')}
+  let(:ldap_type) {'plain'}
   let(:base_dn) { fact_on(ldapserver, 'domain').split('.').map{ |d| "DC=#{d}" }.join(',') }
   let(:results_base_dn) { fact_on(ldapserver, 'domain').split('.').map{ |d| "dc=#{d}" }.join(',') }
-  let(:add_users)   { File.read(File.expand_path('templates/add_users.ldif.erb', File.dirname(__FILE__))) }
-
-  let(:ldapserver_manifest) {
-    <<-EOS
-      service { 'firewalld': ensure => 'stopped', enable => false }
-      include 'simp_openldap::server'
-      EOS
-  }
 
   let(:radiusserver_manifest) {
     <<-EOR
@@ -82,30 +75,7 @@ describe 'freeradius class' do
   }
 
 
-  let(:the_hieradata)  { ERB.new(File.read(File.expand_path('templates/ldap_with_tls.hieradata.erb', File.dirname(__FILE__)))).result(binding) }
-
-  context 'setup ldap server' do
-
-    it 'should configure ldapserver' do
-      set_hieradata_on(ldapserver, the_hieradata)
-      apply_manifest_on(ldapserver, ldapserver_manifest, :catch_failures => true)
-    end
-
-    #sanity check
-    it 'should be able to connect using tls and use ldapsearch' do
-      on(ldapserver, "ldapsearch -ZZ -LLL -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldapserver_fqdn} -x -w suP3rP@ssw0r!")
-    end
-
-    it 'should add test users ' do
-      create_remote_file(ldapserver, '/tmp/add_users.ldif', ERB.new(add_users).result(binding))
-      on(ldapserver, "ldapadd -Z -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldapserver_fqdn} -w suP3rP@ssw0r! -x -f /tmp/add_users.ldif")
-      result = on(ldapserver, "ldapsearch -LLL -Z -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldapserver_fqdn} -w suP3rP@ssw0r! -x cn=radius")
-      expect(result.stdout).to include("dn: cn=radius,ou=Group,#{results_base_dn}")
-      result2 = on(ldapserver, "ldapsearch -LLL -Z -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldapserver_fqdn} -w suP3rP@ssw0r! -x cn=radius1")
-      expect(result2.stdout).to include("dn: uid=radius1,ou=People,#{results_base_dn}")
-    end
-
-  end
+  let(:the_hieradata)  { ERB.new(File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__)))).result(binding) }
 
   context 'set up radius server' do
 

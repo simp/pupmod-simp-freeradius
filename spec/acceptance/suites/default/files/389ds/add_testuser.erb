@@ -1,0 +1,33 @@
+# -------------------------------------
+# Create Radius and not radius groups
+
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" posixgroup create --cn radius --gidNumber 10000
+
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" posixgroup create --cn notradius --gidNumber 11000
+
+# -------------------------------------
+# Create radius user and add to radius group
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" user create --cn radius1 --uid radius1 --displayName "Test User 1" --uidNumber 10000 --gidNumber 100 --homeDirectory /home/radius1
+
+#suP3rP@ssw0r!
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" user modify radius1 add:userPassword:{SSHA}r2GaizHFWY8pcHpIClU0ye7vsO4uHv/y
+
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" posixgroup modify radius add:member:uid=radius1,ou=People,<%= base_dn %>
+
+# -------------------------------------
+# Create radius user 2 and add to radius group
+
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" user create --cn radius2 --uid radius2 --displayName "Test User 2" --uidNumber 10001 --gidNumber 100 --homeDirectory /home/radius2
+
+#suP3rP@ssw0r!
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" user modify radius2 add:userPassword:{SSHA}r2GaizHFWY8pcHpIClU0ye7vsO4uHv/y
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" posixgroup modify radius add:member:uid=radius2,ou=People,<%= base_dn %>
+
+
+# -------------------------------------
+#  Create notradius user and add to notradius group
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" user create --cn notradius --uid notradius --displayName "Non Radius Users" --uidNumber 11000 --gidNumber 11000 --homeDirectory /home/notradius
+
+#suP3rP@ssw0r!
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" user modify notradius add:userPassword:{SSHA}r2GaizHFWY8pcHpIClU0ye7vsO4uHv/y
+dsidm "<%= ds_root_name %>" -b "<%= base_dn %>" posixgroup modify notradius add:member:uid=notradius,ou=People,<%= base_dn %>
