@@ -57,5 +57,4 @@ CONFIG:
   log_level: verbose
   synced_folder: disabled
   type: aio
-  vagrant_memsize: 256
   puppet_collection: "<%= ENV.fetch('BEAKER_PUPPET_COLLECTION', 'puppet7') %>"
