@@ -37,7 +37,7 @@ HOSTS:
       - server
       - client
     platform: el-8-x86_64
-    box: generic/centos8
+    box: centos/stream8
     hypervisor: <%= hypervisor %>
 
   el8-ldap:
@@ -45,14 +45,13 @@ HOSTS:
       - 389ds
       - client
     platform: el-8-x86_64
-    box: generic/centos8
+    box: centos/stream8
     hypervisor: <%= hypervisor %>
 
 CONFIG:
   log_level: verbose
   synced_folder : disabled
   type: aio
-  vagrant_memsize: 256
 <% if ENV['BEAKER_PUPPET_COLLECTION'] -%>
   puppet_collection: <%= ENV['BEAKER_PUPPET_COLLECTION'] %>
 <% end -%>
