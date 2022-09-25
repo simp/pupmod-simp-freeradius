@@ -6,40 +6,32 @@
   end
 -%>
 HOSTS:
-  el7-server:
+  amzn2:
     roles:
-     - server
-     - default
-     - client
+      - server
+      - default
+      - client
     platform: el-7-x86_64
-    box: centos/7
+    box: gbailey/amzn2
     hypervisor: <%= hypervisor %>
 
-  el7-ldap:
+  amzn2-ldap:
     roles:
       - ldap
       - client
     platform: el-7-x86_64
-    box: centos/7
+    box: gbailey/amzn2
     hypervisor: <%= hypervisor %>
     #need to get simp_ppolicy rpm.
     yum_repos:
       simp:
-        baseurl: https://download.simp-project.com/simp/yum/rolling/6/el/$releasever/$basearch/simp
+        baseurl: https://download.simp-project.com/simp/yum/rolling/6/el/7/$basearch/simp
         gpgkeys:
           - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP
           - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP-6
           - https://download.simp-project.com/simp/GPGKEYS/RPM-GPG-KEY-SIMP-UNSTABLE
 
-
-  el8-server:
-    roles:
-      - server
-      - client
-    platform: el-8-x86_64
-    box: centos/stream8
-    hypervisor: <%= hypervisor %>
-
+  # Needed for 389-DS testing
   el8-ldap:
     roles:
       - 389ds

@@ -1,6 +1,6 @@
 {
   "name": "simp-freeradius",
-  "version": "8.2.0",
+  "version": "8.3.0",
   "author": "SIMP Team",
   "summary": "manages FreeRADIUS authentication servers",
   "license": "Apache-2.0",
@@ -34,6 +34,12 @@
     }
   ],
   "operatingsystem_support": [
+    {
+      "operatingsystem": "Amazon",
+      "operatingsystemrelease": [
+        "2"
+      ]
+    },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
