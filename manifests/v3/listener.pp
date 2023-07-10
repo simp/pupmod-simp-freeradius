@@ -41,7 +41,7 @@ define freeradius::v3::listener (
   $_target = "${confdir}/conf.d/listener.${name}"
   concat { "listener.${name}" :
       ensure => present,
-      path   => "${_target}",
+      path   => $_target,
       owner  => 'root',
       group  => $group,
       mode   => '0640',
