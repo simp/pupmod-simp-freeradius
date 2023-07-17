@@ -162,9 +162,9 @@ class freeradius::v3::conf (
   #  the radiusd.conf file includes the file.
   if $trigger_conf_content {
     file { "${freeradius::confdir}/trigger.conf":
-      ensure => 'file',
-      content=> $trigger_conf_content,
-      *      => $file_settings,
+      ensure  => 'file',
+      content => $trigger_conf_content,
+      *       => $file_settings,
     }
   }
 

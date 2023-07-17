@@ -60,7 +60,7 @@ class freeradius::v3::sites::ldap (
   }
 
   if $include_listener {
-    freeradius::v3::listen { "site_ldap_auth":
+    freeradius::v3::listen { 'site_ldap_auth':
       target          => $_target,
       order           => 10,
       listen_type     => 'auth',
@@ -71,7 +71,7 @@ class freeradius::v3::sites::ldap (
       lifetime        => $lifetime
     }
 
-    freeradius::v3::listen { "site_ldap_acct":
+    freeradius::v3::listen { 'site_ldap_acct':
       target      => $_target,
       order       => 11,
       listen_type => 'acct',
