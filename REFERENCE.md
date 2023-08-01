@@ -7,35 +7,35 @@
 ### Classes
 
 * [`freeradius`](#freeradius)
-* [`freeradius::config`](#freeradiusconfig): Manage the permissions on directories and files and then either
-* [`freeradius::config::rsync`](#freeradiusconfigrsync): Rsync the configurations files to `$freeradius::confdir`. It does not
-* [`freeradius::install`](#freeradiusinstall): Install the freeradius server
-* [`freeradius::service`](#freeradiusservice): Configure the radiusd service
-* [`freeradius::v3::conf`](#freeradiusv3conf): @summary configure the `radiusd.conf` file   If `clients_conf_content` is set, it will add that content to the  `clients.conf` file and inclu
-* [`freeradius::v3::conf::instantiate`](#freeradiusv3confinstantiate): Creates the 'instantiate' section of `radiusd.conf`
-* [`freeradius::v3::conf::log`](#freeradiusv3conflog): Add a 'log' section to freeradius
-* [`freeradius::v3::conf::security`](#freeradiusv3confsecurity): Add a 'security' section to freeradius.
-* [`freeradius::v3::conf::thread_pool`](#freeradiusv3confthread_pool): Add a 'thread pool' section to the freeradius configuration
-* [`freeradius::v3::conf::users`](#freeradiusv3confusers): Set up the freeradius users entries
-* [`freeradius::v3::modules::ldap`](#freeradiusv3modulesldap): Set up the LDAP module configuration.
-* [`freeradius::v3::sites::ldap`](#freeradiusv3sitesldap): This will create a site that will authenticate using LDAP and listen
+* [`freeradius::config`](#freeradius--config): Manage the permissions on directories and files and then either
+* [`freeradius::config::rsync`](#freeradius--config--rsync): Rsync the configurations files to `$freeradius::confdir`. It does not
+* [`freeradius::install`](#freeradius--install): Install the freeradius server
+* [`freeradius::service`](#freeradius--service): Configure the radiusd service
+* [`freeradius::v3::conf`](#freeradius--v3--conf): @summary configure the `radiusd.conf` file   If `clients_conf_content` is set, it will add that content to the  `clients.conf` file and inclu
+* [`freeradius::v3::conf::instantiate`](#freeradius--v3--conf--instantiate): Creates the 'instantiate' section of `radiusd.conf`
+* [`freeradius::v3::conf::log`](#freeradius--v3--conf--log): Add a 'log' section to freeradius
+* [`freeradius::v3::conf::security`](#freeradius--v3--conf--security): Add a 'security' section to freeradius.
+* [`freeradius::v3::conf::thread_pool`](#freeradius--v3--conf--thread_pool): Add a 'thread pool' section to the freeradius configuration
+* [`freeradius::v3::conf::users`](#freeradius--v3--conf--users): Set up the freeradius users entries
+* [`freeradius::v3::modules::ldap`](#freeradius--v3--modules--ldap): Set up the LDAP module configuration.
+* [`freeradius::v3::sites::ldap`](#freeradius--v3--sites--ldap): This will create a site that will authenticate using LDAP and listen
 
 ### Defined types
 
-* [`freeradius::v3::client`](#freeradiusv3client): Add a client to `/etc/raddb/clients.d/`
-* [`freeradius::v3::conf::user`](#freeradiusv3confuser): Use concat to add content to the `users` file that is created by
-* [`freeradius::v3::listen`](#freeradiusv3listen): Add a 'listen' section to a freeradius configuration file.
-* [`freeradius::v3::listener`](#freeradiusv3listener): Create a global listener in the `conf.d` directory
-* [`freeradius::v3::module`](#freeradiusv3module): Copies a module definition file to the `modules-available` directory
-* [`freeradius::v3::site`](#freeradiusv3site): Copies a site definition file to the `sites-available` directory and
+* [`freeradius::v3::client`](#freeradius--v3--client): Add a client to `/etc/raddb/clients.d/`
+* [`freeradius::v3::conf::user`](#freeradius--v3--conf--user): Use concat to add content to the `users` file that is created by
+* [`freeradius::v3::listen`](#freeradius--v3--listen): Add a 'listen' section to a freeradius configuration file.
+* [`freeradius::v3::listener`](#freeradius--v3--listener): Create a global listener in the `conf.d` directory
+* [`freeradius::v3::module`](#freeradius--v3--module): Copies a module definition file to the `modules-available` directory
+* [`freeradius::v3::site`](#freeradius--v3--site): Copies a site definition file to the `sites-available` directory and
 
 ### Data types
 
-* [`Freeradius::Deref`](#freeradiusderef): Control under which situations aliases are followed
-* [`Freeradius::Listen`](#freeradiuslisten): Types of packets to listen for
-* [`Freeradius::Logdest`](#freeradiuslogdest): Destination for log messages
-* [`Freeradius::Nas`](#freeradiusnas): NAS-specific method to use when checking for simultaneous use
-* [`Freeradius::Scope`](#freeradiusscope): LDAP search scope
+* [`Freeradius::Deref`](#Freeradius--Deref): Control under which situations aliases are followed
+* [`Freeradius::Listen`](#Freeradius--Listen): Types of packets to listen for
+* [`Freeradius::Logdest`](#Freeradius--Logdest): Destination for log messages
+* [`Freeradius::Nas`](#Freeradius--Nas): NAS-specific method to use when checking for simultaneous use
+* [`Freeradius::Scope`](#Freeradius--Scope): LDAP search scope
 
 ## Classes
 
@@ -47,29 +47,29 @@ The freeradius class.
 
 The following parameters are available in the `freeradius` class:
 
-* [`firewall`](#firewall)
-* [`freeradius_name`](#freeradius_name)
-* [`user`](#user)
-* [`uid`](#uid)
-* [`group`](#group)
-* [`gid`](#gid)
-* [`sysconfdir`](#sysconfdir)
-* [`confdir`](#confdir)
-* [`logdir`](#logdir)
-* [`testcerts`](#testcerts)
-* [`use_rsync`](#use_rsync)
-* [`package_ensure`](#package_ensure)
-* [`manage_sites_enabled`](#manage_sites_enabled)
-* [`pki`](#pki)
-* [`fips`](#fips)
-* [`app_pki_dir`](#app_pki_dir)
-* [`app_pki_cert`](#app_pki_cert)
-* [`app_pki_key`](#app_pki_key)
-* [`app_pki_ca`](#app_pki_ca)
-* [`app_pki_ca_dir`](#app_pki_ca_dir)
-* [`app_pki_external_source`](#app_pki_external_source)
+* [`firewall`](#-freeradius--firewall)
+* [`freeradius_name`](#-freeradius--freeradius_name)
+* [`user`](#-freeradius--user)
+* [`uid`](#-freeradius--uid)
+* [`group`](#-freeradius--group)
+* [`gid`](#-freeradius--gid)
+* [`sysconfdir`](#-freeradius--sysconfdir)
+* [`confdir`](#-freeradius--confdir)
+* [`logdir`](#-freeradius--logdir)
+* [`testcerts`](#-freeradius--testcerts)
+* [`use_rsync`](#-freeradius--use_rsync)
+* [`package_ensure`](#-freeradius--package_ensure)
+* [`manage_sites_enabled`](#-freeradius--manage_sites_enabled)
+* [`pki`](#-freeradius--pki)
+* [`fips`](#-freeradius--fips)
+* [`app_pki_dir`](#-freeradius--app_pki_dir)
+* [`app_pki_cert`](#-freeradius--app_pki_cert)
+* [`app_pki_key`](#-freeradius--app_pki_key)
+* [`app_pki_ca`](#-freeradius--app_pki_ca)
+* [`app_pki_ca_dir`](#-freeradius--app_pki_ca_dir)
+* [`app_pki_external_source`](#-freeradius--app_pki_external_source)
 
-##### <a name="firewall"></a>`firewall`
+##### <a name="-freeradius--firewall"></a>`firewall`
 
 Data type: `Boolean`
 
@@ -77,7 +77,7 @@ If true set rules to open ports on  firewall
 
 Default value: `simplib::lookup('simp_options::firewall', { 'default_value'    => false})`
 
-##### <a name="freeradius_name"></a>`freeradius_name`
+##### <a name="-freeradius--freeradius_name"></a>`freeradius_name`
 
 Data type: `String`
 
@@ -85,7 +85,7 @@ Name of the package
 
 Default value: `'freeradius'`
 
-##### <a name="user"></a>`user`
+##### <a name="-freeradius--user"></a>`user`
 
 Data type: `String`
 
@@ -93,7 +93,7 @@ Data type: `String`
 
 Default value: `'radiusd'`
 
-##### <a name="uid"></a>`uid`
+##### <a name="-freeradius--uid"></a>`uid`
 
 Data type: `Integer`
 
@@ -101,7 +101,7 @@ Data type: `Integer`
 
 Default value: `95`
 
-##### <a name="group"></a>`group`
+##### <a name="-freeradius--group"></a>`group`
 
 Data type: `String`
 
@@ -109,7 +109,7 @@ Data type: `String`
 
 Default value: `'radiusd'`
 
-##### <a name="gid"></a>`gid`
+##### <a name="-freeradius--gid"></a>`gid`
 
 Data type: `Integer`
 
@@ -118,7 +118,7 @@ freeradius.
 
 Default value: `95`
 
-##### <a name="sysconfdir"></a>`sysconfdir`
+##### <a name="-freeradius--sysconfdir"></a>`sysconfdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -126,7 +126,7 @@ Top level configuration directory.
 
 Default value: `'/etc'`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -134,7 +134,7 @@ The configuration directories where the radius files are kept.
 
 Default value: `"${sysconfdir}/raddb"`
 
-##### <a name="logdir"></a>`logdir`
+##### <a name="-freeradius--logdir"></a>`logdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -142,15 +142,15 @@ freeradius log directory
 
 Default value: `'/var/log/freeradius'`
 
-##### <a name="testcerts"></a>`testcerts`
+##### <a name="-freeradius--testcerts"></a>`testcerts`
 
 Data type: `Boolean`
 
 Whether or not freeradius should generate test certs at installation time.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="use_rsync"></a>`use_rsync`
+##### <a name="-freeradius--use_rsync"></a>`use_rsync`
 
 Data type: `Boolean`
 
@@ -159,9 +159,9 @@ The other configuration manifests only work with freeradius version 3 or later,
 if you are using an earlier version you will need to copy files this way.
 rsync will not remove any files so you can use a combination of rsync and manifests.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-freeradius--package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -169,7 +169,7 @@ String to pass to the freeradius package ensure attribute
 
 Default value: `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })`
 
-##### <a name="manage_sites_enabled"></a>`manage_sites_enabled`
+##### <a name="-freeradius--manage_sites_enabled"></a>`manage_sites_enabled`
 
 Data type: `Boolean`
 
@@ -177,9 +177,9 @@ If true then only sites managed by puppet will be allowed in the sites-enabled
 directory.  Files that are rsync'd are not "managed" by puppet.
 Use the freeradius::v3::site define or a file resource to create sites.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="pki"></a>`pki`
+##### <a name="-freeradius--pki"></a>`pki`
 
 Data type: `Variant[Boolean,Enum['simp']]`
 
@@ -187,7 +187,7 @@ Data type: `Variant[Boolean,Enum['simp']]`
 
 Default value: `simplib::lookup('simp_options::pki', { 'default_value'         => false })`
 
-##### <a name="fips"></a>`fips`
+##### <a name="-freeradius--fips"></a>`fips`
 
 Data type: `Boolean`
 
@@ -195,7 +195,7 @@ Data type: `Boolean`
 
 Default value: `simplib::lookup('simp_options::fips', {'default_value' => false })`
 
-##### <a name="app_pki_dir"></a>`app_pki_dir`
+##### <a name="-freeradius--app_pki_dir"></a>`app_pki_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -203,23 +203,23 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/etc/pki/simp_apps/freeradius/x509'`
 
-##### <a name="app_pki_cert"></a>`app_pki_cert`
+##### <a name="-freeradius--app_pki_cert"></a>`app_pki_cert`
 
 Data type: `Stdlib::Absolutepath`
 
 
 
-Default value: `"${app_pki_dir}/public/${::fqdn}.pub"`
+Default value: `"${app_pki_dir}/public/${facts['networking']['fqdn']}.pub"`
 
-##### <a name="app_pki_key"></a>`app_pki_key`
+##### <a name="-freeradius--app_pki_key"></a>`app_pki_key`
 
 Data type: `Stdlib::Absolutepath`
 
 
 
-Default value: `"${app_pki_dir}/private/${::fqdn}.pem"`
+Default value: `"${app_pki_dir}/private/${facts['networking']['fqdn']}.pem"`
 
-##### <a name="app_pki_ca"></a>`app_pki_ca`
+##### <a name="-freeradius--app_pki_ca"></a>`app_pki_ca`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -227,7 +227,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `"${app_pki_dir}/cacerts/cacerts.pem"`
 
-##### <a name="app_pki_ca_dir"></a>`app_pki_ca_dir`
+##### <a name="-freeradius--app_pki_ca_dir"></a>`app_pki_ca_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -235,7 +235,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `"${app_pki_dir}/cacerts"`
 
-##### <a name="app_pki_external_source"></a>`app_pki_external_source`
+##### <a name="-freeradius--app_pki_external_source"></a>`app_pki_external_source`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -243,11 +243,11 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' })`
 
-### <a name="freeradiusconfig"></a>`freeradius::config`
+### <a name="freeradius--config"></a>`freeradius::config`
 
 rsync content or create content
 
-### <a name="freeradiusconfigrsync"></a>`freeradius::config::rsync`
+### <a name="freeradius--config--rsync"></a>`freeradius::config::rsync`
 
 remove any other files that exist in that directory
 
@@ -260,22 +260,22 @@ The defaults in this module use the freeradius share set up by the
 
 The following parameters are available in the `freeradius::config::rsync` class:
 
-* [`rsync_source`](#rsync_source)
-* [`rsync_server`](#rsync_server)
-* [`radius_rsync_user`](#radius_rsync_user)
-* [`radius_rsync_password`](#radius_rsync_password)
-* [`rsync_timeout`](#rsync_timeout)
-* [`rsync_bwlimit`](#rsync_bwlimit)
+* [`rsync_source`](#-freeradius--config--rsync--rsync_source)
+* [`rsync_server`](#-freeradius--config--rsync--rsync_server)
+* [`radius_rsync_user`](#-freeradius--config--rsync--radius_rsync_user)
+* [`radius_rsync_password`](#-freeradius--config--rsync--radius_rsync_password)
+* [`rsync_timeout`](#-freeradius--config--rsync--rsync_timeout)
+* [`rsync_bwlimit`](#-freeradius--config--rsync--rsync_bwlimit)
 
-##### <a name="rsync_source"></a>`rsync_source`
+##### <a name="-freeradius--config--rsync--rsync_source"></a>`rsync_source`
 
 Data type: `String`
 
 The  source  on the rsync server
 
-Default value: `"freeradius_${::environment}_${facts['os']['name']}/"`
+Default value: `"freeradius_${facts['environment']}_${facts['os']['name']}/"`
 
-##### <a name="rsync_server"></a>`rsync_server`
+##### <a name="-freeradius--config--rsync--rsync_server"></a>`rsync_server`
 
 Data type: `Simplib::Host`
 
@@ -285,7 +285,7 @@ which to pull here.
 
 Default value: `simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'})`
 
-##### <a name="radius_rsync_user"></a>`radius_rsync_user`
+##### <a name="-freeradius--config--rsync--radius_rsync_user"></a>`radius_rsync_user`
 
 Data type: `String`
 
@@ -294,9 +294,9 @@ This has been designed with the assuption that you will utilize
 the internal simplib::passgen mechanism to set the password. You can optionally specify
 $radius_rsync_password
 
-Default value: `"freeradius_systems_${::environment}_${facts['os']['name'].downcase}"`
+Default value: `"freeradius_systems_${facts['environment']}_${facts['os']['name'].downcase}"`
 
-##### <a name="radius_rsync_password"></a>`radius_rsync_password`
+##### <a name="-freeradius--config--rsync--radius_rsync_password"></a>`radius_rsync_password`
 
 Data type: `String`
 
@@ -304,7 +304,7 @@ If no password is specified, simplib::passgen will be used
 
 Default value: `simplib::passgen($radius_rsync_user)`
 
-##### <a name="rsync_timeout"></a>`rsync_timeout`
+##### <a name="-freeradius--config--rsync--rsync_timeout"></a>`rsync_timeout`
 
 Data type: `Integer`
 
@@ -314,23 +314,23 @@ timeout here.
 
 Default value: `simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2})`
 
-##### <a name="rsync_bwlimit"></a>`rsync_bwlimit`
+##### <a name="-freeradius--config--rsync--rsync_bwlimit"></a>`rsync_bwlimit`
 
 Data type: `Optional[Integer]`
 
 rsync bandwidth limit
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusinstall"></a>`freeradius::install`
+### <a name="freeradius--install"></a>`freeradius::install`
 
 Install the freeradius server
 
-### <a name="freeradiusservice"></a>`freeradius::service`
+### <a name="freeradius--service"></a>`freeradius::service`
 
 Configure the radiusd service
 
-### <a name="freeradiusv3conf"></a>`freeradius::v3::conf`
+### <a name="freeradius--v3--conf"></a>`freeradius::v3::conf`
 
 @summary configure the `radiusd.conf` file
 
@@ -364,22 +364,22 @@ These parameters add custom content to various parts of the configuration.
 
 The following parameters are available in the `freeradius::v3::conf` class:
 
-* [`cleanup_delay`](#cleanup_delay)
-* [`correct_escapes`](#correct_escapes)
-* [`default_acct_listener`](#default_acct_listener)
-* [`hostname_lookups`](#hostname_lookups)
-* [`localstatedir`](#localstatedir)
-* [`max_request_time`](#max_request_time)
-* [`max_requests`](#max_requests)
-* [`radius_ports`](#radius_ports)
-* [`trusted_nets`](#trusted_nets)
-* [`protocol`](#protocol)
-* [`clients_conf_content`](#clients_conf_content)
-* [`proxy_conf_content`](#proxy_conf_content)
-* [`trigger_conf_content`](#trigger_conf_content)
-* [`users_conf_content`](#users_conf_content)
+* [`cleanup_delay`](#-freeradius--v3--conf--cleanup_delay)
+* [`correct_escapes`](#-freeradius--v3--conf--correct_escapes)
+* [`default_acct_listener`](#-freeradius--v3--conf--default_acct_listener)
+* [`hostname_lookups`](#-freeradius--v3--conf--hostname_lookups)
+* [`localstatedir`](#-freeradius--v3--conf--localstatedir)
+* [`max_request_time`](#-freeradius--v3--conf--max_request_time)
+* [`max_requests`](#-freeradius--v3--conf--max_requests)
+* [`radius_ports`](#-freeradius--v3--conf--radius_ports)
+* [`trusted_nets`](#-freeradius--v3--conf--trusted_nets)
+* [`protocol`](#-freeradius--v3--conf--protocol)
+* [`clients_conf_content`](#-freeradius--v3--conf--clients_conf_content)
+* [`proxy_conf_content`](#-freeradius--v3--conf--proxy_conf_content)
+* [`trigger_conf_content`](#-freeradius--v3--conf--trigger_conf_content)
+* [`users_conf_content`](#-freeradius--v3--conf--users_conf_content)
 
-##### <a name="cleanup_delay"></a>`cleanup_delay`
+##### <a name="-freeradius--v3--conf--cleanup_delay"></a>`cleanup_delay`
 
 Data type: `Integer[2,10]`
 
@@ -387,31 +387,31 @@ Data type: `Integer[2,10]`
 
 Default value: `5`
 
-##### <a name="correct_escapes"></a>`correct_escapes`
+##### <a name="-freeradius--v3--conf--correct_escapes"></a>`correct_escapes`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="default_acct_listener"></a>`default_acct_listener`
-
-Data type: `Boolean`
-
-
-
-Default value: ``true``
-
-##### <a name="hostname_lookups"></a>`hostname_lookups`
+##### <a name="-freeradius--v3--conf--default_acct_listener"></a>`default_acct_listener`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `true`
 
-##### <a name="localstatedir"></a>`localstatedir`
+##### <a name="-freeradius--v3--conf--hostname_lookups"></a>`hostname_lookups`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-freeradius--v3--conf--localstatedir"></a>`localstatedir`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -419,7 +419,7 @@ Data type: `Stdlib::AbsolutePath`
 
 Default value: `'/var'`
 
-##### <a name="max_request_time"></a>`max_request_time`
+##### <a name="-freeradius--v3--conf--max_request_time"></a>`max_request_time`
 
 Data type: `Integer[2,120]`
 
@@ -427,7 +427,7 @@ Data type: `Integer[2,120]`
 
 Default value: `30`
 
-##### <a name="max_requests"></a>`max_requests`
+##### <a name="-freeradius--v3--conf--max_requests"></a>`max_requests`
 
 Data type: `Integer[256]`
 
@@ -435,7 +435,7 @@ Data type: `Integer[256]`
 
 Default value: `1024`
 
-##### <a name="radius_ports"></a>`radius_ports`
+##### <a name="-freeradius--v3--conf--radius_ports"></a>`radius_ports`
 
 Data type: `Array[Simplib::Port]`
 
@@ -443,7 +443,7 @@ The ports where freeradius will listen
 
 Default value: `[1812, 1813]`
 
-##### <a name="trusted_nets"></a>`trusted_nets`
+##### <a name="-freeradius--v3--conf--trusted_nets"></a>`trusted_nets`
 
 Data type: `Simplib::Netlist`
 
@@ -451,7 +451,7 @@ Networks and/or hosts that are allowed to access the RADIUS server
 
 Default value: `simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']})`
 
-##### <a name="protocol"></a>`protocol`
+##### <a name="-freeradius--v3--conf--protocol"></a>`protocol`
 
 Data type: `Enum['udp','tcp','ALL']`
 
@@ -459,39 +459,39 @@ What protocols will be used to make sure the firewall is opened correctly
 
 Default value: `'ALL'`
 
-##### <a name="clients_conf_content"></a>`clients_conf_content`
+##### <a name="-freeradius--v3--conf--clients_conf_content"></a>`clients_conf_content`
 
 Data type: `Optional[String]`
 
 Content for the `clients.conf` file if not creating clients individually
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="proxy_conf_content"></a>`proxy_conf_content`
+##### <a name="-freeradius--v3--conf--proxy_conf_content"></a>`proxy_conf_content`
 
 Data type: `Optional[String]`
 
 If `$proxy_request` is `true`, use this content for the `proxy.conf` file
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="trigger_conf_content"></a>`trigger_conf_content`
+##### <a name="-freeradius--v3--conf--trigger_conf_content"></a>`trigger_conf_content`
 
 Data type: `Optional[String]`
 
 This content for the `trigger.conf` file
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="users_conf_content"></a>`users_conf_content`
+##### <a name="-freeradius--v3--conf--users_conf_content"></a>`users_conf_content`
 
 Data type: `Optional[String]`
 
 The content for the `authorize` file
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3confinstantiate"></a>`freeradius::v3::conf::instantiate`
+### <a name="freeradius--v3--conf--instantiate"></a>`freeradius::v3::conf::instantiate`
 
 in a file under `conf.d`.
 
@@ -508,18 +508,18 @@ rpm2cpio < free radius rpm> | cpio -idmv
 
 The following parameters are available in the `freeradius::v3::conf::instantiate` class:
 
-* [`content`](#content)
+* [`content`](#-freeradius--v3--conf--instantiate--content)
 
-##### <a name="content"></a>`content`
+##### <a name="-freeradius--v3--conf--instantiate--content"></a>`content`
 
 Data type: `Optional[String]`
 
 The literal content of the section that you would like to add. Leading
 and trailing spaces will be removed.
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3conflog"></a>`freeradius::v3::conf::log`
+### <a name="freeradius--v3--conf--log"></a>`freeradius::v3::conf::log`
 
 Add a 'log' section to freeradius
 
@@ -533,18 +533,18 @@ rpm2cpio < free radius rpm> | cpio -idmv
 
 The following parameters are available in the `freeradius::v3::conf::log` class:
 
-* [`destination`](#destination)
-* [`log_file`](#log_file)
-* [`syslog_facility`](#syslog_facility)
-* [`stripped_names`](#stripped_names)
-* [`auth`](#auth)
-* [`auth_badpass`](#auth_badpass)
-* [`auth_goodpass`](#auth_goodpass)
-* [`msg_goodpass`](#msg_goodpass)
-* [`msg_badpass`](#msg_badpass)
-* [`msg_denied`](#msg_denied)
+* [`destination`](#-freeradius--v3--conf--log--destination)
+* [`log_file`](#-freeradius--v3--conf--log--log_file)
+* [`syslog_facility`](#-freeradius--v3--conf--log--syslog_facility)
+* [`stripped_names`](#-freeradius--v3--conf--log--stripped_names)
+* [`auth`](#-freeradius--v3--conf--log--auth)
+* [`auth_badpass`](#-freeradius--v3--conf--log--auth_badpass)
+* [`auth_goodpass`](#-freeradius--v3--conf--log--auth_goodpass)
+* [`msg_goodpass`](#-freeradius--v3--conf--log--msg_goodpass)
+* [`msg_badpass`](#-freeradius--v3--conf--log--msg_badpass)
+* [`msg_denied`](#-freeradius--v3--conf--log--msg_denied)
 
-##### <a name="destination"></a>`destination`
+##### <a name="-freeradius--v3--conf--log--destination"></a>`destination`
 
 Data type: `Freeradius::Logdest`
 
@@ -552,7 +552,7 @@ Data type: `Freeradius::Logdest`
 
 Default value: `'syslog'`
 
-##### <a name="log_file"></a>`log_file`
+##### <a name="-freeradius--v3--conf--log--log_file"></a>`log_file`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -560,7 +560,7 @@ Data type: `Stdlib::AbsolutePath`
 
 Default value: `"${freeradius::logdir}/radius.log"`
 
-##### <a name="syslog_facility"></a>`syslog_facility`
+##### <a name="-freeradius--v3--conf--log--syslog_facility"></a>`syslog_facility`
 
 Data type: `Simplib::Syslog::Facility`
 
@@ -568,63 +568,63 @@ Data type: `Simplib::Syslog::Facility`
 
 Default value: `'local6'`
 
-##### <a name="stripped_names"></a>`stripped_names`
+##### <a name="-freeradius--v3--conf--log--stripped_names"></a>`stripped_names`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="auth"></a>`auth`
-
-Data type: `Boolean`
-
-
-
-Default value: ``true``
-
-##### <a name="auth_badpass"></a>`auth_badpass`
+##### <a name="-freeradius--v3--conf--log--auth"></a>`auth`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `true`
 
-##### <a name="auth_goodpass"></a>`auth_goodpass`
+##### <a name="-freeradius--v3--conf--log--auth_badpass"></a>`auth_badpass`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="msg_goodpass"></a>`msg_goodpass`
+##### <a name="-freeradius--v3--conf--log--auth_goodpass"></a>`auth_goodpass`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-freeradius--v3--conf--log--msg_goodpass"></a>`msg_goodpass`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="msg_badpass"></a>`msg_badpass`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="msg_denied"></a>`msg_denied`
+##### <a name="-freeradius--v3--conf--log--msg_badpass"></a>`msg_badpass`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3confsecurity"></a>`freeradius::v3::conf::security`
+##### <a name="-freeradius--v3--conf--log--msg_denied"></a>`msg_denied`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+### <a name="freeradius--v3--conf--security"></a>`freeradius::v3::conf::security`
 
 Add a 'security' section to freeradius.
 
@@ -638,16 +638,16 @@ rpm2cpio < free radius rpm> | cpio -idmv
 
 The following parameters are available in the `freeradius::v3::conf::security` class:
 
-* [`max_attributes`](#max_attributes)
-* [`reject_delay`](#reject_delay)
-* [`status_server`](#status_server)
-* [`allow_core_dumps`](#allow_core_dumps)
-* [`chroot`](#chroot)
-* [`chroot_path`](#chroot_path)
-* [`chroot_user`](#chroot_user)
-* [`chroot_group`](#chroot_group)
+* [`max_attributes`](#-freeradius--v3--conf--security--max_attributes)
+* [`reject_delay`](#-freeradius--v3--conf--security--reject_delay)
+* [`status_server`](#-freeradius--v3--conf--security--status_server)
+* [`allow_core_dumps`](#-freeradius--v3--conf--security--allow_core_dumps)
+* [`chroot`](#-freeradius--v3--conf--security--chroot)
+* [`chroot_path`](#-freeradius--v3--conf--security--chroot_path)
+* [`chroot_user`](#-freeradius--v3--conf--security--chroot_user)
+* [`chroot_group`](#-freeradius--v3--conf--security--chroot_group)
 
-##### <a name="max_attributes"></a>`max_attributes`
+##### <a name="-freeradius--v3--conf--security--max_attributes"></a>`max_attributes`
 
 Data type: `Integer`
 
@@ -655,7 +655,7 @@ Data type: `Integer`
 
 Default value: `200`
 
-##### <a name="reject_delay"></a>`reject_delay`
+##### <a name="-freeradius--v3--conf--security--reject_delay"></a>`reject_delay`
 
 Data type: `Integer[1,5]`
 
@@ -663,55 +663,55 @@ Data type: `Integer[1,5]`
 
 Default value: `1`
 
-##### <a name="status_server"></a>`status_server`
+##### <a name="-freeradius--v3--conf--security--status_server"></a>`status_server`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="allow_core_dumps"></a>`allow_core_dumps`
+##### <a name="-freeradius--v3--conf--security--allow_core_dumps"></a>`allow_core_dumps`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="chroot"></a>`chroot`
+##### <a name="-freeradius--v3--conf--security--chroot"></a>`chroot`
 
 Data type: `Boolean`
 
 whether or not to run radiusd in a chroot
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="chroot_path"></a>`chroot_path`
+##### <a name="-freeradius--v3--conf--security--chroot_path"></a>`chroot_path`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 directory where the server does "chroot"
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="chroot_user"></a>`chroot_user`
+##### <a name="-freeradius--v3--conf--security--chroot_user"></a>`chroot_user`
 
 Data type: `Optional[String]`
 
 User to run daemon as,must be defined if using a chroot
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="chroot_group"></a>`chroot_group`
+##### <a name="-freeradius--v3--conf--security--chroot_group"></a>`chroot_group`
 
 Data type: `Optional[String]`
 
 Group to run daemon as.
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3confthread_pool"></a>`freeradius::v3::conf::thread_pool`
+### <a name="freeradius--v3--conf--thread_pool"></a>`freeradius::v3::conf::thread_pool`
 
 Add a 'thread pool' section to the freeradius configuration
 
@@ -725,15 +725,15 @@ rpm2cpio < free radius rpm> | cpio -idmv
 
 The following parameters are available in the `freeradius::v3::conf::thread_pool` class:
 
-* [`start_servers`](#start_servers)
-* [`max_servers`](#max_servers)
-* [`min_spare_servers`](#min_spare_servers)
-* [`max_spare_servers`](#max_spare_servers)
-* [`max_requests_per_server`](#max_requests_per_server)
-* [`max_queue_size`](#max_queue_size)
-* [`auto_limit_acct`](#auto_limit_acct)
+* [`start_servers`](#-freeradius--v3--conf--thread_pool--start_servers)
+* [`max_servers`](#-freeradius--v3--conf--thread_pool--max_servers)
+* [`min_spare_servers`](#-freeradius--v3--conf--thread_pool--min_spare_servers)
+* [`max_spare_servers`](#-freeradius--v3--conf--thread_pool--max_spare_servers)
+* [`max_requests_per_server`](#-freeradius--v3--conf--thread_pool--max_requests_per_server)
+* [`max_queue_size`](#-freeradius--v3--conf--thread_pool--max_queue_size)
+* [`auto_limit_acct`](#-freeradius--v3--conf--thread_pool--auto_limit_acct)
 
-##### <a name="start_servers"></a>`start_servers`
+##### <a name="-freeradius--v3--conf--thread_pool--start_servers"></a>`start_servers`
 
 Data type: `Integer`
 
@@ -741,7 +741,7 @@ Data type: `Integer`
 
 Default value: `5`
 
-##### <a name="max_servers"></a>`max_servers`
+##### <a name="-freeradius--v3--conf--thread_pool--max_servers"></a>`max_servers`
 
 Data type: `Integer`
 
@@ -749,7 +749,7 @@ Data type: `Integer`
 
 Default value: `32`
 
-##### <a name="min_spare_servers"></a>`min_spare_servers`
+##### <a name="-freeradius--v3--conf--thread_pool--min_spare_servers"></a>`min_spare_servers`
 
 Data type: `Integer`
 
@@ -757,7 +757,7 @@ Data type: `Integer`
 
 Default value: `3`
 
-##### <a name="max_spare_servers"></a>`max_spare_servers`
+##### <a name="-freeradius--v3--conf--thread_pool--max_spare_servers"></a>`max_spare_servers`
 
 Data type: `Integer`
 
@@ -765,7 +765,7 @@ Data type: `Integer`
 
 Default value: `10`
 
-##### <a name="max_requests_per_server"></a>`max_requests_per_server`
+##### <a name="-freeradius--v3--conf--thread_pool--max_requests_per_server"></a>`max_requests_per_server`
 
 Data type: `Integer`
 
@@ -773,27 +773,27 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### <a name="max_queue_size"></a>`max_queue_size`
+##### <a name="-freeradius--v3--conf--thread_pool--max_queue_size"></a>`max_queue_size`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="auto_limit_acct"></a>`auto_limit_acct`
+##### <a name="-freeradius--v3--conf--thread_pool--auto_limit_acct"></a>`auto_limit_acct`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-### <a name="freeradiusv3confusers"></a>`freeradius::v3::conf::users`
+### <a name="freeradius--v3--conf--users"></a>`freeradius::v3::conf::users`
 
 Set up the freeradius users entries
 
-### <a name="freeradiusv3modulesldap"></a>`freeradius::v3::modules::ldap`
+### <a name="freeradius--v3--modules--ldap"></a>`freeradius::v3::modules::ldap`
 
 Set up the LDAP module configuration.
 
@@ -801,65 +801,65 @@ Set up the LDAP module configuration.
 
 The following parameters are available in the `freeradius::v3::modules::ldap` class:
 
-* [`base_dn`](#base_dn)
-* [`app_pki_key`](#app_pki_key)
-* [`app_pki_cert`](#app_pki_cert)
-* [`app_pki_ca_dir`](#app_pki_ca_dir)
-* [`confdir`](#confdir)
-* [`group`](#group)
-* [`base_filter`](#base_filter)
-* [`client_scope`](#client_scope)
-* [`client_filter`](#client_filter)
-* [`client_attribute_identifier`](#client_attribute_identifier)
-* [`client_attribute_secret`](#client_attribute_secret)
-* [`client_attribute_shortname`](#client_attribute_shortname)
-* [`client_attribute_nas_type`](#client_attribute_nas_type)
-* [`client_attribute_virtual_server`](#client_attribute_virtual_server)
-* [`client_attribute_require_message_authenticator`](#client_attribute_require_message_authenticator)
-* [`default_profile`](#default_profile)
-* [`group_scope`](#group_scope)
-* [`group_filter`](#group_filter)
-* [`group_name_attribute`](#group_name_attribute)
-* [`group_membership_filter`](#group_membership_filter)
-* [`group_membership_attribute`](#group_membership_attribute)
-* [`group_cacheable_name`](#group_cacheable_name)
-* [`group_cacheable_dn`](#group_cacheable_dn)
-* [`identity`](#identity)
-* [`ldap_connections_number`](#ldap_connections_number)
-* [`ldap_debug`](#ldap_debug)
-* [`ldap_timeout`](#ldap_timeout)
-* [`ldap_timelimit`](#ldap_timelimit)
-* [`options_chase_referrals`](#options_chase_referrals)
-* [`options_dereference`](#options_dereference)
-* [`options_idle`](#options_idle)
-* [`options_interval`](#options_interval)
-* [`options_net_timeout`](#options_net_timeout)
-* [`options_probes`](#options_probes)
-* [`options_rebind`](#options_rebind)
-* [`password`](#password)
-* [`pool_start`](#pool_start)
-* [`pool_min`](#pool_min)
-* [`pool_max`](#pool_max)
-* [`pool_spare`](#pool_spare)
-* [`pool_uses`](#pool_uses)
-* [`pool_lifetime`](#pool_lifetime)
-* [`pool_idle_timeout`](#pool_idle_timeout)
-* [`port`](#port)
-* [`profile_attribute`](#profile_attribute)
-* [`random_file`](#random_file)
-* [`require_cert`](#require_cert)
-* [`retry_delay`](#retry_delay)
-* [`start_tls`](#start_tls)
-* [`user_filter`](#user_filter)
-* [`user_access_attribute`](#user_access_attribute)
-* [`user_access_positive`](#user_access_positive)
-* [`user_scope`](#user_scope)
-* [`server`](#server)
-* [`post_auth_content`](#post_auth_content)
-* [`accounting_content`](#accounting_content)
-* [`content`](#content)
+* [`base_dn`](#-freeradius--v3--modules--ldap--base_dn)
+* [`app_pki_key`](#-freeradius--v3--modules--ldap--app_pki_key)
+* [`app_pki_cert`](#-freeradius--v3--modules--ldap--app_pki_cert)
+* [`app_pki_ca_dir`](#-freeradius--v3--modules--ldap--app_pki_ca_dir)
+* [`confdir`](#-freeradius--v3--modules--ldap--confdir)
+* [`group`](#-freeradius--v3--modules--ldap--group)
+* [`base_filter`](#-freeradius--v3--modules--ldap--base_filter)
+* [`client_scope`](#-freeradius--v3--modules--ldap--client_scope)
+* [`client_filter`](#-freeradius--v3--modules--ldap--client_filter)
+* [`client_attribute_identifier`](#-freeradius--v3--modules--ldap--client_attribute_identifier)
+* [`client_attribute_secret`](#-freeradius--v3--modules--ldap--client_attribute_secret)
+* [`client_attribute_shortname`](#-freeradius--v3--modules--ldap--client_attribute_shortname)
+* [`client_attribute_nas_type`](#-freeradius--v3--modules--ldap--client_attribute_nas_type)
+* [`client_attribute_virtual_server`](#-freeradius--v3--modules--ldap--client_attribute_virtual_server)
+* [`client_attribute_require_message_authenticator`](#-freeradius--v3--modules--ldap--client_attribute_require_message_authenticator)
+* [`default_profile`](#-freeradius--v3--modules--ldap--default_profile)
+* [`group_scope`](#-freeradius--v3--modules--ldap--group_scope)
+* [`group_filter`](#-freeradius--v3--modules--ldap--group_filter)
+* [`group_name_attribute`](#-freeradius--v3--modules--ldap--group_name_attribute)
+* [`group_membership_filter`](#-freeradius--v3--modules--ldap--group_membership_filter)
+* [`group_membership_attribute`](#-freeradius--v3--modules--ldap--group_membership_attribute)
+* [`group_cacheable_name`](#-freeradius--v3--modules--ldap--group_cacheable_name)
+* [`group_cacheable_dn`](#-freeradius--v3--modules--ldap--group_cacheable_dn)
+* [`identity`](#-freeradius--v3--modules--ldap--identity)
+* [`ldap_connections_number`](#-freeradius--v3--modules--ldap--ldap_connections_number)
+* [`ldap_debug`](#-freeradius--v3--modules--ldap--ldap_debug)
+* [`ldap_timeout`](#-freeradius--v3--modules--ldap--ldap_timeout)
+* [`ldap_timelimit`](#-freeradius--v3--modules--ldap--ldap_timelimit)
+* [`options_chase_referrals`](#-freeradius--v3--modules--ldap--options_chase_referrals)
+* [`options_dereference`](#-freeradius--v3--modules--ldap--options_dereference)
+* [`options_idle`](#-freeradius--v3--modules--ldap--options_idle)
+* [`options_interval`](#-freeradius--v3--modules--ldap--options_interval)
+* [`options_net_timeout`](#-freeradius--v3--modules--ldap--options_net_timeout)
+* [`options_probes`](#-freeradius--v3--modules--ldap--options_probes)
+* [`options_rebind`](#-freeradius--v3--modules--ldap--options_rebind)
+* [`password`](#-freeradius--v3--modules--ldap--password)
+* [`pool_start`](#-freeradius--v3--modules--ldap--pool_start)
+* [`pool_min`](#-freeradius--v3--modules--ldap--pool_min)
+* [`pool_max`](#-freeradius--v3--modules--ldap--pool_max)
+* [`pool_spare`](#-freeradius--v3--modules--ldap--pool_spare)
+* [`pool_uses`](#-freeradius--v3--modules--ldap--pool_uses)
+* [`pool_lifetime`](#-freeradius--v3--modules--ldap--pool_lifetime)
+* [`pool_idle_timeout`](#-freeradius--v3--modules--ldap--pool_idle_timeout)
+* [`port`](#-freeradius--v3--modules--ldap--port)
+* [`profile_attribute`](#-freeradius--v3--modules--ldap--profile_attribute)
+* [`random_file`](#-freeradius--v3--modules--ldap--random_file)
+* [`require_cert`](#-freeradius--v3--modules--ldap--require_cert)
+* [`retry_delay`](#-freeradius--v3--modules--ldap--retry_delay)
+* [`start_tls`](#-freeradius--v3--modules--ldap--start_tls)
+* [`user_filter`](#-freeradius--v3--modules--ldap--user_filter)
+* [`user_access_attribute`](#-freeradius--v3--modules--ldap--user_access_attribute)
+* [`user_access_positive`](#-freeradius--v3--modules--ldap--user_access_positive)
+* [`user_scope`](#-freeradius--v3--modules--ldap--user_scope)
+* [`server`](#-freeradius--v3--modules--ldap--server)
+* [`post_auth_content`](#-freeradius--v3--modules--ldap--post_auth_content)
+* [`accounting_content`](#-freeradius--v3--modules--ldap--accounting_content)
+* [`content`](#-freeradius--v3--modules--ldap--content)
 
-##### <a name="base_dn"></a>`base_dn`
+##### <a name="-freeradius--v3--modules--ldap--base_dn"></a>`base_dn`
 
 Data type: `String`
 
@@ -867,7 +867,7 @@ Data type: `String`
 
 Default value: `simplib::lookup('simp_options::ldap::base_dn')`
 
-##### <a name="app_pki_key"></a>`app_pki_key`
+##### <a name="-freeradius--v3--modules--ldap--app_pki_key"></a>`app_pki_key`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -875,7 +875,7 @@ Path and name of the private SSL key file
 
 Default value: `$freeradius::app_pki_key`
 
-##### <a name="app_pki_cert"></a>`app_pki_cert`
+##### <a name="-freeradius--v3--modules--ldap--app_pki_cert"></a>`app_pki_cert`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -883,7 +883,7 @@ Path and name of the public SSL certificate
 
 Default value: `$freeradius::app_pki_cert`
 
-##### <a name="app_pki_ca_dir"></a>`app_pki_ca_dir`
+##### <a name="-freeradius--v3--modules--ldap--app_pki_ca_dir"></a>`app_pki_ca_dir`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -891,7 +891,7 @@ Path to the CA.
 
 Default value: `$freeradius::app_pki_ca_dir`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--v3--modules--ldap--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -899,7 +899,7 @@ Freeradius configuration directory
 
 Default value: `$freeradius::confdir`
 
-##### <a name="group"></a>`group`
+##### <a name="-freeradius--v3--modules--ldap--group"></a>`group`
 
 Data type: `String`
 
@@ -907,7 +907,7 @@ Group radiusd is running under.
 
 Default value: `$freeradius::group`
 
-##### <a name="base_filter"></a>`base_filter`
+##### <a name="-freeradius--v3--modules--ldap--base_filter"></a>`base_filter`
 
 Data type: `String`
 
@@ -915,15 +915,15 @@ Data type: `String`
 
 Default value: `'(objectclass=radiusprofile)'`
 
-##### <a name="client_scope"></a>`client_scope`
+##### <a name="-freeradius--v3--modules--ldap--client_scope"></a>`client_scope`
 
 Data type: `Optional[Freeradius::Scope]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="client_filter"></a>`client_filter`
+##### <a name="-freeradius--v3--modules--ldap--client_filter"></a>`client_filter`
 
 Data type: `String`
 
@@ -931,7 +931,7 @@ Data type: `String`
 
 Default value: `'(objectClass=frClient)'`
 
-##### <a name="client_attribute_identifier"></a>`client_attribute_identifier`
+##### <a name="-freeradius--v3--modules--ldap--client_attribute_identifier"></a>`client_attribute_identifier`
 
 Data type: `String`
 
@@ -939,7 +939,7 @@ Data type: `String`
 
 Default value: `'radiusClientIdentifier'`
 
-##### <a name="client_attribute_secret"></a>`client_attribute_secret`
+##### <a name="-freeradius--v3--modules--ldap--client_attribute_secret"></a>`client_attribute_secret`
 
 Data type: `String`
 
@@ -947,55 +947,55 @@ Data type: `String`
 
 Default value: `'radiusClientSecret'`
 
-##### <a name="client_attribute_shortname"></a>`client_attribute_shortname`
+##### <a name="-freeradius--v3--modules--ldap--client_attribute_shortname"></a>`client_attribute_shortname`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="client_attribute_nas_type"></a>`client_attribute_nas_type`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="client_attribute_virtual_server"></a>`client_attribute_virtual_server`
+##### <a name="-freeradius--v3--modules--ldap--client_attribute_nas_type"></a>`client_attribute_nas_type`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="client_attribute_require_message_authenticator"></a>`client_attribute_require_message_authenticator`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="default_profile"></a>`default_profile`
+##### <a name="-freeradius--v3--modules--ldap--client_attribute_virtual_server"></a>`client_attribute_virtual_server`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="group_scope"></a>`group_scope`
+##### <a name="-freeradius--v3--modules--ldap--client_attribute_require_message_authenticator"></a>`client_attribute_require_message_authenticator`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-freeradius--v3--modules--ldap--default_profile"></a>`default_profile`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-freeradius--v3--modules--ldap--group_scope"></a>`group_scope`
 
 Data type: `Optional[Freeradius::Scope]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="group_filter"></a>`group_filter`
+##### <a name="-freeradius--v3--modules--ldap--group_filter"></a>`group_filter`
 
 Data type: `String`
 
@@ -1003,7 +1003,7 @@ Data type: `String`
 
 Default value: `'(objectClass=posixGroup)'`
 
-##### <a name="group_name_attribute"></a>`group_name_attribute`
+##### <a name="-freeradius--v3--modules--ldap--group_name_attribute"></a>`group_name_attribute`
 
 Data type: `String`
 
@@ -1011,7 +1011,7 @@ Data type: `String`
 
 Default value: `'cn'`
 
-##### <a name="group_membership_filter"></a>`group_membership_filter`
+##### <a name="-freeradius--v3--modules--ldap--group_membership_filter"></a>`group_membership_filter`
 
 Data type: `String`
 
@@ -1019,7 +1019,7 @@ Data type: `String`
 
 Default value: `'(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))'`
 
-##### <a name="group_membership_attribute"></a>`group_membership_attribute`
+##### <a name="-freeradius--v3--modules--ldap--group_membership_attribute"></a>`group_membership_attribute`
 
 Data type: `String`
 
@@ -1028,23 +1028,23 @@ be enabled.
 
 Default value: `'memberOf'`
 
-##### <a name="group_cacheable_name"></a>`group_cacheable_name`
+##### <a name="-freeradius--v3--modules--ldap--group_cacheable_name"></a>`group_cacheable_name`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="group_cacheable_dn"></a>`group_cacheable_dn`
+##### <a name="-freeradius--v3--modules--ldap--group_cacheable_dn"></a>`group_cacheable_dn`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="identity"></a>`identity`
+##### <a name="-freeradius--v3--modules--ldap--identity"></a>`identity`
 
 Data type: `String`
 
@@ -1052,7 +1052,7 @@ Data type: `String`
 
 Default value: `simplib::lookup('simp_options::ldap::bind_dn', { 'default_value' => "cn=hostAuth,ou=Hosts,%{lookup('simp_options::ldap::base_dn')}", 'value_type' => String })`
 
-##### <a name="ldap_connections_number"></a>`ldap_connections_number`
+##### <a name="-freeradius--v3--modules--ldap--ldap_connections_number"></a>`ldap_connections_number`
 
 Data type: `Integer[1]`
 
@@ -1060,15 +1060,15 @@ Data type: `Integer[1]`
 
 Default value: `5`
 
-##### <a name="ldap_debug"></a>`ldap_debug`
+##### <a name="-freeradius--v3--modules--ldap--ldap_debug"></a>`ldap_debug`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="ldap_timeout"></a>`ldap_timeout`
+##### <a name="-freeradius--v3--modules--ldap--ldap_timeout"></a>`ldap_timeout`
 
 Data type: `Integer`
 
@@ -1076,7 +1076,7 @@ Data type: `Integer`
 
 Default value: `4`
 
-##### <a name="ldap_timelimit"></a>`ldap_timelimit`
+##### <a name="-freeradius--v3--modules--ldap--ldap_timelimit"></a>`ldap_timelimit`
 
 Data type: `Integer`
 
@@ -1084,15 +1084,15 @@ Data type: `Integer`
 
 Default value: `3`
 
-##### <a name="options_chase_referrals"></a>`options_chase_referrals`
+##### <a name="-freeradius--v3--modules--ldap--options_chase_referrals"></a>`options_chase_referrals`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="options_dereference"></a>`options_dereference`
+##### <a name="-freeradius--v3--modules--ldap--options_dereference"></a>`options_dereference`
 
 Data type: `Freeradius::Deref`
 
@@ -1100,7 +1100,7 @@ Data type: `Freeradius::Deref`
 
 Default value: `'never'`
 
-##### <a name="options_idle"></a>`options_idle`
+##### <a name="-freeradius--v3--modules--ldap--options_idle"></a>`options_idle`
 
 Data type: `Integer`
 
@@ -1108,7 +1108,7 @@ Data type: `Integer`
 
 Default value: `60`
 
-##### <a name="options_interval"></a>`options_interval`
+##### <a name="-freeradius--v3--modules--ldap--options_interval"></a>`options_interval`
 
 Data type: `Integer`
 
@@ -1116,7 +1116,7 @@ Data type: `Integer`
 
 Default value: `3`
 
-##### <a name="options_net_timeout"></a>`options_net_timeout`
+##### <a name="-freeradius--v3--modules--ldap--options_net_timeout"></a>`options_net_timeout`
 
 Data type: `Integer`
 
@@ -1124,7 +1124,7 @@ Data type: `Integer`
 
 Default value: `1`
 
-##### <a name="options_probes"></a>`options_probes`
+##### <a name="-freeradius--v3--modules--ldap--options_probes"></a>`options_probes`
 
 Data type: `Integer`
 
@@ -1132,15 +1132,15 @@ Data type: `Integer`
 
 Default value: `3`
 
-##### <a name="options_rebind"></a>`options_rebind`
+##### <a name="-freeradius--v3--modules--ldap--options_rebind"></a>`options_rebind`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="password"></a>`password`
+##### <a name="-freeradius--v3--modules--ldap--password"></a>`password`
 
 Data type: `String`
 
@@ -1148,7 +1148,7 @@ Data type: `String`
 
 Default value: `simplib::lookup('simp_options::ldap::bind_pw')`
 
-##### <a name="pool_start"></a>`pool_start`
+##### <a name="-freeradius--v3--modules--ldap--pool_start"></a>`pool_start`
 
 Data type: `Integer[1]`
 
@@ -1156,7 +1156,7 @@ Data type: `Integer[1]`
 
 Default value: `5`
 
-##### <a name="pool_min"></a>`pool_min`
+##### <a name="-freeradius--v3--modules--ldap--pool_min"></a>`pool_min`
 
 Data type: `Integer[1]`
 
@@ -1164,7 +1164,7 @@ Data type: `Integer[1]`
 
 Default value: `4`
 
-##### <a name="pool_max"></a>`pool_max`
+##### <a name="-freeradius--v3--modules--ldap--pool_max"></a>`pool_max`
 
 Data type: `Integer[1]`
 
@@ -1172,7 +1172,7 @@ Data type: `Integer[1]`
 
 Default value: `10`
 
-##### <a name="pool_spare"></a>`pool_spare`
+##### <a name="-freeradius--v3--modules--ldap--pool_spare"></a>`pool_spare`
 
 Data type: `Integer[1]`
 
@@ -1180,7 +1180,7 @@ Data type: `Integer[1]`
 
 Default value: `3`
 
-##### <a name="pool_uses"></a>`pool_uses`
+##### <a name="-freeradius--v3--modules--ldap--pool_uses"></a>`pool_uses`
 
 Data type: `Integer[0]`
 
@@ -1188,7 +1188,7 @@ Data type: `Integer[0]`
 
 Default value: `0`
 
-##### <a name="pool_lifetime"></a>`pool_lifetime`
+##### <a name="-freeradius--v3--modules--ldap--pool_lifetime"></a>`pool_lifetime`
 
 Data type: `Integer[0]`
 
@@ -1196,7 +1196,7 @@ Data type: `Integer[0]`
 
 Default value: `0`
 
-##### <a name="pool_idle_timeout"></a>`pool_idle_timeout`
+##### <a name="-freeradius--v3--modules--ldap--pool_idle_timeout"></a>`pool_idle_timeout`
 
 Data type: `Integer[1]`
 
@@ -1204,7 +1204,7 @@ Data type: `Integer[1]`
 
 Default value: `60`
 
-##### <a name="port"></a>`port`
+##### <a name="-freeradius--v3--modules--ldap--port"></a>`port`
 
 Data type: `Simplib::Port`
 
@@ -1212,15 +1212,15 @@ Data type: `Simplib::Port`
 
 Default value: `389`
 
-##### <a name="profile_attribute"></a>`profile_attribute`
+##### <a name="-freeradius--v3--modules--ldap--profile_attribute"></a>`profile_attribute`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="random_file"></a>`random_file`
+##### <a name="-freeradius--v3--modules--ldap--random_file"></a>`random_file`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -1228,7 +1228,7 @@ Data type: `Stdlib::AbsolutePath`
 
 Default value: `'/dev/urandom'`
 
-##### <a name="require_cert"></a>`require_cert`
+##### <a name="-freeradius--v3--modules--ldap--require_cert"></a>`require_cert`
 
 Data type: `String`
 
@@ -1236,7 +1236,7 @@ Data type: `String`
 
 Default value: `'demand'`
 
-##### <a name="retry_delay"></a>`retry_delay`
+##### <a name="-freeradius--v3--modules--ldap--retry_delay"></a>`retry_delay`
 
 Data type: `Integer[1]`
 
@@ -1244,15 +1244,15 @@ Data type: `Integer[1]`
 
 Default value: `30`
 
-##### <a name="start_tls"></a>`start_tls`
+##### <a name="-freeradius--v3--modules--ldap--start_tls"></a>`start_tls`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="user_filter"></a>`user_filter`
+##### <a name="-freeradius--v3--modules--ldap--user_filter"></a>`user_filter`
 
 Data type: `String`
 
@@ -1260,31 +1260,31 @@ Data type: `String`
 
 Default value: `'(uid=%{%{Stripped-User-Name}:-%{User-Name}})'`
 
-##### <a name="user_access_attribute"></a>`user_access_attribute`
+##### <a name="-freeradius--v3--modules--ldap--user_access_attribute"></a>`user_access_attribute`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="user_access_positive"></a>`user_access_positive`
+##### <a name="-freeradius--v3--modules--ldap--user_access_positive"></a>`user_access_positive`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="user_scope"></a>`user_scope`
+##### <a name="-freeradius--v3--modules--ldap--user_scope"></a>`user_scope`
 
 Data type: `Optional[Freeradius::Scope]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="server"></a>`server`
+##### <a name="-freeradius--v3--modules--ldap--server"></a>`server`
 
 Data type: `Array[Simplib::Uri]`
 
@@ -1292,7 +1292,7 @@ Data type: `Array[Simplib::Uri]`
 
 Default value: `simplib::lookup('simp_options::ldap::uri')`
 
-##### <a name="post_auth_content"></a>`post_auth_content`
+##### <a name="-freeradius--v3--modules--ldap--post_auth_content"></a>`post_auth_content`
 
 Data type: `Optional[String]`
 
@@ -1300,9 +1300,9 @@ Override the contents of the `post-auth` section of the configuration
 
 * Do NOT include the `post-auth` header or beginning or end curly brace
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="accounting_content"></a>`accounting_content`
+##### <a name="-freeradius--v3--modules--ldap--accounting_content"></a>`accounting_content`
 
 Data type: `Optional[String]`
 
@@ -1310,9 +1310,9 @@ Override the contents of the `accounting` section of the configuration
 
 * Do NOT include the `accounting` header or beginning or end curly brace
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="content"></a>`content`
+##### <a name="-freeradius--v3--modules--ldap--content"></a>`content`
 
 Data type: `Optional[String]`
 
@@ -1320,9 +1320,9 @@ Specify the entire contents of the configuration file
 
 * All other options will be ignored
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3sitesldap"></a>`freeradius::v3::sites::ldap`
+### <a name="freeradius--v3--sites--ldap"></a>`freeradius::v3::sites::ldap`
 
 on the interface defined by `listen_ip`
 
@@ -1336,17 +1336,17 @@ The Default is to listen on all interfaces.
 
 The following parameters are available in the `freeradius::v3::sites::ldap` class:
 
-* [`site_name`](#site_name)
-* [`enable`](#enable)
-* [`confdir`](#confdir)
-* [`include_listener`](#include_listener)
-* [`group`](#group)
-* [`listen_ip`](#listen_ip)
-* [`max_connections`](#max_connections)
-* [`lifetime`](#lifetime)
-* [`idle_timeout`](#idle_timeout)
+* [`site_name`](#-freeradius--v3--sites--ldap--site_name)
+* [`enable`](#-freeradius--v3--sites--ldap--enable)
+* [`confdir`](#-freeradius--v3--sites--ldap--confdir)
+* [`include_listener`](#-freeradius--v3--sites--ldap--include_listener)
+* [`group`](#-freeradius--v3--sites--ldap--group)
+* [`listen_ip`](#-freeradius--v3--sites--ldap--listen_ip)
+* [`max_connections`](#-freeradius--v3--sites--ldap--max_connections)
+* [`lifetime`](#-freeradius--v3--sites--ldap--lifetime)
+* [`idle_timeout`](#-freeradius--v3--sites--ldap--idle_timeout)
 
-##### <a name="site_name"></a>`site_name`
+##### <a name="-freeradius--v3--sites--ldap--site_name"></a>`site_name`
 
 Data type: `String`
 
@@ -1354,15 +1354,15 @@ The name of the site
 
 Default value: `'default'`
 
-##### <a name="enable"></a>`enable`
+##### <a name="-freeradius--v3--sites--ldap--enable"></a>`enable`
 
 Data type: `Boolean`
 
 Whether to enable the site or not
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--v3--sites--ldap--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1370,7 +1370,7 @@ Configuration directory for freeradius
 
 Default value: `$freeradius::confdir`
 
-##### <a name="include_listener"></a>`include_listener`
+##### <a name="-freeradius--v3--sites--ldap--include_listener"></a>`include_listener`
 
 Data type: `Boolean`
 
@@ -1378,9 +1378,9 @@ If set to true then 'listen' sections will be set up for the site.
 Otherwise the listen_ip will be ignored and the user will be required
 to set up a listener using the listener.pp module.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="group"></a>`group`
+##### <a name="-freeradius--v3--sites--ldap--group"></a>`group`
 
 Data type: `String`
 
@@ -1388,7 +1388,7 @@ Group radiusd runs under.
 
 Default value: `$freeradius::group`
 
-##### <a name="listen_ip"></a>`listen_ip`
+##### <a name="-freeradius--v3--sites--ldap--listen_ip"></a>`listen_ip`
 
 Data type: `Simplib::Host`
 
@@ -1396,7 +1396,7 @@ The ip addresses to listen on.  See setting ipaddr  in sites-enabled/default.
 
 Default value: `'ALL'`
 
-##### <a name="max_connections"></a>`max_connections`
+##### <a name="-freeradius--v3--sites--ldap--max_connections"></a>`max_connections`
 
 Data type: `Integer`
 
@@ -1404,7 +1404,7 @@ Data type: `Integer`
 
 Default value: `16`
 
-##### <a name="lifetime"></a>`lifetime`
+##### <a name="-freeradius--v3--sites--ldap--lifetime"></a>`lifetime`
 
 Data type: `Integer`
 
@@ -1412,7 +1412,7 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### <a name="idle_timeout"></a>`idle_timeout`
+##### <a name="-freeradius--v3--sites--ldap--idle_timeout"></a>`idle_timeout`
 
 Data type: `Integer`
 
@@ -1422,7 +1422,7 @@ Default value: `30`
 
 ## Defined types
 
-### <a name="freeradiusv3client"></a>`freeradius::v3::client`
+### <a name="freeradius--v3--client"></a>`freeradius::v3::client`
 
 Add a client to `/etc/raddb/clients.d/`
 
@@ -1434,23 +1434,23 @@ Add a client to `/etc/raddb/clients.d/`
 
 The following parameters are available in the `freeradius::v3::client` defined type:
 
-* [`secret`](#secret)
-* [`ipaddr`](#ipaddr)
-* [`client_name`](#client_name)
-* [`coa_server`](#coa_server)
-* [`idle_timeout`](#idle_timeout)
-* [`lifetime`](#lifetime)
-* [`login`](#login)
-* [`max_connections`](#max_connections)
-* [`nas_type`](#nas_type)
-* [`password`](#password)
-* [`proto`](#proto)
-* [`require_message_authenticator`](#require_message_authenticator)
-* [`response_window`](#response_window)
-* [`shortname`](#shortname)
-* [`virtual_server`](#virtual_server)
+* [`secret`](#-freeradius--v3--client--secret)
+* [`ipaddr`](#-freeradius--v3--client--ipaddr)
+* [`client_name`](#-freeradius--v3--client--client_name)
+* [`coa_server`](#-freeradius--v3--client--coa_server)
+* [`idle_timeout`](#-freeradius--v3--client--idle_timeout)
+* [`lifetime`](#-freeradius--v3--client--lifetime)
+* [`login`](#-freeradius--v3--client--login)
+* [`max_connections`](#-freeradius--v3--client--max_connections)
+* [`nas_type`](#-freeradius--v3--client--nas_type)
+* [`password`](#-freeradius--v3--client--password)
+* [`proto`](#-freeradius--v3--client--proto)
+* [`require_message_authenticator`](#-freeradius--v3--client--require_message_authenticator)
+* [`response_window`](#-freeradius--v3--client--response_window)
+* [`shortname`](#-freeradius--v3--client--shortname)
+* [`virtual_server`](#-freeradius--v3--client--virtual_server)
 
-##### <a name="secret"></a>`secret`
+##### <a name="-freeradius--v3--client--secret"></a>`secret`
 
 Data type: `String`
 
@@ -1459,14 +1459,18 @@ If you do not specify a secret, then one will be created for you using
 
 Default value: `simplib::passgen("freeradius_${name}")`
 
-##### <a name="ipaddr"></a>`ipaddr`
+##### <a name="-freeradius--v3--client--ipaddr"></a>`ipaddr`
 
-Data type: `Variant[Simplib::IP,
-          Simplib::IP::CIDR]`
+Data type:
+
+```puppet
+Variant[Simplib::IP,
+          Simplib::IP::CIDR]
+```
 
 If set to something with a ':' in it, will be treated as ipv6addr instead.
 
-##### <a name="client_name"></a>`client_name`
+##### <a name="-freeradius--v3--client--client_name"></a>`client_name`
 
 Data type: `String`
 
@@ -1474,15 +1478,15 @@ Data type: `String`
 
 Default value: `$name`
 
-##### <a name="coa_server"></a>`coa_server`
+##### <a name="-freeradius--v3--client--coa_server"></a>`coa_server`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="idle_timeout"></a>`idle_timeout`
+##### <a name="-freeradius--v3--client--idle_timeout"></a>`idle_timeout`
 
 Data type: `Integer`
 
@@ -1490,7 +1494,7 @@ Data type: `Integer`
 
 Default value: `30`
 
-##### <a name="lifetime"></a>`lifetime`
+##### <a name="-freeradius--v3--client--lifetime"></a>`lifetime`
 
 Data type: `Integer`
 
@@ -1498,15 +1502,15 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### <a name="login"></a>`login`
+##### <a name="-freeradius--v3--client--login"></a>`login`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_connections"></a>`max_connections`
+##### <a name="-freeradius--v3--client--max_connections"></a>`max_connections`
 
 Data type: `Integer`
 
@@ -1514,63 +1518,63 @@ Data type: `Integer`
 
 Default value: `16`
 
-##### <a name="nas_type"></a>`nas_type`
+##### <a name="-freeradius--v3--client--nas_type"></a>`nas_type`
 
 Data type: `Optional[Freeradius::Nas]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="password"></a>`password`
+##### <a name="-freeradius--v3--client--password"></a>`password`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="proto"></a>`proto`
+##### <a name="-freeradius--v3--client--proto"></a>`proto`
 
 Data type: `Optional[Enum['udp','tcp','*']]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="require_message_authenticator"></a>`require_message_authenticator`
+##### <a name="-freeradius--v3--client--require_message_authenticator"></a>`require_message_authenticator`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="response_window"></a>`response_window`
+##### <a name="-freeradius--v3--client--response_window"></a>`response_window`
 
 Data type: `Optional[Float[0.0]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="shortname"></a>`shortname`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="virtual_server"></a>`virtual_server`
+##### <a name="-freeradius--v3--client--shortname"></a>`shortname`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3confuser"></a>`freeradius::v3::conf::user`
+##### <a name="-freeradius--v3--client--virtual_server"></a>`virtual_server`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+### <a name="freeradius--v3--conf--user"></a>`freeradius::v3::conf::user`
 
 'freeradius::v3::conf::users` module.
 
@@ -1612,20 +1616,20 @@ freeradius::v3::conf::user { 'lameuser':
 
 The following parameters are available in the `freeradius::v3::conf::user` defined type:
 
-* [`name`](#name)
-* [`content`](#content)
-* [`is_default`](#is_default)
-* [`order`](#order)
-* [`confdir`](#confdir)
+* [`name`](#-freeradius--v3--conf--user--name)
+* [`content`](#-freeradius--v3--conf--user--content)
+* [`is_default`](#-freeradius--v3--conf--user--is_default)
+* [`order`](#-freeradius--v3--conf--user--order)
+* [`confdir`](#-freeradius--v3--conf--user--confdir)
 
-##### <a name="name"></a>`name`
+##### <a name="-freeradius--v3--conf--user--name"></a>`name`
 
 The name of the user.
 If `$is_default` is set to true, this will be treated as a DEFAULT user
 entry and the name will be used for uniqueness.  It is recommended to use
 something like 'default_ppp', 'default_slip', etc... for these entries.
 
-##### <a name="content"></a>`content`
+##### <a name="-freeradius--v3--conf--user--content"></a>`content`
 
 Data type: `String`
 
@@ -1635,15 +1639,15 @@ be properly included, starting with the initial comparison or assignment.
 
 * Leading whitespace is ignored.
 
-##### <a name="is_default"></a>`is_default`
+##### <a name="-freeradius--v3--conf--user--is_default"></a>`is_default`
 
 Data type: `Boolean`
 
 Whether or not the entry is for a DEFAULT user entry.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="order"></a>`order`
+##### <a name="-freeradius--v3--conf--user--order"></a>`order`
 
 Data type: `Integer[1]`
 
@@ -1653,7 +1657,7 @@ The default is alphabetic.
 
 Default value: `100`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--v3--conf--user--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1664,7 +1668,7 @@ The configuration directory for  radiusd.
 
 Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
 
-### <a name="freeradiusv3listen"></a>`freeradius::v3::listen`
+### <a name="freeradius--v3--listen"></a>`freeradius::v3::listen`
 
 The following parameters are all configuration parameters.
 
@@ -1678,31 +1682,31 @@ rpm2cpio < free radius rpm> | cpio -idmv
 
 The following parameters are available in the `freeradius::v3::listen` defined type:
 
-* [`target`](#target)
-* [`listen_type`](#listen_type)
-* [`order`](#order)
-* [`idle_timeout`](#idle_timeout)
-* [`interface`](#interface)
-* [`ipaddr`](#ipaddr)
-* [`lifetime`](#lifetime)
-* [`max_connections`](#max_connections)
-* [`max_pps`](#max_pps)
-* [`per_socket_clients`](#per_socket_clients)
-* [`port`](#port)
+* [`target`](#-freeradius--v3--listen--target)
+* [`listen_type`](#-freeradius--v3--listen--listen_type)
+* [`order`](#-freeradius--v3--listen--order)
+* [`idle_timeout`](#-freeradius--v3--listen--idle_timeout)
+* [`interface`](#-freeradius--v3--listen--interface)
+* [`ipaddr`](#-freeradius--v3--listen--ipaddr)
+* [`lifetime`](#-freeradius--v3--listen--lifetime)
+* [`max_connections`](#-freeradius--v3--listen--max_connections)
+* [`max_pps`](#-freeradius--v3--listen--max_pps)
+* [`per_socket_clients`](#-freeradius--v3--listen--per_socket_clients)
+* [`port`](#-freeradius--v3--listen--port)
 
-##### <a name="target"></a>`target`
+##### <a name="-freeradius--v3--listen--target"></a>`target`
 
 Data type: `Stdlib::Absolutepath`
 
 The concat target to add this section to
 
-##### <a name="listen_type"></a>`listen_type`
+##### <a name="-freeradius--v3--listen--listen_type"></a>`listen_type`
 
 Data type: `Freeradius::Listen`
 
 
 
-##### <a name="order"></a>`order`
+##### <a name="-freeradius--v3--listen--order"></a>`order`
 
 Data type: `Integer[1]`
 
@@ -1710,23 +1714,23 @@ Indicates the order for this element amoung the concat fragments.
 
 Default value: `100`
 
-##### <a name="idle_timeout"></a>`idle_timeout`
+##### <a name="-freeradius--v3--listen--idle_timeout"></a>`idle_timeout`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="interface"></a>`interface`
+##### <a name="-freeradius--v3--listen--interface"></a>`interface`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="ipaddr"></a>`ipaddr`
+##### <a name="-freeradius--v3--listen--ipaddr"></a>`ipaddr`
 
 Data type: `Simplib::Host`
 
@@ -1734,47 +1738,47 @@ Be careful not to use the same IP address on more than one listener
 
 Default value: `'ALL'`
 
-##### <a name="lifetime"></a>`lifetime`
+##### <a name="-freeradius--v3--listen--lifetime"></a>`lifetime`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_connections"></a>`max_connections`
-
-Data type: `Optional[Integer]`
-
-
-
-Default value: ``undef``
-
-##### <a name="max_pps"></a>`max_pps`
+##### <a name="-freeradius--v3--listen--max_connections"></a>`max_connections`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="per_socket_clients"></a>`per_socket_clients`
+##### <a name="-freeradius--v3--listen--max_pps"></a>`max_pps`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
+
+##### <a name="-freeradius--v3--listen--per_socket_clients"></a>`per_socket_clients`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="port"></a>`port`
+##### <a name="-freeradius--v3--listen--port"></a>`port`
 
 Data type: `Optional[Simplib::Port]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3listener"></a>`freeradius::v3::listener`
+### <a name="freeradius--v3--listener"></a>`freeradius::v3::listener`
 
 The following parameters are all configuration parameters.
 
@@ -1788,26 +1792,26 @@ rpm2cpio < free radius rpm> | cpio -idmv
 
 The following parameters are available in the `freeradius::v3::listener` defined type:
 
-* [`listen_type`](#listen_type)
-* [`order`](#order)
-* [`confdir`](#confdir)
-* [`group`](#group)
-* [`idle_timeout`](#idle_timeout)
-* [`interface`](#interface)
-* [`ipaddr`](#ipaddr)
-* [`lifetime`](#lifetime)
-* [`max_connections`](#max_connections)
-* [`max_pps`](#max_pps)
-* [`per_socket_clients`](#per_socket_clients)
-* [`port`](#port)
+* [`listen_type`](#-freeradius--v3--listener--listen_type)
+* [`order`](#-freeradius--v3--listener--order)
+* [`confdir`](#-freeradius--v3--listener--confdir)
+* [`group`](#-freeradius--v3--listener--group)
+* [`idle_timeout`](#-freeradius--v3--listener--idle_timeout)
+* [`interface`](#-freeradius--v3--listener--interface)
+* [`ipaddr`](#-freeradius--v3--listener--ipaddr)
+* [`lifetime`](#-freeradius--v3--listener--lifetime)
+* [`max_connections`](#-freeradius--v3--listener--max_connections)
+* [`max_pps`](#-freeradius--v3--listener--max_pps)
+* [`per_socket_clients`](#-freeradius--v3--listener--per_socket_clients)
+* [`port`](#-freeradius--v3--listener--port)
 
-##### <a name="listen_type"></a>`listen_type`
+##### <a name="-freeradius--v3--listener--listen_type"></a>`listen_type`
 
 Data type: `Freeradius::Listen`
 
 
 
-##### <a name="order"></a>`order`
+##### <a name="-freeradius--v3--listener--order"></a>`order`
 
 Data type: `Integer[1]`
 
@@ -1815,7 +1819,7 @@ Indicates the order for this element amoung the concat fragments.
 
 Default value: `100`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--v3--listener--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1823,7 +1827,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
 
-##### <a name="group"></a>`group`
+##### <a name="-freeradius--v3--listener--group"></a>`group`
 
 Data type: `String`
 
@@ -1831,23 +1835,23 @@ Data type: `String`
 
 Default value: `simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )`
 
-##### <a name="idle_timeout"></a>`idle_timeout`
+##### <a name="-freeradius--v3--listener--idle_timeout"></a>`idle_timeout`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="interface"></a>`interface`
+##### <a name="-freeradius--v3--listener--interface"></a>`interface`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="ipaddr"></a>`ipaddr`
+##### <a name="-freeradius--v3--listener--ipaddr"></a>`ipaddr`
 
 Data type: `Simplib::Host`
 
@@ -1855,47 +1859,47 @@ Be careful not to use the same ip address in more than one listener
 
 Default value: `'ALL'`
 
-##### <a name="lifetime"></a>`lifetime`
+##### <a name="-freeradius--v3--listener--lifetime"></a>`lifetime`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_connections"></a>`max_connections`
-
-Data type: `Optional[Integer]`
-
-
-
-Default value: ``undef``
-
-##### <a name="max_pps"></a>`max_pps`
+##### <a name="-freeradius--v3--listener--max_connections"></a>`max_connections`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="per_socket_clients"></a>`per_socket_clients`
+##### <a name="-freeradius--v3--listener--max_pps"></a>`max_pps`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
+
+##### <a name="-freeradius--v3--listener--per_socket_clients"></a>`per_socket_clients`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="port"></a>`port`
+##### <a name="-freeradius--v3--listener--port"></a>`port`
 
 Data type: `Optional[Simplib::Port]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="freeradiusv3module"></a>`freeradius::v3::module`
+### <a name="freeradius--v3--module"></a>`freeradius::v3::module`
 
 and if it is enabled, links it to the `mods-enabled` directory.
 
@@ -1910,39 +1914,39 @@ create a link.
 
 The following parameters are available in the `freeradius::v3::module` defined type:
 
-* [`enabled`](#enabled)
-* [`content`](#content)
-* [`source`](#source)
-* [`confdir`](#confdir)
-* [`group`](#group)
+* [`enabled`](#-freeradius--v3--module--enabled)
+* [`content`](#-freeradius--v3--module--content)
+* [`source`](#-freeradius--v3--module--source)
+* [`confdir`](#-freeradius--v3--module--confdir)
+* [`group`](#-freeradius--v3--module--group)
 
-##### <a name="enabled"></a>`enabled`
+##### <a name="-freeradius--v3--module--enabled"></a>`enabled`
 
 Data type: `Boolean`
 
 If true a link will be created in mods-enabled to enable the site.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="content"></a>`content`
+##### <a name="-freeradius--v3--module--content"></a>`content`
 
 Data type: `Optional[String]`
 
 The actual content of the module.  Only one of content or source can be
 used.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-freeradius--v3--module--source"></a>`source`
 
 Data type: `Optional[String]`
 
 The source file of the module definition. Only one of content or source can be
 used.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--v3--module--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1950,7 +1954,7 @@ The configuration directory
 
 Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
 
-##### <a name="group"></a>`group`
+##### <a name="-freeradius--v3--module--group"></a>`group`
 
 Data type: `String`
 
@@ -1958,7 +1962,7 @@ The group radiusd will run under
 
 Default value: `simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )`
 
-### <a name="freeradiusv3site"></a>`freeradius::v3::site`
+### <a name="freeradius--v3--site"></a>`freeradius::v3::site`
 
 if it is enabled, links it to the `sites-enabled` directory.
 
@@ -1976,39 +1980,39 @@ create a link.
 
 The following parameters are available in the `freeradius::v3::site` defined type:
 
-* [`enabled`](#enabled)
-* [`content`](#content)
-* [`source`](#source)
-* [`confdir`](#confdir)
-* [`group`](#group)
+* [`enabled`](#-freeradius--v3--site--enabled)
+* [`content`](#-freeradius--v3--site--content)
+* [`source`](#-freeradius--v3--site--source)
+* [`confdir`](#-freeradius--v3--site--confdir)
+* [`group`](#-freeradius--v3--site--group)
 
-##### <a name="enabled"></a>`enabled`
+##### <a name="-freeradius--v3--site--enabled"></a>`enabled`
 
 Data type: `Boolean`
 
 If true a link will be created in sites-enabled to enable the site.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="content"></a>`content`
+##### <a name="-freeradius--v3--site--content"></a>`content`
 
 Data type: `Optional[String]`
 
 The actual content of the entry per.  Only one of content or source can be
 used.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-freeradius--v3--site--source"></a>`source`
 
 Data type: `Optional[String]`
 
 The source file of the site definition. Only one of content or source can be
 used.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="confdir"></a>`confdir`
+##### <a name="-freeradius--v3--site--confdir"></a>`confdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -2016,7 +2020,7 @@ The configuration directory
 
 Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
 
-##### <a name="group"></a>`group`
+##### <a name="-freeradius--v3--site--group"></a>`group`
 
 Data type: `String`
 
@@ -2026,53 +2030,33 @@ Default value: `simplib::lookup( 'freeradius::group', {'default_value' => 'radiu
 
 ## Data types
 
-### <a name="freeradiusderef"></a>`Freeradius::Deref`
+### <a name="Freeradius--Deref"></a>`Freeradius::Deref`
 
 Control under which situations aliases are followed
 
-Alias of
+Alias of `Enum['never', 'searching', 'finding', 'always']`
 
-```puppet
-Enum['never', 'searching', 'finding', 'always']
-```
-
-### <a name="freeradiuslisten"></a>`Freeradius::Listen`
+### <a name="Freeradius--Listen"></a>`Freeradius::Listen`
 
 Types of packets to listen for
 
-Alias of
+Alias of `Enum['auth', 'acct', 'proxy', 'detail', 'status', 'coa']`
 
-```puppet
-Enum['auth', 'acct', 'proxy', 'detail', 'status', 'coa']
-```
-
-### <a name="freeradiuslogdest"></a>`Freeradius::Logdest`
+### <a name="Freeradius--Logdest"></a>`Freeradius::Logdest`
 
 Destination for log messages
 
-Alias of
+Alias of `Enum['files', 'syslog', 'stdout', 'stderr']`
 
-```puppet
-Enum['files', 'syslog', 'stdout', 'stderr']
-```
-
-### <a name="freeradiusnas"></a>`Freeradius::Nas`
+### <a name="Freeradius--Nas"></a>`Freeradius::Nas`
 
 NAS-specific method to use when checking for simultaneous use
 
-Alias of
+Alias of `Enum['cisco', 'computone', 'livingston', 'max40xx', 'multitech', 'netserver', 'pathras', 'patton', 'portslave', 'tc', 'usrhiper', 'other']`
 
-```puppet
-Enum['cisco', 'computone', 'livingston', 'max40xx', 'multitech', 'netserver', 'pathras', 'patton', 'portslave', 'tc', 'usrhiper', 'other']
-```
-
-### <a name="freeradiusscope"></a>`Freeradius::Scope`
+### <a name="Freeradius--Scope"></a>`Freeradius::Scope`
 
 LDAP search scope
 
-Alias of
-
-```puppet
-Enum['base', 'one', 'sub', 'children']
-```
+Alias of `Enum['base', 'one', 'sub', 'children']`
 
