@@ -42,12 +42,13 @@ class freeradius::v3::conf::security (
 
   ensure_resource ('file',  "${freeradius::confdir}/conf.d",
     {
-      ensure => 'directory',
-      owner  => 'root',
-      group  => $freeradius::group,
-      mode   => '0640',
-      purge  => true,
-      before => Service['radiusd'],
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => $freeradius::group,
+      mode    => '0640',
+      purge   => true,
+      recurse => true,
+      before  => Service['radiusd'],
     })
 
   file { "${freeradius::confdir}/conf.d/security.inc":

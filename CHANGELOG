@@ -1,3 +1,6 @@
+* Sat Sep 17 2022 Trevor Vaughan <trevor@sicura.us> - 8.6.2
+- Added `purge => true` where `recurse => true` was present
+
 * Wed Jan 17 2024 Richard Gardner <rick@sicura.us> - 8.6.1
 - Updated hiera.yaml facts to support puppet 8
 

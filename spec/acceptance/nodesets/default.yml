@@ -31,7 +31,7 @@ HOSTS:
     - server
     - client
     platform: el-8-x86_64
-    box: generic/centos8
+    box: generic/centos8s
     hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
     family: centos-cloud/centos-stream-8
     gce_machine_type: n1-standard-2
@@ -40,7 +40,7 @@ HOSTS:
     - 389ds
     - client
     platform: el-8-x86_64
-    box: generic/centos8
+    box: generic/centos8s
     hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
     family: centos-cloud/centos-stream-8
     gce_machine_type: n1-standard-2
@@ -48,5 +48,4 @@ CONFIG:
   log_level: verbose
   synced_folder: disabled
   type: aio
-  vagrant_memsize: 256
   puppet_collection: "<%= ENV.fetch('BEAKER_PUPPET_COLLECTION', 'puppet7') %>"
