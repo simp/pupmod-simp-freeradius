@@ -1,6 +1,6 @@
 {
   "name": "simp-freeradius",
-  "version": "8.6.1",
+  "version": "8.7.0",
   "author": "SIMP Team",
   "summary": "manages FreeRADIUS authentication servers",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
   "dependencies": [
     {
       "name": "simp/iptables",
-      "version_requirement": ">= 6.5.3 < 7.0.0"
+      "version_requirement": ">= 6.5.3 < 8.0.0"
     },
     {
       "name": "simp/pki",
