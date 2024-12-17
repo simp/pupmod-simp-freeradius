@@ -445,85 +445,89 @@ not
 }
 EOF
 
-
-
 describe 'freeradius::v3::modules::ldap' do
   context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
+    on_supported_os.each_value do |facts|
       let(:facts) { facts }
-      let(:pre_condition) {'include "freeradius"'}
+      let(:pre_condition) { 'include "freeradius"' }
 
       context 'with default params' do
         let(:hieradata) { 'simp_options_ldap' }
-        let(:facts) { facts.merge({:radius_version => '3'})}
+        let(:facts) { facts.merge({ radius_version: '3' }) }
+
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::modules::ldap') }
-        it { is_expected.to create_file('/etc/raddb/mods-enabled/ldap').with_content(default_module_content)}
+        it { is_expected.to create_file('/etc/raddb/mods-enabled/ldap').with_content(default_module_content) }
       end
 
       context 'with params' do
         let(:hieradata) { 'simp_options_ldap' }
-        let(:facts) { facts.merge({:radius_version => '3'})}
-        let(:params){{
-          :base_filter                       =>  'test(objectclass=radiusprofile)',
-          :client_scope                      =>  'base',
-          :client_attribute_identifier       =>  'testradiusClientIdentifier',
-          :client_attribute_secret           =>  'testradiusClientSecret',
-          :client_attribute_shortname        =>  'shortname',
-          :client_attribute_nas_type         =>  'cisco',
-          :client_attribute_virtual_server   =>  'virtual_server',
-          :client_filter                     =>  'test(objectClass=frClient)',
-          :default_profile                   =>  'default_profile',
-          :group_scope                       =>  'one',
-          :group_filter                      =>  '(objectClass=bob)',
-          :group_name_attribute              =>  'testcn',
-          :group_membership_filter           =>  'test_membership_filter',
-          :group_membership_attribute        =>  'testmemberOf',
-          :group_cacheable_name              =>  true,
-          :group_cacheable_dn                =>  true,
-          :ldap_connections_number           =>  15,
-          :ldap_debug                        =>  'ldap_debug',
-          :ldap_timeout                      =>  14,
-          :ldap_timelimit                    =>  13,
-          :options_chase_referrals           =>  true,
-          :options_dereference               =>  'always',
-          :options_idle                      =>  160,
-          :options_interval                  =>  13,
-          :options_net_timeout               =>  11,
-          :options_probes                    =>  13,
-          :options_rebind                    =>  true,
-          :pool_start                        =>  15,
-          :pool_min                          =>  14,
-          :pool_max                          =>  110,
-          :pool_spare                        =>  13,
-          :pool_uses                         =>  10,
-          :pool_lifetime                     =>  10,
-          :pool_idle_timeout                 =>  160,
-          :port                              =>  1389,
-          :profile_attribute                 =>  'profile_attribute',
-          :random_file                       =>  '/dev/test',
-          :require_cert                      =>  'nocert',
-          :retry_delay                       =>  130,
-          :start_tls                         =>  false,
-          :user_access_attribute             =>  'user_access_attribute',
-          :user_access_positive              =>  false,
-          :user_filter                       =>  'test(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
-          :user_scope                        =>  'sub',
-        }}
+        let(:facts) { facts.merge({ radius_version: '3' }) }
+        let(:params) do
+          {
+            base_filter: 'test(objectclass=radiusprofile)',
+         client_scope: 'base',
+         client_attribute_identifier: 'testradiusClientIdentifier',
+         client_attribute_secret: 'testradiusClientSecret',
+         client_attribute_shortname: 'shortname',
+         client_attribute_nas_type: 'cisco',
+         client_attribute_virtual_server: 'virtual_server',
+         client_filter: 'test(objectClass=frClient)',
+         default_profile: 'default_profile',
+         group_scope: 'one',
+         group_filter: '(objectClass=bob)',
+         group_name_attribute: 'testcn',
+         group_membership_filter: 'test_membership_filter',
+         group_membership_attribute: 'testmemberOf',
+         group_cacheable_name: true,
+         group_cacheable_dn: true,
+         ldap_connections_number: 15,
+         ldap_debug: 'ldap_debug',
+         ldap_timeout: 14,
+         ldap_timelimit: 13,
+         options_chase_referrals: true,
+         options_dereference: 'always',
+         options_idle: 160,
+         options_interval: 13,
+         options_net_timeout: 11,
+         options_probes: 13,
+         options_rebind: true,
+         pool_start: 15,
+         pool_min: 14,
+         pool_max: 110,
+         pool_spare: 13,
+         pool_uses: 10,
+         pool_lifetime: 10,
+         pool_idle_timeout: 160,
+         port: 1389,
+         profile_attribute: 'profile_attribute',
+         random_file: '/dev/test',
+         require_cert: 'nocert',
+         retry_delay: 130,
+         start_tls: false,
+         user_access_attribute: 'user_access_attribute',
+         user_access_positive: false,
+         user_filter: 'test(uid=%{%{Stripped-User-Name}:-%{User-Name}})',
+         user_scope: 'sub',
+          }
+        end
+
         it { is_expected.to create_file('/etc/raddb/mods-enabled/ldap').with_content(nondefault_module_content) }
       end
 
       context 'overriding post-auth' do
         let(:hieradata) { 'simp_options_ldap' }
-        let(:facts) { facts.merge({:radius_version => '3'})}
-        let(:params) {{
-          :post_auth_content => <<~EOM
+        let(:facts) { facts.merge({ radius_version: '3' }) }
+        let(:params) do
+          {
+            post_auth_content: <<~EOM
             bob
               is
             not
                alice
             EOM
-        }}
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::modules::ldap') }
@@ -532,15 +536,17 @@ describe 'freeradius::v3::modules::ldap' do
 
       context 'overriding accounting' do
         let(:hieradata) { 'simp_options_ldap' }
-        let(:facts) { facts.merge({:radius_version => '3'})}
-        let(:params) {{
-          :accounting_content => <<~EOM
+        let(:facts) { facts.merge({ radius_version: '3' }) }
+        let(:params) do
+          {
+            accounting_content: <<~EOM
             bob
               is
             not
                alice
             EOM
-        }}
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::modules::ldap') }
@@ -549,10 +555,12 @@ describe 'freeradius::v3::modules::ldap' do
 
       context 'overriding all content' do
         let(:hieradata) { 'simp_options_ldap' }
-        let(:facts) { facts.merge({:radius_version => '3'})}
-        let(:params) {{
-          :content => 'test'
-        }}
+        let(:facts) { facts.merge({ radius_version: '3' }) }
+        let(:params) do
+          {
+            content: 'test'
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::modules::ldap') }
@@ -561,10 +569,10 @@ describe 'freeradius::v3::modules::ldap' do
 
       context 'when simp_options::ldap::uri not specified' do
         let(:hieradata) { 'simp_options_ldap_without_uri' }
-        let(:facts) { facts.merge({:radius_version => '3'})}
+        let(:facts) { facts.merge({ radius_version: '3' }) }
+
         it { is_expected.not_to compile.with_all_deps }
       end
-
     end
   end
 end
