@@ -6,11 +6,11 @@ describe 'Setup openldap  server for freeradius' do
   ldap_server = only_host_with_role(hosts, 'ldap')
   ldap_server_fqdn = fact_on(ldap_server, 'fqdn')
 
-  _domains = fact_on(ldap_server, 'domain').split('.')
-  _domains.map! do |d|
+  facter_found_domains = fact_on(ldap_server, 'domain').split('.')
+  facter_found_domains.map! do |d|
     "dc=#{d}"
   end
-  base_dn = _domains.join(',')
+  base_dn = facter_found_domains.join(',')
 
   common_hieradata = File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__)))
 
