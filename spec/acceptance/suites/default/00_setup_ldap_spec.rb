@@ -3,30 +3,26 @@ require 'spec_helper_acceptance'
 test_name 'Set up ldap server '
 
 describe 'Setup openldap  server for freeradius' do
-  ldap_server = only_host_with_role(hosts,'ldap')
+  ldap_server = only_host_with_role(hosts, 'ldap')
   ldap_server_fqdn = fact_on(ldap_server, 'fqdn')
 
-  _domains = fact_on(ldap_server, 'domain').split('.')
-  _domains.map! { |d|
+  facter_found_domains = fact_on(ldap_server, 'domain').split('.')
+  facter_found_domains.map! do |d|
     "dc=#{d}"
-  }
-  base_dn = _domains.join(',')
+  end
+  base_dn = facter_found_domains.join(',')
 
   common_hieradata = File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__)))
 
   context 'setup ldap server ' do
-
     let(:ldap_type)        { 'plain' }
-    let(:server_hieradata) { File.read(File.expand_path("files/#{ldap_type}/server_hieradata.yaml.erb", File.dirname(__FILE__)))}
-    let (:hieradata){ "#{common_hieradata}" + "\n#{server_hieradata}"}
+    let(:server_hieradata) { File.read(File.expand_path("files/#{ldap_type}/server_hieradata.yaml.erb", File.dirname(__FILE__))) }
+    let(:hieradata) { common_hieradata.to_s + "\n#{server_hieradata}" }
 
+    let(:test_user_ldif) { ERB.new(File.read(File.expand_path("files/#{ldap_type}/add_users.ldif.erb", File.dirname(__FILE__)))).result(binding) }
 
-    let(:test_user_ldif) { ERB.new(File.read(File.expand_path("files/#{ldap_type}/add_users.ldif.erb",File.dirname(__FILE__)))).result(binding) }
-
-    it 'should install, openldap, and create users' do
-
-
-      server_manifest = <<-EOM
+    it 'installs openldap and create users' do
+      server_manifest = <<~EOM
         include 'simp_options'
         include 'simp_openldap::server'
       EOM
@@ -36,9 +32,8 @@ describe 'Setup openldap  server for freeradius' do
       apply_manifest_on(ldap_server, server_manifest, catch_failures: true)
       apply_manifest_on(ldap_server, server_manifest, catch_failures: true)
       apply_manifest_on(ldap_server, server_manifest, catch_changes: true)
-
     end
-    it 'should create users on ldap server' do
+    it 'creates users on ldap server' do
       # Create test.user
       create_remote_file(ldap_server, '/root/user_ldif.ldif', test_user_ldif)
 
@@ -50,6 +45,5 @@ describe 'Setup openldap  server for freeradius' do
       result2 = on(ldap_server, "ldapsearch -LLL -Z -D cn=LDAPAdmin,ou=People,#{base_dn} -H ldap://#{ldap_server_fqdn} -w suP3rP@ssw0r! -x cn=radius1")
       expect(result2.stdout).to include("dn: uid=radius1,ou=People,#{base_dn}")
     end
-
   end
 end
