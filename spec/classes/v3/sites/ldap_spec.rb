@@ -117,7 +117,7 @@ describe 'freeradius::v3::sites::ldap' do
         let(:facts) { facts.merge({ radius_version: '3' }) }
         let(:params) do
           {
-            'include_listener' => false
+            'include_listener' => false,
           }
         end
 

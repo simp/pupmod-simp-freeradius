@@ -10,14 +10,14 @@ describe 'freeradius::v3::module', type: :define do
         let(:title) { 'test_module' }
         let(:params) do
           {
-            source: '/tmp/mymodule'
+            source: '/tmp/mymodule',
           }
         end
 
         it {
-          is_expected.to create_file('/etc/raddb/mods-available/test_module').with({
-                                                                                     'source' => '/tmp/mymodule'
-                                                                                   })
+          is_expected.to create_file('/etc/raddb/mods-available/test_module').with(
+            'source' => '/tmp/mymodule',
+          )
         }
         it { is_expected.not_to create_file('/etc/raddb/mods-enabled/test_module') }
       end
@@ -26,16 +26,16 @@ describe 'freeradius::v3::module', type: :define do
         let(:params) do
           {
             content: 'My module',
-         enabled: true
+            enabled: true,
           }
         end
 
         it { is_expected.to create_file('/etc/raddb/mods-available/test_module').with_content(%r{My module}) }
         it {
-          is_expected.to create_file('/etc/raddb/mods-enabled/test_module').with({
-                                                                                   'ensure' => 'link',
-          'target' => '/etc/raddb/mods-available/test_module'
-                                                                                 })
+          is_expected.to create_file('/etc/raddb/mods-enabled/test_module').with(
+            'ensure' => 'link',
+            'target' => '/etc/raddb/mods-available/test_module',
+          )
         }
       end
       context 'with content and source set ' do
@@ -43,7 +43,7 @@ describe 'freeradius::v3::module', type: :define do
         let(:params) do
           {
             content: 'My module',
-         source: '/var/stuff'
+            source: '/var/stuff',
           }
         end
 

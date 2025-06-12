@@ -11,15 +11,15 @@ describe 'freeradius::v3::conf::user', type: :define do
         let(:params) do
           {
             content: 'test user stuff',
-         confdir: '/etc/raddb'
+            confdir: '/etc/raddb',
           }
         end
 
         it {
-          is_expected.to contain_concat__fragment('radius_user_100.test_add_user').with({
-                                                                                          #          'content' => 'test_add_user test user stuff',
-                                                                                          'target' => '/etc/raddb/mods-config/files/authorize'
-                                                                                        })
+          is_expected.to contain_concat__fragment('radius_user_100.test_add_user').with(
+            # 'content' => 'test_add_user test user stuff',
+            'target' => '/etc/raddb/mods-config/files/authorize',
+          )
         }
       end
       context 'add a default user fragment' do
@@ -27,16 +27,16 @@ describe 'freeradius::v3::conf::user', type: :define do
         let(:params) do
           {
             content: 'default stuff',
-         confdir: '/etc/raddb',
-         is_default: true
+            confdir: '/etc/raddb',
+            is_default: true,
           }
         end
 
         it {
-          is_expected.to contain_concat__fragment('radius_user_100.user999').with({
-                                                                                    'target' => '/etc/raddb/mods-config/files/authorize',
-          'content' => 'DEFAULT default stuff'
-                                                                                  })
+          is_expected.to contain_concat__fragment('radius_user_100.user999').with(
+            'target' => '/etc/raddb/mods-config/files/authorize',
+            'content' => 'DEFAULT default stuff',
+          )
         }
       end
     end

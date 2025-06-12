@@ -10,19 +10,19 @@ describe 'freeradius::v3::client', type: :define do
         let(:params) do
           {
             ipaddr: '1.2.3.4',
-         secret: 'MyLittlePony'
+            secret: 'MyLittlePony',
           }
         end
 
         it { is_expected.to create_file('/etc/raddb/clients.d') }
         it {
-          is_expected.to create_file('/etc/raddb/clients.d/test_client.conf').with_content(<<-EOM)
-client test_client {
-  ipaddr = 1.2.3.4
-  secret = MyLittlePony
-  require_message_authenticator = yes
-}
-  EOM
+          is_expected.to create_file('/etc/raddb/clients.d/test_client.conf').with_content(<<~EOM)
+            client test_client {
+              ipaddr = 1.2.3.4
+              secret = MyLittlePony
+              require_message_authenticator = yes
+            }
+          EOM
         }
       end
 
@@ -31,31 +31,31 @@ client test_client {
         let(:params) do
           {
             ipaddr: '2620:0:2d0:200::7/32',
-         secret: 'MyLittlePony',
-         nas_type: 'cisco',
-         coa_server: 'TwilightSparkle',
-         login: 'RainbowDash',
-         password: 'FlutterShy',
-         virtual_server: 'PinkiePie',
-         shortname: 'Scootaloo'
+            secret: 'MyLittlePony',
+            nas_type: 'cisco',
+            coa_server: 'TwilightSparkle',
+            login: 'RainbowDash',
+            password: 'FlutterShy',
+            virtual_server: 'PinkiePie',
+            shortname: 'Scootaloo',
           }
         end
 
         it { is_expected.to create_file('/etc/raddb/clients.d') }
         it {
-          is_expected.to create_file('/etc/raddb/clients.d/test2_client.conf').with_content(<<-EOM)
-client test2_client {
-  ipv6addr = 2620:0:2d0:200::7/32
-  secret = MyLittlePony
-  shortname = Scootaloo
-  require_message_authenticator = yes
-  nas_type = cisco
-  login = RainbowDash
-  password = FlutterShy
-  virtual_server = PinkiePie
-  coa_server = TwilightSparkle
-}
-  EOM
+          is_expected.to create_file('/etc/raddb/clients.d/test2_client.conf').with_content(<<~EOM)
+            client test2_client {
+              ipv6addr = 2620:0:2d0:200::7/32
+              secret = MyLittlePony
+              shortname = Scootaloo
+              require_message_authenticator = yes
+              nas_type = cisco
+              login = RainbowDash
+              password = FlutterShy
+              virtual_server = PinkiePie
+              coa_server = TwilightSparkle
+            }
+          EOM
         }
       end
     end

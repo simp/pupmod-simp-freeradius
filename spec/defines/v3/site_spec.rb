@@ -4,20 +4,20 @@ describe 'freeradius::v3::site', type: :define do
   context 'supported operating systems' do
     on_supported_os.each_value do |facts|
       let(:facts) { facts }
-      let(:pre_condition) { "include  'freeradius'" }
+      let(:pre_condition) { "include 'freeradius'" }
 
       context 'with default parameters' do
         let(:title) { 'test_site' }
         let(:params) do
           {
-            source: '/tmp/mysite'
+            source: '/tmp/mysite',
           }
         end
 
         it {
-          is_expected.to create_file('/etc/raddb/sites-available/test_site').with({
-                                                                                    'source' => '/tmp/mysite'
-                                                                                  })
+          is_expected.to create_file('/etc/raddb/sites-available/test_site').with(
+            'source' => '/tmp/mysite',
+          )
         }
         it { is_expected.not_to create_file('/etc/raddb/sites-enabled/test_site') }
       end
@@ -26,16 +26,16 @@ describe 'freeradius::v3::site', type: :define do
         let(:params) do
           {
             content: 'My site',
-         enabled: true
+            enabled: true,
           }
         end
 
         it { is_expected.to create_file('/etc/raddb/sites-available/test_site').with_content(%r{My site}) }
         it {
-          is_expected.to create_file('/etc/raddb/sites-enabled/test_site').with({
-                                                                                  'ensure' => 'link',
-          'target' => '/etc/raddb/sites-available/test_site'
-                                                                                })
+          is_expected.to create_file('/etc/raddb/sites-enabled/test_site').with(
+            'ensure' => 'link',
+            'target' => '/etc/raddb/sites-available/test_site',
+          )
         }
       end
       context 'with content and source set ' do
@@ -43,7 +43,7 @@ describe 'freeradius::v3::site', type: :define do
         let(:params) do
           {
             content: 'My site',
-         source: '/var/stuff'
+            source: '/var/stuff',
           }
         end
 

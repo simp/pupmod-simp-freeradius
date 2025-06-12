@@ -12,10 +12,10 @@ describe 'freeradius class' do
   let(:results_base_dn) { fact_on(ldapserver, 'domain').split('.').map { |d| "dc=#{d}" }.join(',') }
 
   let(:radiusserver_useldap_only_manifest) do
-    <<-EOR
-    # This class will set up the simp default site which allows only ldap
-    #  authentication.  Note:  the ldap module is set up because
-    #  freeradius::ldap = true. (see hieradata)
+    <<~EOR
+      # This class will set up the simp default site which allows only ldap
+      #  authentication.  Note:  the ldap module is set up because
+      #  freeradius::ldap = true. (see hieradata)
       include 'freeradius'
       include 'simp_openldap::client'
       include 'freeradius::v3::modules::ldap'
@@ -30,16 +30,16 @@ describe 'freeradius class' do
         Reply-Message := "Hello World"
        | EOTU
 
-        freeradius::v3::conf::user { 'testuser':
-          content => $_testuser
-        }
+      freeradius::v3::conf::user { 'testuser':
+        content => $_testuser,
+      }
 
-        freeradius::v3::client { 'localhost':
-          ipaddr                        => '127.0.0.1',
-          secret                        => 'testing123',
-          require_message_authenticator => false,
-          nas_type                      => 'other',
-        }
+      freeradius::v3::client { 'localhost':
+        ipaddr                        => '127.0.0.1',
+        secret                        => 'testing123',
+        require_message_authenticator => false,
+        nas_type                      => 'other',
+      }
     EOR
   end
 

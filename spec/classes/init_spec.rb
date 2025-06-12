@@ -66,12 +66,12 @@ shared_examples_for 'use_rsync and testcerts' do
   it { is_expected.to contain_class('rsync') }
   it { is_expected.to contain_file('/etc/raddb/radiusd.conf').with_content(nil) }
   it {
-    is_expected.to contain_rsync('freeradius').with({
-                                                      source: "freeradius_#{environment}_#{facts[:os][:name]}/",
-   user: "freeradius_systems_#{environment}_#{facts[:os][:name].downcase}",
-   server: '127.0.0.1',
-   timeout: 2
-                                                    })
+    is_expected.to contain_rsync('freeradius').with(
+      source: "freeradius_#{environment}_#{facts[:os][:name]}/",
+      user: "freeradius_systems_#{environment}_#{facts[:os][:name].downcase}",
+      server: '127.0.0.1',
+      timeout: 2,
+    )
   }
   it { is_expected.to contain_file('/etc/raddb/certs') }
   it { is_expected.to contain_exec('/etc/raddb/certs/bootstrap') }
@@ -90,10 +90,10 @@ describe 'freeradius' do
         # Version 3
         context 'version 3 (v3)' do
           let(:facts) do
-            facts.merge({
-                          radius_version: '3',
-              hardwaremodel: 'x86_64'
-                        })
+            facts.merge(
+              radius_version: '3',
+              hardwaremodel: 'x86_64',
+            )
           end
 
           context 'with default parameters' do
@@ -106,7 +106,7 @@ describe 'freeradius' do
           context 'with manage sites enabled on ' do
             let(:params) do
               {
-                manage_sites_enabled: true
+                manage_sites_enabled: true,
               }
             end
 
@@ -151,19 +151,19 @@ describe 'freeradius' do
             it { is_expected.to contain_file('/etc/raddb/conf.d/security.inc').with_content(expected_content_security) }
             it { is_expected.to contain_file('/etc/raddb/conf.d/thread_pool.inc').with_content(expected_content_thread_pool) }
             it {
-              is_expected.to contain_file('/etc/raddb/conf.d/instantiate.inc').with_content(<<-EOM)
-instantiate {
-}
-EOM
+              is_expected.to contain_file('/etc/raddb/conf.d/instantiate.inc').with_content(<<~EOM)
+                instantiate {
+                }
+              EOM
             }
           end
 
           context 'v3::conf with changed parameters' do
             let(:facts) do
-              facts.merge({
-                            radius_version: '3',
+              facts.merge(
+                radius_version: '3',
                 hardwaremodel: 'i386',
-                          })
+              )
             end
             let(:hieradata) { 'conf_v3_params' }
 
@@ -190,10 +190,10 @@ EOM
 
         context 'version 2 (v2)' do
           let(:facts) do
-            facts.merge({
-                          radius_version: '2',
+            facts.merge(
+              radius_version: '2',
               hardwaremodel: 'x86_64',
-                        })
+            )
           end
 
           context 'default params' do

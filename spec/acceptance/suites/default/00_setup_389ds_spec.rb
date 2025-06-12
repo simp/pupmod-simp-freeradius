@@ -23,8 +23,8 @@ describe 'Setup 389ds server for freeradius' do
     let(:add_testuser)     { File.read(File.expand_path("files/#{ldap_type}/add_testuser.erb", File.dirname(__FILE__))) }
     let(:ds_root_name)     { 'accounts' }
 
-    it 'install,s 389ds accounts instance' do
-      server_manifest = <<-EOM
+    it 'installs 389ds accounts instance' do
+      server_manifest = <<~EOM
         include 'simp_options'
         include 'simp_ds389::instances::accounts'
       EOM

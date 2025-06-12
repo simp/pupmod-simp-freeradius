@@ -25,29 +25,29 @@ describe 'freeradius class' do
         Reply-Message := "Hello World"
        | EOTU
 
-        freeradius::v3::conf::user { 'testuser':
-          content => $_testuser
-        }
+      freeradius::v3::conf::user { 'testuser':
+        content => $_testuser,
+      }
 
-        freeradius::v3::client { 'localhost':
-          ipaddr                        => '127.0.0.1',
-          secret                        => 'testing123',
-          require_message_authenticator => false,
-          nas_type                      => 'other',
-        }
+      freeradius::v3::client { 'localhost':
+        ipaddr                        => '127.0.0.1',
+        secret                        => 'testing123',
+        require_message_authenticator => false,
+        nas_type                      => 'other',
+      }
 
-        freeradius::v3::client { 'mynetwork':
-          ipaddr => '10.0.71.0/24',
-          secret => 'testing123'
-        }
+      freeradius::v3::client { 'mynetwork':
+        ipaddr => '10.0.71.0/24',
+        secret => 'testing123',
+      }
     EOR
   end
 
   let(:radiusserver_useldap_only_manifest) do
-    <<-EOR
-    # This class will set up the simp default site which allows only ldap
-    #  authentication.  Note:  the ldap module is set up because
-    #  freeradius::ldap = true. (see hieradata)
+    <<~EOR
+      # This class will set up the simp default site which allows only ldap
+      #  authentication.  Note:  the ldap module is set up because
+      #  freeradius::ldap = true. (see hieradata)
       include 'freeradius'
       include 'freeradius::v3::modules::ldap'
       include 'freeradius::v3::sites::ldap'
@@ -60,16 +60,16 @@ describe 'freeradius class' do
         Reply-Message := "Hello World"
        | EOTU
 
-        freeradius::v3::conf::user { 'testuser':
-          content => $_testuser
-        }
+      freeradius::v3::conf::user { 'testuser':
+        content => $_testuser,
+      }
 
-        freeradius::v3::client { 'localhost':
-          ipaddr                        => '127.0.0.1',
-          secret                        => 'testing123',
-          require_message_authenticator => false,
-          nas_type                      => 'other',
-        }
+      freeradius::v3::client { 'localhost':
+        ipaddr                        => '127.0.0.1',
+        secret                        => 'testing123',
+        require_message_authenticator => false,
+        nas_type                      => 'other',
+      }
     EOR
   end
 

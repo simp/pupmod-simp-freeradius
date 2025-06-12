@@ -21,8 +21,8 @@ describe 'Setup openldap  server for freeradius' do
 
     let(:test_user_ldif) { ERB.new(File.read(File.expand_path("files/#{ldap_type}/add_users.ldif.erb", File.dirname(__FILE__)))).result(binding) }
 
-    it 'install,s openldap, and create users' do
-      server_manifest = <<-EOM
+    it 'installs openldap and create users' do
+      server_manifest = <<~EOM
         include 'simp_options'
         include 'simp_openldap::server'
       EOM
