@@ -17,10 +17,8 @@ describe 'freeradius class' do
       #  authentication.  Note:  the ldap module is set up because
       #  freeradius::ldap = true. (see hieradata)
       include 'freeradius'
-      include 'simp_openldap::client'
       include 'freeradius::v3::modules::ldap'
       include 'freeradius::v3::sites::ldap'
-      Class['simp_openldap::client'] -> Class['freeradius']
 
       Class['freeradius'] -> [Class['freeradius::v3::sites::ldap'],Class['freeradius::v3::modules::ldap']]
 
