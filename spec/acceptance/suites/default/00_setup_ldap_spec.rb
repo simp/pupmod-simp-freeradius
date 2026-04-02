@@ -24,7 +24,6 @@ describe 'Setup openldap  server for freeradius' do
     it 'installs openldap and create users' do
       server_manifest = <<~EOM
         include 'simp_options'
-        include 'simp_openldap::server'
       EOM
 
       # Apply
