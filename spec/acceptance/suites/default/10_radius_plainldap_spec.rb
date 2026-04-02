@@ -13,11 +13,9 @@ describe 'freeradius class' do
 
   let(:radiusserver_manifest) do
     <<-EOR
-      include 'simp_openldap::client'
 
       include 'freeradius'
 
-      Class['simp_openldap::client'] -> Class['freeradius']
 
       #setup a test user, localclient and remote client"
       $_testuser = @("EOTU"/L)
