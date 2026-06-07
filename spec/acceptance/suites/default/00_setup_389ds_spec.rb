@@ -4,16 +4,15 @@ test_name 'Set up ds389 server '
 
 describe 'Setup 389ds server for freeradius' do
   # stunnel just needs to be set, it does not effect this test
-  stunnel_setting = true
-  ldap_server = only_host_with_role(hosts, '389ds')
-  ldap_server_fqdn = fact_on(ldap_server, 'fqdn')
+  let(:stunnel_setting) { true }
+  let(:ldap_server) { only_host_with_role(hosts, '389ds') }
+  let(:ldap_server_fqdn) { fact_on(ldap_server, 'fqdn') }
 
-  facter_found_domains = fact_on(ldap_server, 'domain').split('.')
-  facter_found_domains.map! do |d|
-    "dc=#{d}"
+  let(:facter_found_domains) do
+    fact_on(ldap_server, 'domain').split('.').map { |d| "dc=#{d}" }
   end
-  base_dn = facter_found_domains.join(',')
-  common_hieradata = File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__)))
+  let(:base_dn) { facter_found_domains.join(',') }
+  let(:common_hieradata) { File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__))) }
 
   context 'setup 389ds ldap server ' do
     let(:root_pw)          { 'suP3rP@ssw0r!' }

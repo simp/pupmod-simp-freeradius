@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-default_header = <<-EOF
+DEFAULT_HEADER = <<-EOF.freeze
 # This file is managed by Puppet.  Changes will be overwritten
 # at the next puppet run.
 #
 server default {
 EOF
 
-default_listen_auth = <<-EOF
+DEFAULT_LISTEN_AUTH = <<-EOF.freeze
 listen {
   type = auth
   ipaddr = *
@@ -20,7 +20,7 @@ listen {
 }
 EOF
 
-default_listen_acct = <<-EOF
+DEFAULT_LISTEN_ACCT = <<-EOF.freeze
 listen {
   type = acct
   ipaddr = *
@@ -30,7 +30,7 @@ listen {
 }
 EOF
 
-default_footer = <<-EOF
+DEFAULT_FOOTER = <<-EOF.freeze
   authorize {
     filter_username
     preprocess
@@ -106,10 +106,10 @@ describe 'freeradius::v3::sites::ldap' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('freeradius::v3::sites::ldap') }
         it { is_expected.to create_concat('site_simp_ldap_default').with_path('/etc/raddb/sites-available/simp-ldap-default') }
-        it { is_expected.to create_concat__fragment('site_ldap_header').with_content(default_header) }
-        it { is_expected.to create_concat__fragment('site_ldap_footer').with_content(default_footer) }
-        it { is_expected.to create_concat__fragment('listen.site_ldap_auth.auth').with_content(default_listen_auth) }
-        it { is_expected.to create_concat__fragment('listen.site_ldap_acct.acct').with_content(default_listen_acct) }
+        it { is_expected.to create_concat__fragment('site_ldap_header').with_content(DEFAULT_HEADER) }
+        it { is_expected.to create_concat__fragment('site_ldap_footer').with_content(DEFAULT_FOOTER) }
+        it { is_expected.to create_concat__fragment('listen.site_ldap_auth.auth').with_content(DEFAULT_LISTEN_AUTH) }
+        it { is_expected.to create_concat__fragment('listen.site_ldap_acct.acct').with_content(DEFAULT_LISTEN_ACCT) }
         it { is_expected.to create_file('/etc/raddb/sites-enabled/default').with_target('/etc/raddb/sites-available/simp-ldap-default') }
       end
 
@@ -121,8 +121,8 @@ describe 'freeradius::v3::sites::ldap' do
           }
         end
 
-        it { is_expected.to create_concat__fragment('site_ldap_header').with_content(default_header) }
-        it { is_expected.to create_concat__fragment('site_ldap_footer').with_content(default_footer) }
+        it { is_expected.to create_concat__fragment('site_ldap_header').with_content(DEFAULT_HEADER) }
+        it { is_expected.to create_concat__fragment('site_ldap_footer').with_content(DEFAULT_FOOTER) }
         it { is_expected.not_to create_concat__fragment('listen.site_ldap_auth.auth') }
         it { is_expected.not_to create_concat__fragment('listen.site_ldap_acct.acct') }
       end

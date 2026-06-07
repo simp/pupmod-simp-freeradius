@@ -136,14 +136,11 @@ describe 'freeradius' do
 
           #  Test v3 manifests
           context 'v3::conf with default parameters' do
-            expected_content_radius_conf = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/', 'radius.conf.default'))
-            expected_content_log = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/conf.d/', 'log.default'))
-            expected_content_security = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/conf.d/', 'security.default'))
-            expected_content_thread_pool = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/conf.d/', 'thread_pool.default'))
+            let(:expected_content_radius_conf) { File.read(File.join(File.dirname(__FILE__), '../files/3/', 'radius.conf.default')) }
+            let(:expected_content_log) { File.read(File.join(File.dirname(__FILE__), '../files/3/conf.d/', 'log.default')) }
+            let(:expected_content_security) { File.read(File.join(File.dirname(__FILE__), '../files/3/conf.d/', 'security.default')) }
+            let(:expected_content_thread_pool) { File.read(File.join(File.dirname(__FILE__), '../files/3/conf.d/', 'thread_pool.default')) }
+
             it_behaves_like 'config v3'
             it { is_expected.not_to contain_iptables__listen__udp('radius_iptables') }
             it { is_expected.to contain_file('/etc/raddb/radiusd.conf').with_content(expected_content_radius_conf) }
@@ -167,14 +164,10 @@ describe 'freeradius' do
             end
             let(:hieradata) { 'conf_v3_params' }
 
-            expected2_content_radius_conf = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/', 'radius.conf.with_params'))
-            expected2_content_log = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/conf.d/', 'log.with_params'))
-            expected2_content_security = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/conf.d/', 'security.with_params'))
-            expected2_content_thread_pool = File.read(File.join(File.dirname(__FILE__),
-               '../files/3/conf.d/', 'thread_pool.with_params'))
+            let(:expected2_content_radius_conf) { File.read(File.join(File.dirname(__FILE__), '../files/3/', 'radius.conf.with_params')) }
+            let(:expected2_content_log) { File.read(File.join(File.dirname(__FILE__), '../files/3/conf.d/', 'log.with_params')) }
+            let(:expected2_content_security) { File.read(File.join(File.dirname(__FILE__), '../files/3/conf.d/', 'security.with_params')) }
+            let(:expected2_content_thread_pool) { File.read(File.join(File.dirname(__FILE__), '../files/3/conf.d/', 'thread_pool.with_params')) }
 
             it { is_expected.to contain_file('/etc/raddb/radiusd.conf').with_content(expected2_content_radius_conf) }
             it { is_expected.to contain_file('/etc/raddb/conf.d/log.inc').with_content(expected2_content_log) }

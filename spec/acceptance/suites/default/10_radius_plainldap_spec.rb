@@ -3,8 +3,8 @@ require 'spec_helper_acceptance'
 test_name 'freeradius class'
 
 describe 'freeradius class' do
-  servers = hosts_with_role(hosts, 'server')
-  ldapserver = find_at_most_one_host_with_role(hosts, 'ldap') # There can only be one.
+  servers = hosts_with_role(hosts, 'server') # rubocop:disable RSpec/LeakyLocalVariable
+  ldapserver = find_at_most_one_host_with_role(hosts, 'ldap') # rubocop:disable RSpec/LeakyLocalVariable
 
   let(:ldap_server_fqdn) { fact_on(ldapserver, 'fqdn') }
   let(:ldap_type) { 'plain' }
