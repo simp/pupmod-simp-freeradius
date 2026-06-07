@@ -3,16 +3,15 @@ require 'spec_helper_acceptance'
 test_name 'Set up ldap server '
 
 describe 'Setup openldap  server for freeradius' do
-  ldap_server = only_host_with_role(hosts, 'ldap')
-  ldap_server_fqdn = fact_on(ldap_server, 'fqdn')
+  let(:ldap_server) { only_host_with_role(hosts, 'ldap') }
+  let(:ldap_server_fqdn) { fact_on(ldap_server, 'fqdn') }
 
-  facter_found_domains = fact_on(ldap_server, 'domain').split('.')
-  facter_found_domains.map! do |d|
-    "dc=#{d}"
+  let(:facter_found_domains) do
+    fact_on(ldap_server, 'domain').split('.').map { |d| "dc=#{d}" }
   end
-  base_dn = facter_found_domains.join(',')
+  let(:base_dn) { facter_found_domains.join(',') }
 
-  common_hieradata = File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__)))
+  let(:common_hieradata) { File.read(File.expand_path('files/common_hieradata.yaml.erb', File.dirname(__FILE__))) }
 
   context 'setup ldap server ' do
     let(:ldap_type)        { 'plain' }
