@@ -20,7 +20,11 @@ certdir = ${raddbdir}/certs
 cadir = ${raddbdir}/certs
 run_dir = ${localstatedir}/run/${name}
 db_dir = ${localstatedir}/lib/${name}
-<% if $facts['hardwaremodel'] == "x86_64"  { -%>
+<%# Prefer the legacy `hardwaremodel` fact (kept for backward compatibility),
+    but fall back to the structured `os.architecture` fact when it is absent
+    (e.g. under OpenVox/Facter 4, where `hardwaremodel` is not populated). -%>
+<% $_arch = ($facts['hardwaremodel'] =~ String[1]) ? { true => $facts['hardwaremodel'], default => $facts.dig('os', 'architecture') } -%>
+<% if $_arch in ['x86_64', 'aarch64', 'ppc64', 'ppc64le', 's390x'] { -%>
 libdir = /usr/lib64/freeradius
 <% } else { -%>
 libdir = /usr/lib/freeradius

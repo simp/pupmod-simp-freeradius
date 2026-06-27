@@ -3,6 +3,16 @@ require 'spec_helper_acceptance'
 test_name 'freeradius class'
 
 describe 'freeradius class' do
+  # FreeRADIUS-against-plain-OpenLDAP coverage depends on the `simp_openldap`
+  # module, which was archived and removed from this module (see the "Remove
+  # references to archived SIMP modules" cleanup). With no OpenLDAP server to
+  # authenticate against, these examples are skipped until a replacement LDAP
+  # server module is wired back in. The 389DS path (11_radius_389ldap_spec.rb)
+  # provides live FreeRADIUS+LDAP coverage.
+  before(:all) do
+    skip('OpenLDAP server (simp_openldap) was removed; plain-LDAP path is unsupported')
+  end
+
   servers = hosts_with_role(hosts, 'server') # rubocop:disable RSpec/LeakyLocalVariable
   ldapserver = find_at_most_one_host_with_role(hosts, 'ldap') # rubocop:disable RSpec/LeakyLocalVariable
 

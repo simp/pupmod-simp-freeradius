@@ -3,6 +3,17 @@ require 'spec_helper_acceptance'
 test_name 'Set up ldap server '
 
 describe 'Setup openldap  server for freeradius' do
+  # The plain OpenLDAP server path depends on the `simp_openldap` module, which
+  # was archived and removed from this module's dependencies/fixtures (see the
+  # "Remove references to archived SIMP modules" cleanup). Without an OpenLDAP
+  # server class there is nothing to stand up, so these examples are skipped
+  # until/unless a replacement LDAP server module is wired back in. The 389DS
+  # path (00_setup_389ds_spec.rb / 11_radius_389ldap_spec.rb) provides live LDAP
+  # coverage.
+  before(:all) do
+    skip('OpenLDAP server (simp_openldap) was removed; plain-LDAP path is unsupported')
+  end
+
   let(:ldap_server) { only_host_with_role(hosts, 'ldap') }
   let(:ldap_server_fqdn) { fact_on(ldap_server, 'fqdn') }
 
