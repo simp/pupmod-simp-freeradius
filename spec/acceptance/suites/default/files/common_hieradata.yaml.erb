@@ -7,6 +7,11 @@ simp_options::syslog: false
 simp_options::pki: true
 simp_options::pki::source: '/etc/pki/simp-testing/pki'
 
+# Generate the FreeRADIUS snakeoil EAP certs (/etc/raddb/certs/server.pem) at
+# install time. Without these the stock eap module fails to initialize its TLS
+# context and radiusd refuses to start.
+freeradius::testcerts: true
+
 simp_options::ldap::uri:
   - 'ldap://<%= ldap_server_fqdn %>'
 simp_options::ldap::base_dn: '<%= base_dn %>'
