@@ -44,11 +44,11 @@ and the `v3::conf*` internals are `assert_private()`'d.
     Otherwise `include` `install` → `config` ~> `service` in an ordered chain
     (`init.pp`).
 
-- **`freeradius::install` (`manifests/install.pp`, `assert_private` line 6)** —
+- **`freeradius::install` (`manifests/install.pp`, `assert_private`)** —
   creates the `radiusd` group/user and installs `$freeradius_name`, `-ldap`, and
   `-utils` packages at `$package_ensure` (requires the user).
 
-- **`freeradius::config` (`manifests/config.pp`, `assert_private` line 7)** —
+- **`freeradius::config` (`manifests/config.pp`, `assert_private`)** —
   optionally calls `pki::copy` when `$freeradius::pki` (`config.pp`); creates
   `$confdir` and the `mods-config`/`mods-available`/`mods-enabled`/`sites-available`/
   `sites-enabled` dirs (`sites-enabled` is `purge`d only when `$manage_sites_enabled`,
@@ -60,13 +60,11 @@ and the `v3::conf*` internals are `assert_private()`'d.
 - **`freeradius::service` (`manifests/service.pp`)** — `service { 'radiusd' }`
   running + enabled. (Note: not `assert_private`'d, but no docstring params.)
 
-- **`freeradius::config::rsync` (`manifests/config/rsync.pp`, `assert_private`
-  line 42)** — `include 'rsync'` and pull the config tree via the `rsync` define
+- **`freeradius::config::rsync` (`manifests/config/rsync.pp`, `assert_private`)** — `include 'rsync'` and pull the config tree via the `rsync` define
   (server from `simp_options::rsync::server`, timeout from
   `simp_options::rsync::timeout`; password via `simplib::passgen`, `rsync.pp`).
 
-- **`freeradius::v3::conf` (`manifests/v3/conf.pp`, `assert_private` line
-  79)** — the core 3.x config class. `include`s the four `conf::*` section classes
+- **`freeradius::v3::conf` (`manifests/v3/conf.pp`, `assert_private`)** — the core 3.x config class. `include`s the four `conf::*` section classes
   (`conf.pp`), renders `radiusd.conf` from `epp('freeradius/3/radiusd.conf.epp')`
   (`conf.pp`), manages log-file perms and `conf.d`/`policy.d`/`clients.d`, honors
   optional `*_conf_content` overrides, renders `clients.conf` from
@@ -83,7 +81,7 @@ and the `v3::conf*` internals are `assert_private()`'d.
   `$chroot_user`. None call `assert_private()` (they are ordered under `v3::conf`).
 
 - **`freeradius::v3::conf::users` (`manifests/v3/conf/users.pp`,
-  `assert_private` line 5)** — sets up the `concat` container + header for the
+  `assert_private`)** — sets up the `concat` container + header for the
   `mods-config/files/authorize` users file.
 
 - **`freeradius::v3::conf::user` (`define`, `manifests/v3/conf/user.pp`)** — adds
@@ -108,13 +106,13 @@ and the `v3::conf*` internals are `assert_private()`'d.
   `$confdir`/`$group` from `freeradius::*` lookups (`module.pp`, `site.pp`).
 
 - **`freeradius::v3::modules::ldap` (`class`, `manifests/v3/modules/ldap.pp`,
-  `inherits freeradius` line 146)** — renders the LDAP module config to
+  `inherits freeradius`)** — renders the LDAP module config to
   `mods-enabled/ldap` from `template('freeradius/3/modules/ldap.erb')` (`ldap.pp`)
   unless `$content` is set. Its first four params are `simp_options::ldap::*` lookups
   (see seam table).
 
 - **`freeradius::v3::sites::ldap` (`class`, `manifests/v3/sites/ldap.pp`,
-  `inherits freeradius` line 42)** — builds a `concat` site file
+  `inherits freeradius`)** — builds a `concat` site file
   `sites-available/simp-ldap-default` from `epp` header/footer templates
   (`sites/ldap.pp`), optionally adds auth/acct `v3::listen` fragments
   (`sites/ldap.pp`), and symlinks into `sites-enabled` when `$enable`.
