@@ -2,12 +2,6 @@
 
 This file provides guidance to AI agents when working with code in this repository.
 
-> **A note on line references:** File-and-line citations in this document (e.g.
-> `manifests/init.pp:1-10`) reflect the code at the time it was written and will
-> drift as the module changes. The durable anchors are the **file path** and the
-> named **class / define / type / parameter** — treat the line numbers as a
-> starting point and confirm against the current source.
-
 ## What this module does
 
 `simp-freeradius` is a SIMP Puppet module that installs and configures a
@@ -21,10 +15,10 @@ driven by SIMP's `simp_options::ldap::*` seam.
 
 The module is **FIPS-incompatible by design**: RADIUS requires MD5, so when FIPS is
 active the module refuses to configure anything and only emits a warning
-(`manifests/init.pp:103-105`). Two configuration paths exist: the default
+(`manifests/init.pp`). Two configuration paths exist: the default
 manifest-driven path (FreeRADIUS 3.x only, driven by the `radius_version` fact) and
 an `rsync`-based path for copying a pre-built config tree (needed for pre-3.x
-installs, `manifests/config.pp:64-79`).
+installs, `manifests/config.pp`).
 
 ### Business logic
 
@@ -34,120 +28,120 @@ defined types (`client`, `listen`, `listener`, `module`, `site`,
 consumers declare directly. The `install`/`config`/`service`/`config::rsync` classes
 and the `v3::conf*` internals are `assert_private()`'d.
 
-- **`freeradius` (`manifests/init.pp:77-111`)** — Public entry class; `include`d by
-  consumers. Key parameters (`init.pp:77-100`):
+- **`freeradius` (`manifests/init.pp`)** — Public entry class; `include`d by
+  consumers. Key parameters (`init.pp`):
   - `$pki` (`Variant[Boolean,Enum['simp']]`) — from `simp_options::pki`
-    (`init.pp:78`); controls whether `pki::copy` manages app certs.
-  - `$firewall` (`Boolean`) — from `simp_options::firewall` (`init.pp:79`); gates
+    (`init.pp`); controls whether `pki::copy` manages app certs.
+  - `$firewall` (`Boolean`) — from `simp_options::firewall` (`init.pp`); gates
     the iptables port opening in `v3::conf`.
-  - `$fips` (`Boolean`) — from `simp_options::fips` (`init.pp:80`).
+  - `$fips` (`Boolean`) — from `simp_options::fips` (`init.pp`).
   - `$freeradius_name` (`'freeradius'`), `$user`/`$group` (`'radiusd'`),
     `$uid`/`$gid` (`95`), `$confdir` (`${sysconfdir}/raddb`), `$logdir`
     (`/var/log/freeradius`), `$manage_sites_enabled` (`false`),
-    `$package_ensure` (from `simp_options::package_ensure`, `init.pp:99`).
-  - Control flow (`init.pp:103-110`): **if `$fips` OR the `fips_enabled` fact is
+    `$package_ensure` (from `simp_options::package_ensure`, `init.pp`).
+  - Control flow (`init.pp`): **if `$fips` OR the `fips_enabled` fact is
     true, do nothing but `warning()`** (RADIUS needs MD5, unsupported in FIPS).
     Otherwise `include` `install` → `config` ~> `service` in an ordered chain
-    (`init.pp:106-109`).
+    (`init.pp`).
 
-- **`freeradius::install` (`manifests/install.pp:5-30`, `assert_private` line 6)** —
+- **`freeradius::install` (`manifests/install.pp`, `assert_private` line 6)** —
   creates the `radiusd` group/user and installs `$freeradius_name`, `-ldap`, and
   `-utils` packages at `$package_ensure` (requires the user).
 
-- **`freeradius::config` (`manifests/config.pp:4-80`, `assert_private` line 7)** —
-  optionally calls `pki::copy` when `$freeradius::pki` (`config.pp:9-15`); creates
+- **`freeradius::config` (`manifests/config.pp`, `assert_private` line 7)** —
+  optionally calls `pki::copy` when `$freeradius::pki` (`config.pp`); creates
   `$confdir` and the `mods-config`/`mods-available`/`mods-enabled`/`sites-available`/
   `sites-enabled` dirs (`sites-enabled` is `purge`d only when `$manage_sites_enabled`,
-  `config.pp:56-62`); optional testcert bootstrap (`config.pp:30-45`). **Version
-  dispatch (`config.pp:64-79`):** if `$use_rsync` include `config::rsync`; else if
+  `config.pp`); optional testcert bootstrap (`config.pp`). **Version
+  dispatch (`config.pp`):** if `$use_rsync` include `config::rsync`; else if
   the `radius_version` fact is < 3 emit a warning (module only supports 3.x), if it
   is unknown warn, otherwise `include 'freeradius::v3::conf'`.
 
-- **`freeradius::service` (`manifests/service.pp:3-9`)** — `service { 'radiusd' }`
+- **`freeradius::service` (`manifests/service.pp`)** — `service { 'radiusd' }`
   running + enabled. (Note: not `assert_private`'d, but no docstring params.)
 
-- **`freeradius::config::rsync` (`manifests/config/rsync.pp:33-67`, `assert_private`
+- **`freeradius::config::rsync` (`manifests/config/rsync.pp`, `assert_private`
   line 42)** — `include 'rsync'` and pull the config tree via the `rsync` define
   (server from `simp_options::rsync::server`, timeout from
-  `simp_options::rsync::timeout`; password via `simplib::passgen`, `rsync.pp:37`).
+  `simp_options::rsync::timeout`; password via `simplib::passgen`, `rsync.pp`).
 
-- **`freeradius::v3::conf` (`manifests/v3/conf.pp:57-237`, `assert_private` line
+- **`freeradius::v3::conf` (`manifests/v3/conf.pp`, `assert_private` line
   79)** — the core 3.x config class. `include`s the four `conf::*` section classes
-  (`conf.pp:81-84`), renders `radiusd.conf` from `epp('freeradius/3/radiusd.conf.epp')`
-  (`conf.pp:138`), manages log-file perms and `conf.d`/`policy.d`/`clients.d`, honors
+  (`conf.pp`), renders `radiusd.conf` from `epp('freeradius/3/radiusd.conf.epp')`
+  (`conf.pp`), manages log-file perms and `conf.d`/`policy.d`/`clients.d`, honors
   optional `*_conf_content` overrides, renders `clients.conf` from
   `epp('freeradius/3/clients.conf.epp')` when no explicit clients content
-  (`conf.pp:203`), conditionally includes `conf::users` (`conf.pp:210-219`), and opens
+  (`conf.pp`), conditionally includes `conf::users` (`conf.pp`), and opens
   the radius ports via `iptables::listen::{udp,tcp_stateful}` when `$freeradius::firewall`
-  (`conf.pp:222-235`). `$trusted_nets` defaults from `simp_options::trusted_nets`
-  (`conf.pp:69`).
+  (`conf.pp`). `$trusted_nets` defaults from `simp_options::trusted_nets`
+  (`conf.pp`).
 
 - **`freeradius::v3::conf::{log,security,thread_pool,instantiate}`** — private-in-
   practice section classes, each `include 'freeradius'` and render one `conf.d/*.inc`
-  section from an ERB template (`log.pp:52`, `security.pp:58`, `thread_pool.pp:43`,
-  `instantiate.pp:37`). `security.pp` `fail()`s if `$chroot` is set without
+  section from an ERB template (`log.pp`, `security.pp`, `thread_pool.pp`,
+  `instantiate.pp`). `security.pp` `fail()`s if `$chroot` is set without
   `$chroot_user`. None call `assert_private()` (they are ordered under `v3::conf`).
 
-- **`freeradius::v3::conf::users` (`manifests/v3/conf/users.pp:3-...`,
+- **`freeradius::v3::conf::users` (`manifests/v3/conf/users.pp`,
   `assert_private` line 5)** — sets up the `concat` container + header for the
   `mods-config/files/authorize` users file.
 
-- **`freeradius::v3::conf::user` (`define`, `manifests/v3/conf/user.pp:57`)** — adds
+- **`freeradius::v3::conf::user` (`define`, `manifests/v3/conf/user.pp`)** — adds
   a `concat::fragment` to the authorize file from `template('freeradius/user.erb')`
-  (`user.pp:66`). `$confdir` from `simplib::lookup('freeradius::confdir', ...)`.
+  (`user.pp`). `$confdir` from `simplib::lookup('freeradius::confdir', ...)`.
 
-- **`freeradius::v3::client` (`define`, `manifests/v3/client.pp:28`)** — writes
+- **`freeradius::v3::client` (`define`, `manifests/v3/client.pp`)** — writes
   `clients.d/${name}.conf` from `template('freeradius/3/clients.d/client.erb')`
-  (`client.pp:61`); `include 'freeradius'` (`client.pp:47`); secret defaults via
-  `simplib::passgen("freeradius_${name}")` (`client.pp:32`).
+  (`client.pp`); `include 'freeradius'` (`client.pp`); secret defaults via
+  `simplib::passgen("freeradius_${name}")` (`client.pp`).
 
 - **`freeradius::v3::listen` / `freeradius::v3::listener` (`define`s,
-  `listen.pp:27` / `listener.pp:26`)** — `listen` adds a `listen{}` concat fragment
-  (`template('freeradius/3/conf.d/listen.erb')`, `listen.pp:42`) to a target file;
+  `listen.pp` / `listener.pp`)** — `listen` adds a `listen{}` concat fragment
+  (`template('freeradius/3/conf.d/listen.erb')`, `listen.pp`) to a target file;
   `listener` creates a standalone listener file in `conf.d` and delegates a `listen`
-  fragment. `$confdir`/`$group` from `freeradius::*` lookups (`listener.pp:28-29`).
+  fragment. `$confdir`/`$group` from `freeradius::*` lookups (`listener.pp`).
 
-- **`freeradius::v3::module` / `freeradius::v3::site` (`define`s, `module.pp:26` /
-  `site.pp:29`)** — copy a module/site definition into `mods-available`/
+- **`freeradius::v3::module` / `freeradius::v3::site` (`define`s, `module.pp` /
+  `site.pp`)** — copy a module/site definition into `mods-available`/
   `sites-available` and optionally symlink into the `-enabled` dir. Both `fail()` if
-  both `content` and `source` are supplied (`module.pp:35`, `site.pp:37`).
-  `$confdir`/`$group` from `freeradius::*` lookups (`module.pp:30-31`, `site.pp:33-34`).
+  both `content` and `source` are supplied (`module.pp`, `site.pp`).
+  `$confdir`/`$group` from `freeradius::*` lookups (`module.pp`, `site.pp`).
 
-- **`freeradius::v3::modules::ldap` (`class`, `manifests/v3/modules/ldap.pp:88`,
+- **`freeradius::v3::modules::ldap` (`class`, `manifests/v3/modules/ldap.pp`,
   `inherits freeradius` line 146)** — renders the LDAP module config to
-  `mods-enabled/ldap` from `template('freeradius/3/modules/ldap.erb')` (`ldap.pp:152`)
+  `mods-enabled/ldap` from `template('freeradius/3/modules/ldap.erb')` (`ldap.pp`)
   unless `$content` is set. Its first four params are `simp_options::ldap::*` lookups
   (see seam table).
 
-- **`freeradius::v3::sites::ldap` (`class`, `manifests/v3/sites/ldap.pp:32`,
+- **`freeradius::v3::sites::ldap` (`class`, `manifests/v3/sites/ldap.pp`,
   `inherits freeradius` line 42)** — builds a `concat` site file
   `sites-available/simp-ldap-default` from `epp` header/footer templates
-  (`sites/ldap.pp:58,86`), optionally adds auth/acct `v3::listen` fragments
-  (`sites/ldap.pp:62-81`), and symlinks into `sites-enabled` when `$enable`.
+  (`sites/ldap.pp`), optionally adds auth/acct `v3::listen` fragments
+  (`sites/ldap.pp`), and symlinks into `sites-enabled` when `$enable`.
 
 ### Gotchas / non-obvious details
 
 - **FIPS makes the module a no-op.** If `$fips` (`simp_options::fips`) or the
   `fips_enabled` fact is true, `freeradius` installs and configures **nothing** and
-  only warns (`init.pp:103-105`). RADIUS requires MD5, which FIPS forbids.
+  only warns (`init.pp`). RADIUS requires MD5, which FIPS forbids.
 - **Only FreeRADIUS 3.x is managed by the manifests.** The manifest path keys off
   the custom `radius_version` fact (`lib/facter/radius_version.rb`): < 3 → warning
-  only, `unknown` → warning only, ≥ 3 → `v3::conf` (`config.pp:64-79`). For older
+  only, `unknown` → warning only, ≥ 3 → `v3::conf` (`config.pp`). For older
   installs you must set `$use_rsync => true` and ship a pre-built config tree; rsync
   never removes files, so rsync + manifests can be combined (`config.pp` docstring).
 - **`v3::modules::ldap` has three *required* lookups with no default:**
   `simp_options::ldap::base_dn`, `simp_options::ldap::bind_pw`,
-  `simp_options::ldap::uri` (`ldap.pp:89,90,92`). Compilation fails if these are not
+  `simp_options::ldap::uri` (`ldap.pp`). Compilation fails if these are not
   in Hiera. This class and `v3::sites::ldap` both `inherits freeradius`.
 - **There is no `data/` directory** even though `hiera.yaml` (v5) points `datadir`
   at `data`. All parameter defaults live in the manifests (via `simplib::lookup`
   defaults or literals), not in module data — `hiera.yaml` resolves to nothing.
 - **`sites-enabled` is only purged when `$manage_sites_enabled` is true**
-  (`config.pp:56-62`); rsync'd files are not "managed" by Puppet and would be purged
+  (`config.pp`); rsync'd files are not "managed" by Puppet and would be purged
   if you enable this, so the docstring warns against mixing them.
 - **`freeradius::service` is not `assert_private()`'d**, unlike the other internal
   classes — declaring it directly is technically possible but not intended; it is
-  ordered after `config` by the entry class (`init.pp:109`).
+  ordered after `config` by the entry class (`init.pp`).
 - **`simp/simplib` is a declared dependency and provides the `simplib::lookup` /
   `simplib::passgen` functions and the `Simplib::*` data types**, but
   `simp/simp_options` itself is **NOT** a declared dependency — the `simp_options::*`
@@ -168,18 +162,18 @@ The module routes SIMP-wide feature toggles through
 
 | File:line | Key | `default_value` |
 |-----------|-----|-----------------|
-| `manifests/init.pp:78` | `simp_options::pki` | `false` |
-| `manifests/init.pp:79` | `simp_options::firewall` | `false` |
-| `manifests/init.pp:80` | `simp_options::fips` | `false` |
-| `manifests/init.pp:94` | `simp_options::pki::source` | `'/etc/pki/simp/x509'` |
-| `manifests/init.pp:99` | `simp_options::package_ensure` | `'installed'` |
-| `manifests/config/rsync.pp:35` | `simp_options::rsync::server` | `'127.0.0.1'` |
-| `manifests/config/rsync.pp:38` | `simp_options::rsync::timeout` | `2` |
-| `manifests/v3/conf.pp:69` | `simp_options::trusted_nets` | `['127.0.0.1', '::1']` |
-| `manifests/v3/modules/ldap.pp:89` | `simp_options::ldap::base_dn` | **none (required)** |
-| `manifests/v3/modules/ldap.pp:90` | `simp_options::ldap::bind_pw` | **none (required)** |
-| `manifests/v3/modules/ldap.pp:91` | `simp_options::ldap::bind_dn` | `"cn=hostAuth,ou=Hosts,%{lookup('simp_options::ldap::base_dn')}"` (`value_type => String`) |
-| `manifests/v3/modules/ldap.pp:92` | `simp_options::ldap::uri` | **none (required)** |
+| `manifests/init.pp` | `simp_options::pki` | `false` |
+| `manifests/init.pp` | `simp_options::firewall` | `false` |
+| `manifests/init.pp` | `simp_options::fips` | `false` |
+| `manifests/init.pp` | `simp_options::pki::source` | `'/etc/pki/simp/x509'` |
+| `manifests/init.pp` | `simp_options::package_ensure` | `'installed'` |
+| `manifests/config/rsync.pp` | `simp_options::rsync::server` | `'127.0.0.1'` |
+| `manifests/config/rsync.pp` | `simp_options::rsync::timeout` | `2` |
+| `manifests/v3/conf.pp` | `simp_options::trusted_nets` | `['127.0.0.1', '::1']` |
+| `manifests/v3/modules/ldap.pp` | `simp_options::ldap::base_dn` | **none (required)** |
+| `manifests/v3/modules/ldap.pp` | `simp_options::ldap::bind_pw` | **none (required)** |
+| `manifests/v3/modules/ldap.pp` | `simp_options::ldap::bind_dn` | `"cn=hostAuth,ou=Hosts,%{lookup('simp_options::ldap::base_dn')}"` (`value_type => String`) |
+| `manifests/v3/modules/ldap.pp` | `simp_options::ldap::uri` | **none (required)** |
 
 There is a **second, module-local `simplib::lookup` seam** for the defined types'
 `$confdir`/`$group` — these use plain (non-`simp_options`) keys so that a define
@@ -187,13 +181,13 @@ declared outside the `freeradius` class still resolves sane paths:
 
 | File:line | Key | `default_value` |
 |-----------|-----|-----------------|
-| `manifests/v3/module.pp:30` | `freeradius::confdir` | `'/etc/raddb'` |
-| `manifests/v3/module.pp:31` | `freeradius::group` | `'radiusd'` |
-| `manifests/v3/listener.pp:28` | `freeradius::confdir` | `'/etc/raddb'` |
-| `manifests/v3/listener.pp:29` | `freeradius::group` | `'radiusd'` |
-| `manifests/v3/site.pp:33` | `freeradius::confdir` | `'/etc/raddb'` |
-| `manifests/v3/site.pp:34` | `freeradius::group` | `'radiusd'` |
-| `manifests/v3/conf/user.pp:61` | `freeradius::confdir` | `'/etc/raddb'` |
+| `manifests/v3/module.pp` | `freeradius::confdir` | `'/etc/raddb'` |
+| `manifests/v3/module.pp` | `freeradius::group` | `'radiusd'` |
+| `manifests/v3/listener.pp` | `freeradius::confdir` | `'/etc/raddb'` |
+| `manifests/v3/listener.pp` | `freeradius::group` | `'radiusd'` |
+| `manifests/v3/site.pp` | `freeradius::confdir` | `'/etc/raddb'` |
+| `manifests/v3/site.pp` | `freeradius::group` | `'radiusd'` |
+| `manifests/v3/conf/user.pp` | `freeradius::confdir` | `'/etc/raddb'` |
 
 Keep routing SIMP feature toggles through `simplib::lookup('simp_options::*', {
 'default_value' => ... })` with an explicit default rather than assuming
@@ -204,9 +198,9 @@ Keep routing SIMP feature toggles through `simplib::lookup('simp_options::*', {
 Module dependencies (from `metadata.json`):
 
 - `simp/iptables` `>= 6.5.3 < 8.0.0` — provides `iptables::listen::udp` /
-  `iptables::listen::tcp_stateful` used when `$firewall` (`v3/conf.pp:222-235`).
+  `iptables::listen::tcp_stateful` used when `$firewall` (`v3/conf.pp`).
 - `simp/pki` `>= 6.2.0 < 7.0.0` — provides `pki::copy` for app cert management
-  (`config.pp:10`).
+  (`config.pp`).
 - `simp/rsync` `>= 6.1.1 < 7.0.0` — provides the `rsync` define and `rsync` class
   (`config/rsync.pp`).
 - `simp/simplib` `>= 4.9.0 < 5.0.0` — provides `simplib::lookup`,
