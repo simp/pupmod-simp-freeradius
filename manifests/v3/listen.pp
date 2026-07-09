@@ -37,8 +37,7 @@ define freeradius::v3::listen (
   Optional[String]        $per_socket_clients = undef,
   Optional[Simplib::Port] $port               = undef
 ) {
-
-  concat::fragment  { "listen.${name}.${listen_type}":
+  concat::fragment { "listen.${name}.${listen_type}":
     content => template('freeradius/3/conf.d/listen.erb'),
     target  => $target,
     order   => $order

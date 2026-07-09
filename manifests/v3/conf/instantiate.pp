@@ -15,7 +15,6 @@
 class freeradius::v3::conf::instantiate (
   Optional[String]  $content = undef
 ) {
-
   include 'freeradius'
 
   ensure_resource ('file',  "${freeradius::confdir}/conf.d",
@@ -26,7 +25,7 @@ class freeradius::v3::conf::instantiate (
       mode   => '0640',
       purge  => true,
       before => Service['radiusd'],
-    })
+  })
 
   file { "${freeradius::confdir}/conf.d/instantiate.inc":
     ensure  => 'file',
@@ -37,5 +36,4 @@ class freeradius::v3::conf::instantiate (
     content => template('freeradius/3/conf.d/instantiate.erb'),
     notify  => Service['radiusd']
   }
-
 }

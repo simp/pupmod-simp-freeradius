@@ -144,7 +144,6 @@ class freeradius::v3::modules::ldap (
   Optional[String]            $accounting_content                             = undef,
   Optional[String]            $content                                        = undef
 ) inherits freeradius {
-
   if $content {
     $_content = $content
   }

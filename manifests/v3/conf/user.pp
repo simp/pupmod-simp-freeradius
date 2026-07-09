@@ -58,13 +58,11 @@ define freeradius::v3::conf::user (
   String                $content,
   Boolean               $is_default = false,
   Integer[1]            $order      = 100,
-  Stdlib::Absolutepath  $confdir    = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )
+  Stdlib::Absolutepath  $confdir    = simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' })
 ) {
-
   concat::fragment { "radius_user_${order}.${name}":
     target  => "${confdir}/mods-config/files/authorize",
     content => template('freeradius/user.erb'),
-    order   =>  $order
+    order   => $order
   }
-
 }

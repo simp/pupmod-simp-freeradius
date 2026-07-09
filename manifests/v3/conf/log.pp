@@ -29,7 +29,6 @@ class freeradius::v3::conf::log (
   Optional[String]           $msg_badpass     = undef,
   Optional[String]           $msg_denied      = undef
 ) {
-
   include 'freeradius'
 
   ensure_resource ('file',  "${freeradius::confdir}/conf.d",
@@ -41,7 +40,7 @@ class freeradius::v3::conf::log (
       recurse => true,
       purge   => true,
       before  => Service['radiusd'],
-    })
+  })
 
   file { "${freeradius::confdir}/conf.d/log.inc":
     ensure  => 'file',

@@ -27,7 +27,7 @@
 #
 define freeradius::v3::client (
   Variant[Simplib::IP,
-          Simplib::IP::CIDR]       $ipaddr,
+  Simplib::IP::CIDR]       $ipaddr,
   String                           $client_name                   = $name,
   String                           $secret                        = simplib::passgen("freeradius_${name}"),
   Optional[Enum['udp','tcp','*']]  $proto                         = undef,
@@ -43,7 +43,6 @@ define freeradius::v3::client (
   Integer                          $lifetime                      = 0,
   Integer                          $idle_timeout                  = 30,
 ) {
-
   include 'freeradius'
 
   ensure_resource ( 'file', "${freeradius::confdir}/clients.d",
@@ -52,7 +51,7 @@ define freeradius::v3::client (
       owner  => 'root',
       group  => $freeradius::group,
       mode   => '0640',
-    })
+  })
 
   file { "${freeradius::confdir}/clients.d/${name}.conf":
     owner   => 'root',
@@ -61,5 +60,4 @@ define freeradius::v3::client (
     content => template('freeradius/3/clients.d/client.erb'),
     notify  => Service['radiusd']
   }
-
 }

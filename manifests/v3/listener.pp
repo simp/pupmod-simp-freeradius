@@ -25,8 +25,8 @@
 #
 define freeradius::v3::listener (
   Freeradius::Listen      $listen_type,
-  Stdlib::Absolutepath    $confdir            = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} ),
-  String                  $group              = simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} ),
+  Stdlib::Absolutepath    $confdir            = simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' }),
+  String                  $group              = simplib::lookup( 'freeradius::group', { 'default_value' => 'radiusd' }),
   Optional[Integer]       $idle_timeout       = undef,
   Optional[String]        $interface          = undef,
   Simplib::Host           $ipaddr             = 'ALL',
@@ -37,20 +37,18 @@ define freeradius::v3::listener (
   Optional[String]        $per_socket_clients = undef,
   Optional[Simplib::Port] $port               = undef
 ) {
-
   $_target = "${confdir}/conf.d/listener.${name}"
   concat { "listener.${name}" :
-      ensure => present,
-      path   => $_target,
-      owner  => 'root',
-      group  => $group,
-      mode   => '0640',
-      notify => Service['radiusd'],
-      order  => 'numeric'
-    }
+    ensure => present,
+    path   => $_target,
+    owner  => 'root',
+    group  => $group,
+    mode   => '0640',
+    notify => Service['radiusd'],
+    order  => 'numeric'
+  }
 
-
-  freeradius::v3::listen  { "${_target}-fragment":
+  freeradius::v3::listen { "${_target}-fragment":
     target             => $_target,
     order              => $order,
     listen_type        => $listen_type,
@@ -63,5 +61,4 @@ define freeradius::v3::listener (
     max_connections    => $max_connections,
     idle_timeout       => $idle_timeout,
   }
-
 }

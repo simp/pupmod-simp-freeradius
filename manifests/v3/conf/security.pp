@@ -14,7 +14,7 @@
 # @param chroot_path
 #    directory where the server does "chroot"
 #
-# @param  chroot_user
+# @param chroot_user
 #    User to run daemon as,must be defined if using a chroot
 #
 # @param chroot_group
@@ -30,12 +30,11 @@ class freeradius::v3::conf::security (
   Optional[String]               $chroot_user       = undef,
   Optional[String]               $chroot_group      = undef
 ) {
-
   include 'freeradius'
 
   if $chroot {
     if ! $chroot_user {
-      fail('Radiusd requires the chroot_user be set if you are using a chroot. See
+    fail('Radiusd requires the chroot_user be set if you are using a chroot. See
       radiusd.conf help.')
     }
   }
@@ -48,7 +47,7 @@ class freeradius::v3::conf::security (
       mode   => '0640',
       purge  => true,
       before => Service['radiusd'],
-    })
+  })
 
   file { "${freeradius::confdir}/conf.d/security.inc":
     ensure  => 'file',
@@ -58,5 +57,4 @@ class freeradius::v3::conf::security (
     content => template('freeradius/3/conf.d/security.erb'),
     notify  => Service['radiusd']
   }
-
 }

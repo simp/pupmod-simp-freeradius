@@ -21,10 +21,9 @@ class freeradius::install {
   }
 
   package { [$freeradius::freeradius_name,
-            "${freeradius::freeradius_name}-ldap",
-            "${freeradius::freeradius_name}-utils"]:
-    ensure  => $freeradius::package_ensure,
-    require => User['radiusd']
+      "${freeradius::freeradius_name}-ldap",
+    "${freeradius::freeradius_name}-utils"]:
+      ensure  => $freeradius::package_ensure,
+      require => User['radiusd']
   }
-
 }

@@ -48,6 +48,7 @@ The freeradius class.
 The following parameters are available in the `freeradius` class:
 
 * [`firewall`](#-freeradius--firewall)
+* [`fips`](#-freeradius--fips)
 * [`freeradius_name`](#-freeradius--freeradius_name)
 * [`user`](#-freeradius--user)
 * [`uid`](#-freeradius--uid)
@@ -61,7 +62,6 @@ The following parameters are available in the `freeradius` class:
 * [`package_ensure`](#-freeradius--package_ensure)
 * [`manage_sites_enabled`](#-freeradius--manage_sites_enabled)
 * [`pki`](#-freeradius--pki)
-* [`fips`](#-freeradius--fips)
 * [`app_pki_dir`](#-freeradius--app_pki_dir)
 * [`app_pki_cert`](#-freeradius--app_pki_cert)
 * [`app_pki_key`](#-freeradius--app_pki_key)
@@ -75,7 +75,17 @@ Data type: `Boolean`
 
 If true set rules to open ports on  firewall
 
-Default value: `simplib::lookup('simp_options::firewall', { 'default_value'    => false})`
+Default value: `simplib::lookup('simp_options::firewall', { 'default_value'    => false })`
+
+##### <a name="-freeradius--fips"></a>`fips`
+
+Data type: `Boolean`
+
+If true, or if the ``fips_enabled`` fact is true, freeradius will not be
+configured since FreeRADIUS cannot operate without MD5 support, which is
+not available in FIPS mode.
+
+Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false })`
 
 ##### <a name="-freeradius--freeradius_name"></a>`freeradius_name`
 
@@ -187,14 +197,6 @@ Data type: `Variant[Boolean,Enum['simp']]`
 
 Default value: `simplib::lookup('simp_options::pki', { 'default_value'         => false })`
 
-##### <a name="-freeradius--fips"></a>`fips`
-
-Data type: `Boolean`
-
-
-
-Default value: `simplib::lookup('simp_options::fips', {'default_value' => false })`
-
 ##### <a name="-freeradius--app_pki_dir"></a>`app_pki_dir`
 
 Data type: `Stdlib::Absolutepath`
@@ -283,7 +285,7 @@ Default: 127.0.0.1
 If $use_rsync_radiusd_conf is true, specify the rsync server from
 which to pull here.
 
-Default value: `simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'})`
+Default value: `simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1' })`
 
 ##### <a name="-freeradius--config--rsync--radius_rsync_user"></a>`radius_rsync_user`
 
@@ -312,7 +314,7 @@ Default: '2'
 If $use_rsync_radiusd_conf is true, specify the rsync connection
 timeout here.
 
-Default value: `simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2})`
+Default value: `simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 })`
 
 ##### <a name="-freeradius--config--rsync--rsync_bwlimit"></a>`rsync_bwlimit`
 
@@ -449,7 +451,7 @@ Data type: `Simplib::Netlist`
 
 Networks and/or hosts that are allowed to access the RADIUS server
 
-Default value: `simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']})`
+Default value: `simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] })`
 
 ##### <a name="-freeradius--v3--conf--protocol"></a>`protocol`
 
@@ -1465,7 +1467,7 @@ Data type:
 
 ```puppet
 Variant[Simplib::IP,
-          Simplib::IP::CIDR]
+  Simplib::IP::CIDR]
 ```
 
 If set to something with a ':' in it, will be treated as ipv6addr instead.
@@ -1666,7 +1668,7 @@ The configuration directory for  radiusd.
 * Generally, you will want default entries at the end of the file, but this
   is not strictly enforced. You have been warned!
 
-Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
+Default value: `simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' })`
 
 ### <a name="freeradius--v3--listen"></a>`freeradius::v3::listen`
 
@@ -1825,7 +1827,7 @@ Data type: `Stdlib::Absolutepath`
 
 
 
-Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
+Default value: `simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' })`
 
 ##### <a name="-freeradius--v3--listener--group"></a>`group`
 
@@ -1833,7 +1835,7 @@ Data type: `String`
 
 
 
-Default value: `simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )`
+Default value: `simplib::lookup( 'freeradius::group', { 'default_value' => 'radiusd' })`
 
 ##### <a name="-freeradius--v3--listener--idle_timeout"></a>`idle_timeout`
 
@@ -1952,7 +1954,7 @@ Data type: `Stdlib::Absolutepath`
 
 The configuration directory
 
-Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
+Default value: `simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' })`
 
 ##### <a name="-freeradius--v3--module--group"></a>`group`
 
@@ -1960,7 +1962,7 @@ Data type: `String`
 
 The group radiusd will run under
 
-Default value: `simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )`
+Default value: `simplib::lookup( 'freeradius::group', { 'default_value' => 'radiusd' })`
 
 ### <a name="freeradius--v3--site"></a>`freeradius::v3::site`
 
@@ -2018,7 +2020,7 @@ Data type: `Stdlib::Absolutepath`
 
 The configuration directory
 
-Default value: `simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} )`
+Default value: `simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' })`
 
 ##### <a name="-freeradius--v3--site--group"></a>`group`
 
@@ -2026,7 +2028,7 @@ Data type: `String`
 
 The group radiusd will run under
 
-Default value: `simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )`
+Default value: `simplib::lookup( 'freeradius::group', { 'default_value' => 'radiusd' })`
 
 ## Data types
 
