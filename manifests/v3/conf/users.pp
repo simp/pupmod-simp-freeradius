@@ -1,7 +1,6 @@
 # @summary Set up the freeradius users entries
 #
 class freeradius::v3::conf::users {
-
   assert_private()
 
   Class['freeradius::config']
@@ -18,15 +17,14 @@ class freeradius::v3::conf::users {
   }
 
   $_header = @("EOF")
-# This file is managed by Puppet.  Changes will be overwritten
-# at the next puppet run.
-#
- | EOF
+   # This file is managed by Puppet.  Changes will be overwritten
+   # at the next puppet run.
+   #
+    | EOF
 
   concat::fragment { 'radius_user_header':
     target  => "${freeradius::confdir}/mods-config/files/authorize",
     content => $_header,
     order   => 0
   }
-
 }

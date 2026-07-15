@@ -32,13 +32,12 @@
 #   rsync bandwidth limit
 class freeradius::config::rsync (
   String                  $rsync_source           = "freeradius_${facts['environment']}_${facts['os']['name']}/",
-  Simplib::Host           $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1'}),
+  Simplib::Host           $rsync_server           = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1' }),
   String                  $radius_rsync_user      = "freeradius_systems_${facts['environment']}_${facts['os']['name'].downcase}",
   String                  $radius_rsync_password  = simplib::passgen($radius_rsync_user),
-  Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2}),
+  Integer                 $rsync_timeout          = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
   Optional[Integer]       $rsync_bwlimit          = undef,
 ) {
-
   assert_private()
 
   include 'rsync'

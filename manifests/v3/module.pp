@@ -27,10 +27,9 @@ define freeradius::v3::module (
   Optional[String]      $content = undef,
   Optional[String]      $source  = undef,
   Boolean               $enabled = false,
-  Stdlib::Absolutepath  $confdir = simplib::lookup( 'freeradius::confdir', {'default_value' => '/etc/raddb'} ),
-  String                $group   = simplib::lookup( 'freeradius::group', {'default_value' => 'radiusd'} )
+  Stdlib::Absolutepath  $confdir = simplib::lookup( 'freeradius::confdir', { 'default_value' => '/etc/raddb' }),
+  String                $group   = simplib::lookup( 'freeradius::group', { 'default_value' => 'radiusd' })
 ) {
-
   if $content and $source {
     fail('Only one of $content and $source can be specified.')
   }
@@ -51,5 +50,4 @@ define freeradius::v3::module (
       require => Class['freeradius::config']
     }
   }
-
 }

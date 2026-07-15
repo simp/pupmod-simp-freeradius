@@ -40,7 +40,6 @@ class freeradius::v3::sites::ldap (
   Integer              $lifetime         = 0,
   Integer              $idle_timeout     = 30
 ) inherits freeradius {
-
   $_target = "${confdir}/sites-available/simp-ldap-default"
 
   concat { 'site_simp_ldap_default':
@@ -87,7 +86,7 @@ class freeradius::v3::sites::ldap (
   }
 
   if $enable {
-    file {  "${confdir}/sites-enabled/${site_name}":
+    file { "${confdir}/sites-enabled/${site_name}":
       ensure => 'link',
       target => $_target,
       owner  => 'root',

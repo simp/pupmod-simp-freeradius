@@ -17,6 +17,3 @@ fixtures:
     stdlib: https://github.com/simp/puppetlabs-stdlib.git
     systemd: https://github.com/simp/puppet-systemd.git
 
-  symlinks:
-    freeradius: "#{source_dir}"
-

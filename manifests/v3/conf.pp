@@ -66,7 +66,7 @@ class freeradius::v3::conf (
   Array[Simplib::Port]    $radius_ports           = [1812, 1813],
 
   # SIMP-Related Parameters
-  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1']}),
+  Simplib::Netlist        $trusted_nets           = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
   Enum['udp','tcp','ALL'] $protocol               = 'ALL',
 
   # Configuration Override Parameters
@@ -75,7 +75,6 @@ class freeradius::v3::conf (
   Optional[String]        $trigger_conf_content   = undef,
   Optional[String]        $users_conf_content     = undef,
 ) {
-
   assert_private()
 
   include 'freeradius::v3::conf::log'
@@ -86,9 +85,9 @@ class freeradius::v3::conf (
   Class[freeradius::config]
   -> Class[freeradius::v3::conf]
   -> [Class[freeradius::v3::conf::thread_pool],
-      Class[freeradius::v3::conf::log],
-      Class[freeradius::v3::conf::instantiate],
-      Class[freeradius::v3::conf::security]]
+    Class[freeradius::v3::conf::log],
+    Class[freeradius::v3::conf::instantiate],
+  Class[freeradius::v3::conf::security]]
 
   ############################
   #  Manage permissions on log files
@@ -109,15 +108,15 @@ class freeradius::v3::conf (
   }
 
   file { [
-    "${freeradius::logdir}/linelog",
-    "${freeradius::logdir}/radutmp",
-    "${freeradius::logdir}/radwtmp",
-    "${freeradius::logdir}/sradutmp"
-  ]:
-    ensure  => 'file',
-    *       => $log_file_settings,
-    require => File[$freeradius::logdir],
-    before  => Service['radiusd'],
+      "${freeradius::logdir}/linelog",
+      "${freeradius::logdir}/radutmp",
+      "${freeradius::logdir}/radwtmp",
+      "${freeradius::logdir}/sradutmp"
+    ]:
+      ensure  => 'file',
+      *       => $log_file_settings,
+      require => File[$freeradius::logdir],
+      before  => Service['radiusd'],
   }
   #
   ############################
@@ -149,7 +148,7 @@ class freeradius::v3::conf (
       recurse  => true,
       purge    => true,
       mode     => '0640',
-    })
+  })
 
   file { "${freeradius::confdir}/policy.d":
     ensure => 'directory',
@@ -168,7 +167,7 @@ class freeradius::v3::conf (
     }
   }
 
-  if $proxy_conf_content{
+  if $proxy_conf_content {
     file { "${freeradius::confdir}/proxy.conf":
       ensure  => 'file',
       content => $proxy_conf_content,
@@ -192,11 +191,11 @@ class freeradius::v3::conf (
   } else {
     # create individual files in the clients directory
     ensure_resource('file', "${freeradius::confdir}/clients.d",
-    {
-      ensure => 'directory',
-      owner  => 'root',
-      group  => $freeradius::group,
-      mode   => '0640',
+      {
+        ensure => 'directory',
+        owner  => 'root',
+        group  => $freeradius::group,
+        mode   => '0640',
     })
     file { "${freeradius::confdir}/clients.conf":
       ensure  => file,
@@ -227,11 +226,10 @@ class freeradius::v3::conf (
       }
     }
     if $protocol == 'tcp' or $protocol == 'ALL' {
-      iptables::listen::tcp_stateful  {'radius_iptables_tcp':
+      iptables::listen::tcp_stateful { 'radius_iptables_tcp':
         trusted_nets => $trusted_nets,
         dports       => $radius_ports
       }
     }
   }
-
 }

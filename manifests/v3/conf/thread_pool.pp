@@ -22,26 +22,24 @@ class freeradius::v3::conf::thread_pool (
   Optional[Integer] $max_queue_size          = undef,
   Boolean           $auto_limit_acct         = false
 ) {
-
   include 'freeradius'
 
   ensure_resource ('file',  "${freeradius::confdir}/conf.d",
     {
       ensure => 'directory',
       owner  => 'root',
-      group =>  $freeradius::group,
+      group => $freeradius::group,
       mode   => '0640',
       purge  => true,
       before => Service['radiusd'],
-    })
+  })
 
   file { "${freeradius::confdir}/conf.d/thread_pool.inc":
     ensure  => 'file',
     owner   => 'root',
-    group   =>  $freeradius::group,
+    group   => $freeradius::group,
     mode    => '0640',
     content => template('freeradius/3/conf.d/thread_pool.erb'),
     notify  => Service['radiusd']
   }
-
 }

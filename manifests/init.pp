@@ -30,11 +30,19 @@
 # @param app_pki_cert
 #   Path and name of the public SSL certificate
 #
+# @param app_pki_ca
+#   Path and name of the CA certificate bundle used to verify client/server certificates.
+#
 # @param app_pki_ca_dir
 #   Path to the CA.
 
 # @param firewall
 #   If true set rules to open ports on  firewall
+#
+# @param fips
+#   If true, or if the ``fips_enabled`` fact is true, freeradius will not be
+#   configured since FreeRADIUS cannot operate without MD5 support, which is
+#   not available in FIPS mode.
 #
 # @param freeradius_name
 #   Name of the package
@@ -76,8 +84,8 @@
 #
 class freeradius (
   Variant[Boolean,Enum['simp']]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'         => false }),
-  Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'    => false}),
-  Boolean                        $fips                    = simplib::lookup('simp_options::fips', {'default_value' => false }),
+  Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'    => false }),
+  Boolean                        $fips                    = simplib::lookup('simp_options::fips', { 'default_value' => false }),
   String                         $freeradius_name         = 'freeradius',
   String                         $user                    = 'radiusd',
   Integer                        $uid                     = 95,
@@ -99,7 +107,6 @@ class freeradius (
   String                         $package_ensure          = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
 
 ) {
-
   if $fips or $facts['fips_enabled'] {
     warning('RADIUS, by design, must have MD5 support. FreeRADIUS (and RADIUS period) cannot be supported in FIPS mode.')
   } else {

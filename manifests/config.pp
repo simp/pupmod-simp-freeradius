@@ -1,9 +1,8 @@
 # @summary Manage the permissions on directories and files and then either
 # rsync content or create content
 #
-class freeradius::config(
+class freeradius::config (
 ) {
-
   assert_private()
 
   if $freeradius::pki {
@@ -45,12 +44,12 @@ class freeradius::config(
   }
 
   file { ["${freeradius::confdir}/mods-config",
-          "${freeradius::confdir}/mods-available",
-          "${freeradius::confdir}/mods-enabled",
-          "${freeradius::confdir}/sites-available"]:
-    ensure  => 'directory',
-    require => File[$freeradius::confdir],
-    *       => $config_file_settings
+      "${freeradius::confdir}/mods-available",
+      "${freeradius::confdir}/mods-enabled",
+    "${freeradius::confdir}/sites-available"]:
+      ensure  => 'directory',
+      require => File[$freeradius::confdir],
+      *       => $config_file_settings
   }
 
   file { "${freeradius::confdir}/sites-enabled":
