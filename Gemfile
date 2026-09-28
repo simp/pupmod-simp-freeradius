@@ -36,6 +36,9 @@ group :test do
   # dependency) still requires it internally but does not declare it, causing
   # a LoadError on Ruby >= 3.4 unless it is added explicitly here.
   gem 'observer', require: false
+  # openvox 8 accepts openfact 6, which no OpenVox 8 AIO agent ships; CI pins
+  # the openfact each agent release actually ships with OPENFACT_VERSION
+  gem 'openfact', ENV.fetch('OPENFACT_VERSION', '>= 5')
 end
 
 group :development do
