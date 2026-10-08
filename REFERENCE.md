@@ -2061,4 +2061,3 @@ Alias of `Enum['cisco', 'computone', 'livingston', 'max40xx', 'multitech', 'nets
 LDAP search scope
 
 Alias of `Enum['base', 'one', 'sub', 'children']`
-
